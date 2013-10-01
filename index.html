@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>CSS Color Shifter</title>
+
+    <script src="JsInheritance.js"></script>
+    <script src="ColorFormat.js"></script>
+    <script src="ColorMatch.js"></script>
+    <script src="ColorShifter.js"></script>
+    
+	<script>
+		window.addEventListener("DOMContentLoaded", function() {
+			var colorShifter = new ColorShifter("source", "target", "hueChange", "saturationChange", "lightnessChange");
+		});
+	</script>
+
+</head>
+
+<body>
+
+<div>
+    <label>Hue Change<input type="text" id="hueChange" /></label>
+</div>
+<div>
+    <label>Saturation Change<input type="text" id="saturationChange" /></label>
+</div>
+<div>
+    <label>Lightness Change<input type="text" id="lightnessChange" /></label>
+</div>
+
+<div>
+    <textarea id="source" rows="20" cols="100"></textarea>
+</div>
+<div>
+    <textarea id="target" rows="20" cols="100"></textarea>
+</div>
+
+</body>
+</html>
