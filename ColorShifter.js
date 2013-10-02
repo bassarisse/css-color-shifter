@@ -38,16 +38,16 @@ var ColorShifter = Class.extend({
         var alphaField = document.getElementById(alphaFieldId);
 
         if (sourceField) {
-            sourceField.addEventListener("change", updateFunc);
-            sourceField.addEventListener("keyup", updateFunc);
+            sourceField.addEventListener("change", updateFunc, false);
+            sourceField.addEventListener("keyup", updateFunc, false);
         }
 
         if (targetField) targetField.readOnly = true;
 
-        if (hueElement) hueElement.addEventListener("keyup", updateFunc);
-        if (saturationElement) saturationElement.addEventListener("keyup", updateFunc);
-        if (lightnessField) lightnessField.addEventListener("keyup", updateFunc);
-        if (alphaField) alphaField.addEventListener("keyup", updateFunc);
+        if (hueElement) hueElement.addEventListener("keyup", updateFunc, false);
+        if (saturationElement) saturationElement.addEventListener("keyup", updateFunc, false);
+        if (lightnessField) lightnessField.addEventListener("keyup", updateFunc, false);
+        if (alphaField) alphaField.addEventListener("keyup", updateFunc, false);
 
     },
 
@@ -72,16 +72,15 @@ var ColorShifter = Class.extend({
 
 	update: function(cssString) {
 
-        var sourceField = document.getElementById(this.sourceFieldId);
-
-        if (typeof(cssString) != "string" && sourceField)
-            cssString = sourceField.value;
-
-        if (typeof(cssString) != "string" || this.sourceCssString == cssString) {
-            this.fillTargetField();
-            return;
+        if (typeof(cssString) != "string") {
+            var sourceField = document.getElementById(this.sourceFieldId);
+            if (sourceField)
+                cssString = sourceField.value;
+    
+            if (typeof(cssString) != "string")
+                return;
         }
-
+        
         this.refreshFromFields();
 
         var self = this;
