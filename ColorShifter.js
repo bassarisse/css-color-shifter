@@ -1,14 +1,14 @@
 
 var ColorShifter = Class.extend({
 
-    matchRegExp: /#[\da-f]{3,8}|rgb(a)?\(( )*\d+( )*,( )*\d+( )*,( )*\d+( )*(,( )*\d(.\d+)?( )*)?\)|hsl(a)?\(( )*\d+(.\d+)?( )*,( )*\d+(.\d+)?%?( )*,( )*\d+(.\d+)?%?( )*(,( )*\d(.\d+)?( )*)?\)/igm,
-
+    initialized: false,
     hueChange: 0,
 	saturationChange: 0,
 	lightnessChange: 0,
 	alphaChange: 0,
     outputFormat: ColorFormat.Unknown,
 
+    matchRegExp: null,
     sourceCssString: "",
     shiftedCssString: "",
 
@@ -20,7 +20,37 @@ var ColorShifter = Class.extend({
     alphaFieldId: null,
 
     init: function(sourceFieldId, targetFieldId, hueElementId, saturationElementId, lightnessFieldId, alphaFieldId) {
+        
+        if (this.initialized)
+            return;
+        this.initialized = true;
+        
+        this.createRegExp();
+        this.setupFields(sourceFieldId, targetFieldId, hueElementId, saturationElementId, lightnessFieldId, alphaFieldId);
 
+    },
+    
+    createRegExp: function() {
+        
+        var regexp = "", add = function(s) {
+            if (regexp != "")
+                regexp += "|";
+            regexp += s;
+        };
+        
+        add('#[\\da-f]{3,8}');
+        add('rgb(a)?\\(( )*\\d+( )*,( )*\\d+( )*,( )*\\d+( )*(,( )*\\d(.\\d+)?( )*)?\\)');
+        add('hsl(a)?\\(( )*\\d+(.\\d+)?( )*,( )*\\d+(.\\d+)?%?( )*,( )*\\d+(.\\d+)?%?( )*(,( )*\\d(.\\d+)?( )*)?\\)');
+        
+        for (var n in ColorNames)
+            add(ColorNames[n]);
+        
+        this.matchRegExp = new RegExp(regexp, "igm");
+        
+    },
+    
+    setupFields: function(sourceFieldId, targetFieldId, hueElementId, saturationElementId, lightnessFieldId, alphaFieldId) {
+        
         var updateFunc = this.update.bind(this);
 
         this.sourceFieldId = sourceFieldId;
@@ -48,7 +78,7 @@ var ColorShifter = Class.extend({
         if (saturationElement) saturationElement.addEventListener("keyup", updateFunc, false);
         if (lightnessField) lightnessField.addEventListener("keyup", updateFunc, false);
         if (alphaField) alphaField.addEventListener("keyup", updateFunc, false);
-
+        
     },
 
     refreshFromFields: function() {

@@ -38,14 +38,9 @@ var ColorMatch = Class.extend({
 			this.saturation = 0;
 		else
 			this.saturation = delta / (1 - Math.abs(2 * this.lightness - 1));
-
-        var multiplier = 10000000;
 			
-		this.saturation = Math.round(this.saturation * 100 * multiplier);
-		this.lightness = Math.round(this.lightness * 100 * multiplier);
-
-        this.saturation /= multiplier;
-        this.lightness /= multiplier;
+		this.saturation *= 100;
+		this.lightness *= 100;
 
 	},
 	
@@ -81,13 +76,22 @@ var ColorMatch = Class.extend({
 		g += m;
 		b += m;
 		
-		this.red = Math.round(r * 255);
-		this.green = Math.round(g * 255);
-		this.blue = Math.round(b * 255);
+		this.red = r * 255;
+		this.green = g * 255;
+		this.blue = b * 255;
 		
 	},
 
     _normalize: function() {
+		
+        var multiplier = 10000000;
+        
+		this.red = Math.round(this.red);
+		this.green = Math.round(this.green);
+		this.blue = Math.round(this.blue);
+			
+		this.saturation = Math.round(this.saturation * multiplier) / multiplier;
+		this.lightness = Math.round(this.lightness * multiplier) / multiplier;
 
         if (this.red > 255) this.red = 255;
         if (this.red < 0) this.red = 0;
