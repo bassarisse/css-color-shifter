@@ -89,6 +89,9 @@ var ColorShifter = Class.extend({
         this.shiftedCssString = cssString.replace(this.matchRegExp, function(match) {
 
             var colorMatch = new ColorMatch(match, self.outputFormat);
+            
+            if (self.alphaChange != 0)
+                colorMatch.isAlphaSpecified = true;
 
             return colorMatch.modify(self.hueChange, self.saturationChange, self.lightnessChange, self.alphaChange);
         });
