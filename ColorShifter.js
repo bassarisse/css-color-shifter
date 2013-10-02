@@ -1,7 +1,7 @@
 
 var ColorShifter = Class.extend({
 
-    matchRegExp: /#[\da-f]{3,8}|rgb(a)?\(( )*\d+( )*,( )*\d+( )*,( )*\d+( )*(,( )*\d(.\d+)?( )*)?\)|hsl(a)?\(( )*\d+( )*,( )*\d+%( )*,( )*\d+%( )*(,( )*\d(.\d+)?( )*)?\)/igm,
+    matchRegExp: /#[\da-f]{3,8}|rgb(a)?\(( )*\d+( )*,( )*\d+( )*,( )*\d+( )*(,( )*\d(.\d+)?( )*)?\)|hsl(a)?\(( )*\d+(.\d+)?( )*,( )*\d+(.\d+)?%?( )*,( )*\d+(.\d+)?%?( )*(,( )*\d(.\d+)?( )*)?\)/igm,
 
     hueChange: 0,
 	saturationChange: 0,

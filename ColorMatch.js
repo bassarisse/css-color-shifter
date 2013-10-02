@@ -149,7 +149,7 @@ var ColorMatch = Class.extend({
 			this.red = parseInt(strParts[0], 10);
 			this.green = parseInt(strParts[1], 10);
 			this.blue = parseInt(strParts[2], 10);
-			this.alpha = this.isAlphaSpecified ? parseFloat(strParts[4]) : 1;
+			this.alpha = this.isAlphaSpecified ? parseFloat(strParts[3]) : 1;
             if (isNaN(this.alpha)) this.alpha = 1;
 			
 			this._updateFromRgb();
@@ -163,10 +163,10 @@ var ColorMatch = Class.extend({
 			colorStr = colorStr.replace(/[hsla% \(\)]/igm, "");
 			var strParts = colorStr.split(",");
 			
-			this.hue = parseInt(strParts[0], 10);
-			this.saturation = parseInt(strParts[1], 10);
-			this.lightness = parseInt(strParts[2], 10);
-			this.alpha = this.isAlphaSpecified ? parseFloat(strParts[4]) : 1;
+			this.hue = parseFloat(strParts[0]);
+			this.saturation = parseFloat(strParts[1]);
+			this.lightness = parseFloat(strParts[2]);
+			this.alpha = this.isAlphaSpecified ? parseFloat(strParts[3]) : 1;
             if (isNaN(this.alpha)) this.alpha = 1;
 			
 			this._updateFromHsl();
@@ -209,9 +209,9 @@ var ColorMatch = Class.extend({
                 var returnStr = "hsl";
                 if (this.isAlphaSpecified)
                     returnStr += "a";
-                returnStr += "(" + this.hue.toFixed(0) + ", " + this.saturation.toFixed(2) + "%, " + this.lightness.toFixed(2) + "%";
+                returnStr += "(" + this.hue.toDecimalString(0) + ", " + this.saturation.toDecimalString(2) + "%, " + this.lightness.toDecimalString(2) + "%";
                 if (this.isAlphaSpecified)
-                    returnStr +=  ", " + this.alpha.toFixed(4);
+                    returnStr +=  ", " + this.alpha.toDecimalString(4);
                 returnStr += ")";
                 break;
 
@@ -220,9 +220,9 @@ var ColorMatch = Class.extend({
                 var returnStr = "rgb";
                 if (this.isAlphaSpecified)
                     returnStr += "a";
-                returnStr += "(" + this.red.toFixed(0) + ", " + this.green.toFixed(0) + ", " + this.blue.toFixed(0);
+                returnStr += "(" + this.red.toDecimalString(0) + ", " + this.green.toDecimalString(0) + ", " + this.blue.toDecimalString(0);
                 if (this.isAlphaSpecified)
-                    returnStr +=  ", " + this.alpha.toFixed(4);
+                    returnStr +=  ", " + this.alpha.toDecimalString(4);
                 returnStr += ")";
                 break
         }
