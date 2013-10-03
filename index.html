@@ -2,7 +2,7 @@
 <head>
     <title>CSS Color Shifter</title>
     
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 
     <script src="JsInheritance.js"></script>
     <script src="Globals.js"></script>
@@ -24,19 +24,19 @@
 <body>
 
 <div>
-    <label>Hue Change<input type="text" id="hueChange" /></label>
+    <label>Hue Change<input type="range" id="hueChange" value="0" min="0" max="360" step="0.01" /></label>
 </div>
 <div>
-    <label>Saturation Change<input type="text" id="saturationChange" /></label>
+    <label>Saturation Change<input type="range" id="saturationChange" value="0" min="-100" max="100" step="0.01" /></label>
 </div>
 <div>
-    <label>Lightness Change<input type="text" id="lightnessChange" /></label>
+    <label>Lightness Change<input type="range" id="lightnessChange" value="0" min="-100" max="100" step="0.01" /></label>
 </div>
 <div>
-    <label>Alpha Change<input type="text" id="alphaChange" /></label>
+    <label>Alpha Change<input type="range" id="alphaChange" value="0" min="-1" max="1" step="0.0001" /></label>
 </div>
 <div>
-    <label>Contrast Change<input type="text" id="contrastChange" /></label>
+    <label>Contrast Change<input type="range" id="contrastChange" value="0" min="-255" max="255" step="0.1" /></label>
 </div>
 
 <div>

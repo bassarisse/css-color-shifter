@@ -83,11 +83,11 @@ var ColorShifter = Class.extend({
 
         if (targetField) targetField.readOnly = true;
 
-        if (hueElement) hueElement.addEventListener("keyup", updateFunc, false);
-        if (saturationElement) saturationElement.addEventListener("keyup", updateFunc, false);
-        if (lightnessField) lightnessField.addEventListener("keyup", updateFunc, false);
-        if (alphaField) alphaField.addEventListener("keyup", updateFunc, false);
-        if (contrastField) contrastField.addEventListener("keyup", updateFunc, false);
+        if (hueElement) hueElement.addEventListener("change", updateFunc, false);
+        if (saturationElement) saturationElement.addEventListener("change", updateFunc, false);
+        if (lightnessField) lightnessField.addEventListener("change", updateFunc, false);
+        if (alphaField) alphaField.addEventListener("change", updateFunc, false);
+        if (contrastField) contrastField.addEventListener("change", updateFunc, false);
         
     },
 

@@ -218,16 +218,20 @@ var ColorMatch = Class.extend({
         if (contrast)
             this._applyContrast(contrast);
 
+        var format = this.format;
+        if (this.format == ColorFormat.Hex && this.isAlphaSpecified)
+            format = ColorFormat.Rgb;
+
         var returnStr = "";
 		
-		switch (this.format) {
+		switch (format) {
 
             case ColorFormat.Hex:
                 var returnStr = "#";
                 if (this.isAlphaSpecified)
-                    returnStr += ((1 << 32) + ((this.alpha * 255) << 24) + (this.red << 16) + (this.green << 8) + this.blue).toString(16).slice(1);
-                else
-                    returnStr += ((1 << 24) + (this.red << 16) + (this.green << 8) + this.blue).toString(16).slice(1);
+                    returnStr += ((1 << 8) + Math.round(this.alpha * 255)).toString(16).slice(1);
+                
+                returnStr += ((1 << 24) + (this.red << 16) + (this.green << 8) + this.blue).toString(16).slice(1);
                 break;
 
             case ColorFormat.Hsl:
