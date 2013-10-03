@@ -43,7 +43,7 @@ var ColorShifter = Class.extend({
         add('hsl(a)?\\(( )*\\d+(.\\d+)?( )*,( )*\\d+(.\\d+)?%?( )*,( )*\\d+(.\\d+)?%?( )*(,( )*\\d(.\\d+)?( )*)?\\)');
         
         for (var n in ColorNames)
-            add(ColorNames[n]);
+            add(n);
         
         this.matchRegExp = new RegExp(regexp, "igm");
         
@@ -117,6 +117,8 @@ var ColorShifter = Class.extend({
         this.sourceCssString = cssString;
 
         this.shiftedCssString = cssString.replace(this.matchRegExp, function(match) {
+            
+            match = ColorNames[match.toString().toLowerCase()] || match;
 
             var colorMatch = new ColorMatch(match, self.outputFormat);
             
