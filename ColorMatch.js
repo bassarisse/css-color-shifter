@@ -41,6 +41,8 @@ var ColorMatch = Class.extend({
 			
 		this.saturation *= 100;
 		this.lightness *= 100;
+		
+		this._normalize();
 
 	},
 	
@@ -54,6 +56,7 @@ var ColorMatch = Class.extend({
             this.red = f;
             this.green = f;
             this.blue = f;
+            this._normalize();
             return;
         }
 
@@ -80,7 +83,25 @@ var ColorMatch = Class.extend({
 		this.green = g * 255;
 		this.blue = b * 255;
 		
+		this._normalize();
+		
 	},
+    
+    _applyContrast: function(contrast) {
+        
+        if (contrast > 255) contrast = 255;
+        else if (contrast < -255) contrast = -255;
+        
+        var factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+        
+        this.red = factor * (this.red - 128) + 128;
+        this.green = factor * (this.green - 128) + 128;
+        this.blue = factor * (this.blue - 128) + 128;
+        
+        this._normalize();
+        this._updateFromRgb();
+        
+    },
 
     _normalize: function() {
 		
@@ -176,14 +197,12 @@ var ColorMatch = Class.extend({
 			this._updateFromHsl();
 		}
 
-        this._normalize();
-
         if (typeof(outputFormat) != "undefined" && outputFormat != ColorFormat.Unknown)
             this.format = outputFormat;
 		
 	},
 	
-	modify: function(hue, saturation, lightness, alpha) {
+	modify: function(hue, saturation, lightness, alpha, contrast) {
 		
 		if (!this.isValid)
             return this.originalString;
@@ -195,7 +214,9 @@ var ColorMatch = Class.extend({
 
         this._normalize();
         this._updateFromHsl();
-        this._normalize();
+        
+        if (contrast)
+            this._applyContrast(contrast);
 
         var returnStr = "";
 		
