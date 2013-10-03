@@ -16,20 +16,21 @@ var ColorShifter = Class.extend({
 
     sourceFieldId: null,
     targetFieldId: null,
-    hueElementId: null,
-    saturationElementId: null,
+    hueFieldId: null,
+    saturationFieldId: null,
     lightnessFieldId: null,
     alphaFieldId: null,
     contrastFieldId: null,
+    useOnlyWebSafeColors: false,
 
-    init: function(sourceFieldId, targetFieldId, hueElementId, saturationElementId, lightnessFieldId, alphaFieldId, contrastFieldId) {
+    init: function(options) {
         
         if (this.initialized)
             return;
         this.initialized = true;
         
         this.createRegExp();
-        this.setupFields(sourceFieldId, targetFieldId, hueElementId, saturationElementId, lightnessFieldId, alphaFieldId, contrastFieldId);
+        this.setupFields(options);
 
     },
     
@@ -56,25 +57,27 @@ var ColorShifter = Class.extend({
         
     },
     
-    setupFields: function(sourceFieldId, targetFieldId, hueElementId, saturationElementId, lightnessFieldId, alphaFieldId, contrastFieldId) {
+    setupFields: function(options) {
         
         var updateFunc = this.update.bind(this);
 
-        this.sourceFieldId = sourceFieldId;
-        this.targetFieldId = targetFieldId;
-        this.hueElementId = hueElementId;
-        this.saturationElementId = saturationElementId;
-        this.lightnessFieldId = lightnessFieldId;
-        this.alphaFieldId = alphaFieldId;
-        this.contrastFieldId = contrastFieldId;
+        this.sourceFieldId = options.sourceFieldId;
+        this.targetFieldId = options.targetFieldId;
+        this.hueFieldId = options.hueFieldId;
+        this.saturationFieldId = options.saturationFieldId;
+        this.lightnessFieldId = options.lightnessFieldId;
+        this.alphaFieldId = options.alphaFieldId;
+        this.contrastFieldId = options.contrastFieldId;
+        this.webSafeFieldId = options.webSafeFieldId;
 
-        var sourceField = document.getElementById(sourceFieldId);
-        var targetField = document.getElementById(targetFieldId);
-        var hueElement = document.getElementById(hueElementId);
-        var saturationElement = document.getElementById(saturationElementId);
-        var lightnessField = document.getElementById(lightnessFieldId);
-        var alphaField = document.getElementById(alphaFieldId);
-        var contrastField = document.getElementById(contrastFieldId);
+        var sourceField = document.getElementById(this.sourceFieldId);
+        var targetField = document.getElementById(this.targetFieldId);
+        var hueField = document.getElementById(this.hueFieldId);
+        var saturationField = document.getElementById(this.saturationFieldId);
+        var lightnessField = document.getElementById(this.lightnessFieldId);
+        var alphaField = document.getElementById(this.alphaFieldId);
+        var contrastField = document.getElementById(this.contrastFieldId);
+        var webSafeField = document.getElementById(this.webSafeFieldId);
 
         if (sourceField) {
             sourceField.addEventListener("change", updateFunc, false);
@@ -83,27 +86,30 @@ var ColorShifter = Class.extend({
 
         if (targetField) targetField.readOnly = true;
 
-        if (hueElement) hueElement.addEventListener("change", updateFunc, false);
-        if (saturationElement) saturationElement.addEventListener("change", updateFunc, false);
+        if (hueField) hueField.addEventListener("change", updateFunc, false);
+        if (saturationField) saturationField.addEventListener("change", updateFunc, false);
         if (lightnessField) lightnessField.addEventListener("change", updateFunc, false);
         if (alphaField) alphaField.addEventListener("change", updateFunc, false);
         if (contrastField) contrastField.addEventListener("change", updateFunc, false);
+        if (webSafeField) webSafeField.addEventListener("change", updateFunc, false);
         
     },
 
     refreshFromFields: function() {
 
-        var hueElement = document.getElementById(this.hueElementId);
-        var saturationElement = document.getElementById(this.saturationElementId);
+        var hueElement = document.getElementById(this.hueFieldId);
+        var saturationElement = document.getElementById(this.saturationFieldId);
         var lightnessField = document.getElementById(this.lightnessFieldId);
         var alphaField = document.getElementById(this.alphaFieldId);
         var contrastField = document.getElementById(this.contrastFieldId);
+        var webSafeField = document.getElementById(this.webSafeFieldId);
 
         if (hueElement) this.hueChange = parseFloat(hueElement.value);
         if (saturationElement) this.saturationChange = parseFloat(saturationElement.value);
         if (lightnessField) this.lightnessChange = parseFloat(lightnessField.value);
         if (alphaField) this.alphaChange = parseFloat(alphaField.value);
         if (contrastField) this.contrastChange = parseFloat(contrastField.value);
+        if (webSafeField) this.useOnlyWebSafeColors = webSafeField.checked ? true : false;
 
         if (isNaN(this.hueChange)) this.hueChange = 0;
         if (isNaN(this.saturationChange)) this.saturationChange = 0;
@@ -143,12 +149,25 @@ var ColorShifter = Class.extend({
                 
                 colorString = ColorNames[colorString.toLowerCase()] || colorString;
                 
-                var colorMatch = new ColorMatch(colorString, self.outputFormat);
+                var colorMatch = new ColorMatch(colorString);
                 
                 if (self.alphaChange != 0)
                     colorMatch.isAlphaSpecified = true;
                     
-                var newColor = colorMatch.modify(self.hueChange, self.saturationChange, self.lightnessChange, self.alphaChange, self.contrastChange);
+                colorMatch.modify({
+                    hue: self.hueChange,
+                    saturation: self.saturationChange,
+                    lightness: self.lightnessChange,
+                    alpha: self.alphaChange,
+                    contrast: self.contrastChange
+                });
+                
+                if (self.useOnlyWebSafeColors)
+                    colorMatch.convertToWebSafe();
+                
+                var newColor = colorMatch.getValue({
+                    format: self.outputFormat
+                });
                 
                 originalColorsContainer.append('<div class="color-swatch" style="background-color:' + colorString + ';"></div>');
                 changedColorsContainer.append('<div class="color-swatch" style="background-color:' + newColor + ';"></div>');

@@ -130,11 +130,9 @@ var ColorMatch = Class.extend({
         if (this.alpha < 0) this.alpha = 0;
 
     },
-
-	init: function(colorStr, outputFormat) {
-
-		this.originalString = colorStr;
-		
+	
+	_setup: function(colorStr) {
+	    
 		if (colorStr.indexOf("#") == 0) {
 		
 			colorStr = colorStr.substr(1, colorStr.length - 1);
@@ -196,34 +194,65 @@ var ColorMatch = Class.extend({
 			
 			this._updateFromHsl();
 		}
+		
+	},
 
-        if (typeof(outputFormat) != "undefined" && outputFormat != ColorFormat.Unknown)
-            this.format = outputFormat;
+	init: function(colorStr) {
+
+		this.originalString = colorStr;
+		this._setup(colorStr);
 		
 	},
 	
-	modify: function(hue, saturation, lightness, alpha, contrast) {
+	reset: function() {
+	    
+	    this._setup(this.originalString);
+	    
+	},
+	
+	modify: function(options) {
 		
 		if (!this.isValid)
-            return this.originalString;
+            return;
 
-        this.hue += hue;
-        this.saturation += saturation;
-        this.lightness += lightness;
-        this.alpha += alpha;
+        if (options.hue) this.hue += options.hue;
+        if (options.saturation) this.saturation += options.saturation;
+        if (options.lightness) this.lightness += options.lightness;
+        if (options.alpha) this.alpha += options.alpha;
 
         this._normalize();
         this._updateFromHsl();
         
-        if (contrast)
-            this._applyContrast(contrast);
-
+        if (options.contrast) this._applyContrast(options.contrast);
+            
+	},
+	
+	convertToWebSafe: function() {
+	    
+	    this.isAlphaSpecified = false;
+	    
+	    this.red = Math.floor((this.red + 25.5) / 51) * 51;
+	    this.green = Math.floor((this.green + 25.5) / 51) * 51;
+	    this.blue = Math.floor((this.blue + 25.5) / 51) * 51;
+	    
+	    this._updateFromRgb();
+	    
+	},
+	
+	getValue: function (options) {
+		
+		if (!this.isValid)
+            return this.originalString;
+	    
+        var returnStr = "";
         var format = this.format;
+        
+        if (typeof(options.format) != "undefined" && options.format != ColorFormat.Unknown)
+            format = options.format;
+        
         if (this.format == ColorFormat.Hex && this.isAlphaSpecified)
             format = ColorFormat.Rgb;
-
-        var returnStr = "";
-		
+        
 		switch (format) {
 
             case ColorFormat.Hex:
