@@ -14,6 +14,7 @@ var ColorShifter = Class.extend({
     sourceCssString: "",
     shiftedCssString: "",
 
+    updateCallback: null,
     sourceFieldId: null,
     targetFieldId: null,
     hueFieldId: null,
@@ -30,7 +31,8 @@ var ColorShifter = Class.extend({
         this.initialized = true;
         
         this.createRegExp();
-        this.setupFields(options);
+        this.updateCallback = this.update.bind(this);
+        this.setupFields(true, options);
 
     },
     
@@ -57,18 +59,24 @@ var ColorShifter = Class.extend({
         
     },
     
-    setupFields: function(options) {
+    setupFields: function(enable, options) {
         
-        var updateFunc = this.update.bind(this);
-
-        this.sourceFieldId = options.sourceFieldId;
-        this.targetFieldId = options.targetFieldId;
-        this.hueFieldId = options.hueFieldId;
-        this.saturationFieldId = options.saturationFieldId;
-        this.lightnessFieldId = options.lightnessFieldId;
-        this.alphaFieldId = options.alphaFieldId;
-        this.contrastFieldId = options.contrastFieldId;
-        this.webSafeFieldId = options.webSafeFieldId;
+        if (options) {
+            this.sourceFieldId = options.sourceFieldId;
+            this.targetFieldId = options.targetFieldId;
+            this.hueFieldId = options.hueFieldId;
+            this.saturationFieldId = options.saturationFieldId;
+            this.lightnessFieldId = options.lightnessFieldId;
+            this.alphaFieldId = options.alphaFieldId;
+            this.contrastFieldId = options.contrastFieldId;
+            this.webSafeFieldId = options.webSafeFieldId;
+        }
+        
+        if (typeof(enable) == 'undefined')
+            return;
+        
+        var eventFunc = enable ? Util.addEvent : Util.removeEvent;
+        var updateFunc = this.updateCallback;
 
         var sourceField = document.getElementById(this.sourceFieldId);
         var targetField = document.getElementById(this.targetFieldId);
@@ -79,20 +87,28 @@ var ColorShifter = Class.extend({
         var contrastField = document.getElementById(this.contrastFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
 
+        if (targetField) targetField.readOnly = enable;
+
         if (sourceField) {
-            sourceField.addEventListener("change", updateFunc, false);
-            sourceField.addEventListener("keyup", updateFunc, false);
+            eventFunc(sourceField, "change", updateFunc);
+            eventFunc(sourceField, "keyup", updateFunc);
         }
 
-        if (targetField) targetField.readOnly = true;
-
-        if (hueField) hueField.addEventListener("change", updateFunc, false);
-        if (saturationField) saturationField.addEventListener("change", updateFunc, false);
-        if (lightnessField) lightnessField.addEventListener("change", updateFunc, false);
-        if (alphaField) alphaField.addEventListener("change", updateFunc, false);
-        if (contrastField) contrastField.addEventListener("change", updateFunc, false);
-        if (webSafeField) webSafeField.addEventListener("change", updateFunc, false);
+        eventFunc(hueField, "change", updateFunc);
+        eventFunc(saturationField, "change", updateFunc);
+        eventFunc(lightnessField, "change", updateFunc);
+        eventFunc(alphaField, "change", updateFunc);
+        eventFunc(contrastField, "change", updateFunc);
+        eventFunc(webSafeField, "change", updateFunc);
         
+    },
+    
+    enableFields: function() {
+        this.setupFields(true);
+    },
+    
+    disableFields: function() {
+        this.setupFields(false);
     },
 
     refreshFromFields: function() {
