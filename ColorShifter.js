@@ -7,6 +7,8 @@ var ColorShifter = Class.extend({
 	lightnessChange: 0,
 	alphaChange: 0,
 	contrastChange: 0,
+	colorize: false,
+    useOnlyWebSafeColors: false,
     outputFormat: ColorFormat.Unknown,
 
     matchRegExp: null,
@@ -22,7 +24,7 @@ var ColorShifter = Class.extend({
     lightnessFieldId: null,
     alphaFieldId: null,
     contrastFieldId: null,
-    useOnlyWebSafeColors: false,
+    colorizeFieldId: null,
     
     _setupFields: function(enable, options) {
         
@@ -34,6 +36,7 @@ var ColorShifter = Class.extend({
             this.lightnessFieldId = options.lightnessFieldId;
             this.alphaFieldId = options.alphaFieldId;
             this.contrastFieldId = options.contrastFieldId;
+            this.colorizeFieldId = options.colorizeFieldId;
             this.webSafeFieldId = options.webSafeFieldId;
         }
         
@@ -50,6 +53,7 @@ var ColorShifter = Class.extend({
         var lightnessField = document.getElementById(this.lightnessFieldId);
         var alphaField = document.getElementById(this.alphaFieldId);
         var contrastField = document.getElementById(this.contrastFieldId);
+        var colorizeField = document.getElementById(this.colorizeFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
 
         if (targetField) targetField.readOnly = enable;
@@ -64,6 +68,7 @@ var ColorShifter = Class.extend({
         eventFunc(lightnessField, "change", updateFunc);
         eventFunc(alphaField, "change", updateFunc);
         eventFunc(contrastField, "change", updateFunc);
+        eventFunc(colorizeField, "change", updateFunc);
         eventFunc(webSafeField, "change", updateFunc);
         
     },
@@ -118,6 +123,7 @@ var ColorShifter = Class.extend({
         var lightnessField = document.getElementById(this.lightnessFieldId);
         var alphaField = document.getElementById(this.alphaFieldId);
         var contrastField = document.getElementById(this.contrastFieldId);
+        var colorizeField = document.getElementById(this.colorizeFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
 
         if (hueElement) this.hueChange = parseFloat(hueElement.value);
@@ -125,6 +131,7 @@ var ColorShifter = Class.extend({
         if (lightnessField) this.lightnessChange = parseFloat(lightnessField.value);
         if (alphaField) this.alphaChange = parseFloat(alphaField.value);
         if (contrastField) this.contrastChange = parseFloat(contrastField.value);
+        if (colorizeField) this.colorize = colorizeField.checked ? true : false;
         if (webSafeField) this.useOnlyWebSafeColors = webSafeField.checked ? true : false;
 
         if (isNaN(this.hueChange)) this.hueChange = 0;
@@ -176,6 +183,7 @@ var ColorShifter = Class.extend({
                     lightness: self.lightnessChange,
                     alpha: self.alphaChange,
                     contrast: self.contrastChange,
+                    colorize: self.colorize,
                     webSafe: self.useOnlyWebSafeColors
                 });
                 
