@@ -61,6 +61,8 @@ var ColorShifter = Class.extend({
         if (sourceField) {
             eventFunc(sourceField, "change", updateFunc);
             eventFunc(sourceField, "keyup", updateFunc);
+            if (enable && sourceField.value !== '')
+                this.update(sourceField.value)
         }
 
         eventFunc(hueField, "change", updateFunc);
@@ -70,6 +72,7 @@ var ColorShifter = Class.extend({
         eventFunc(contrastField, "change", updateFunc);
         eventFunc(colorizeField, "change", updateFunc);
         eventFunc(webSafeField, "change", updateFunc);
+        
         
     },
 
