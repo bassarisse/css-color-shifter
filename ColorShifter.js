@@ -13,8 +13,8 @@ var ColorShifter = Class.extend({
     colorRegExp: null,
     sourceCssString: "",
     shiftedCssString: "",
-
     updateCallback: null,
+    
     sourceFieldId: null,
     targetFieldId: null,
     hueFieldId: null,
@@ -23,43 +23,8 @@ var ColorShifter = Class.extend({
     alphaFieldId: null,
     contrastFieldId: null,
     useOnlyWebSafeColors: false,
-
-    init: function(options) {
-        
-        if (this.initialized)
-            return;
-        this.initialized = true;
-        
-        this.createRegExp();
-        this.updateCallback = this.update.bind(this);
-        this.setupFields(true, options);
-
-    },
     
-    createRegExp: function() {
-        
-        var regexp = "", add = function(s) {
-            if (regexp != "")
-                regexp += "|";
-            regexp += s;
-        };
-        
-        add('#[\\da-f]{3,8}');
-        add('rgb(a)?\\(( )*\\d+( )*,( )*\\d+( )*,( )*\\d+( )*(,( )*\\d(.\\d+)?( )*)?\\)');
-        add('hsl(a)?\\(( )*\\d+(.\\d+)?( )*,( )*\\d+(.\\d+)?%?( )*,( )*\\d+(.\\d+)?%?( )*(,( )*\\d(.\\d+)?( )*)?\\)');
-        
-        for (var n in ColorNames)
-            add(n);
-        
-        this.colorRegExp = new RegExp(regexp, "igm");
-            
-        regexp = ":[^:;{}!]*(" + regexp + ")";
-        
-        this.matchRegExp = new RegExp(regexp, "igm");
-        
-    },
-    
-    setupFields: function(enable, options) {
+    _setupFields: function(enable, options) {
         
         if (options) {
             this.sourceFieldId = options.sourceFieldId;
@@ -102,13 +67,48 @@ var ColorShifter = Class.extend({
         eventFunc(webSafeField, "change", updateFunc);
         
     },
+
+    init: function(options) {
+        
+        if (this.initialized)
+            return;
+        this.initialized = true;
+        
+        this.createRegExp();
+        this.updateCallback = this.update.bind(this);
+        this._setupFields(true, options);
+
+    },
+    
+    createRegExp: function() {
+        
+        var regexp = "", add = function(s) {
+            if (regexp != "")
+                regexp += "|";
+            regexp += s;
+        };
+        
+        add('#[\\da-f]{3,8}');
+        add('rgb(a)?\\(( )*\\d+( )*,( )*\\d+( )*,( )*\\d+( )*(,( )*\\d(.\\d+)?( )*)?\\)');
+        add('hsl(a)?\\(( )*\\d+(.\\d+)?( )*,( )*\\d+(.\\d+)?%?( )*,( )*\\d+(.\\d+)?%?( )*(,( )*\\d(.\\d+)?( )*)?\\)');
+        
+        for (var n in ColorNames)
+            add(n);
+        
+        this.colorRegExp = new RegExp(regexp, "igm");
+            
+        regexp = ":[^:;{}!]*(" + regexp + ")";
+        
+        this.matchRegExp = new RegExp(regexp, "igm");
+        
+    },
     
     enableFields: function() {
-        this.setupFields(true);
+        this._setupFields(true);
     },
     
     disableFields: function() {
-        this.setupFields(false);
+        this._setupFields(false);
     },
 
     refreshFromFields: function() {
@@ -175,11 +175,9 @@ var ColorShifter = Class.extend({
                     saturation: self.saturationChange,
                     lightness: self.lightnessChange,
                     alpha: self.alphaChange,
-                    contrast: self.contrastChange
+                    contrast: self.contrastChange,
+                    webSafe: self.useOnlyWebSafeColors
                 });
-                
-                if (self.useOnlyWebSafeColors)
-                    colorMatch.convertToWebSafe();
                 
                 var newColor = colorMatch.getValue({
                     format: self.outputFormat

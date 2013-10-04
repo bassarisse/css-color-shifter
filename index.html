@@ -15,7 +15,9 @@
     <link rel="stylesheet" href="css-color-shifter.css" type="text/css" />
     
 	<script>
-		window.addEventListener("DOMContentLoaded", function() {
+	(function() {
+	    
+	    var initFunc = function() {
 			var colorShifter = new ColorShifter({
 			    sourceFieldId: "source",
 			    targetFieldId: "target",
@@ -26,7 +28,14 @@
 			    contrastFieldId: "contrastChange",
 			    webSafeFieldId: "webSafeColors"
 			});
-		}, false);
+		};
+	    
+	    if (window.addEventListener)
+		    window.addEventListener("DOMContentLoaded", initFunc, false);
+		else if (window.attachEvent)
+		    window.attachEvent("onload", initFunc);
+		
+	})();
 	</script>
 
 </head>

@@ -86,22 +86,6 @@ var ColorMatch = Class.extend({
 		this._normalize();
 		
 	},
-    
-    _applyContrast: function(contrast) {
-        
-        if (contrast > 255) contrast = 255;
-        else if (contrast < -255) contrast = -255;
-        
-        var factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
-        
-        this.red = factor * (this.red - 128) + 128;
-        this.green = factor * (this.green - 128) + 128;
-        this.blue = factor * (this.blue - 128) + 128;
-        
-        this._normalize();
-        this._updateFromRgb();
-        
-    },
 
     _normalize: function() {
 		
@@ -209,6 +193,39 @@ var ColorMatch = Class.extend({
 	    this._setup(this.originalString);
 	    
 	},
+    
+    applyContrast: function(contrast) {
+        
+        if (contrast > 255) contrast = 255;
+        else if (contrast < -255) contrast = -255;
+        
+        var factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+        
+        this.red = factor * (this.red - 128) + 128;
+        this.green = factor * (this.green - 128) + 128;
+        this.blue = factor * (this.blue - 128) + 128;
+        
+        this._normalize();
+        this._updateFromRgb();
+        
+    },
+	
+	convertToWebSafe: function() {
+	    
+	    this.isAlphaSpecified = false;
+	    
+	    this.red *= this.alpha;
+	    this.green *= this.alpha;
+	    this.blue *= this.alpha;
+	    this.alpha = 1;
+	    
+	    this.red = Math.floor((this.red + 25.5) / 51) * 51;
+	    this.green = Math.floor((this.green + 25.5) / 51) * 51;
+	    this.blue = Math.floor((this.blue + 25.5) / 51) * 51;
+	    
+	    this._updateFromRgb();
+	    
+	},
 	
 	modify: function(options) {
 		
@@ -223,20 +240,8 @@ var ColorMatch = Class.extend({
         this._normalize();
         this._updateFromHsl();
         
-        if (options.contrast) this._applyContrast(options.contrast);
-            
-	},
-	
-	convertToWebSafe: function() {
-	    
-	    this.isAlphaSpecified = false;
-	    
-	    this.red = Math.floor((this.red + 25.5) / 51) * 51;
-	    this.green = Math.floor((this.green + 25.5) / 51) * 51;
-	    this.blue = Math.floor((this.blue + 25.5) / 51) * 51;
-	    
-	    this._updateFromRgb();
-	    
+        if (options.contrast) this.applyContrast(options.contrast);
+        if (options.webSafe) this.convertToWebSafe();
 	},
 	
 	getValue: function (options) {
