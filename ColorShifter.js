@@ -16,6 +16,7 @@ var ColorShifter = Class.extend({
     sourceCssString: "",
     shiftedCssString: "",
     updateCallback: null,
+    syncFieldsCallback: null,
     
     sourceFieldId: null,
     targetFieldId: null,
@@ -45,6 +46,7 @@ var ColorShifter = Class.extend({
         
         var eventFunc = enable ? Util.addEvent : Util.removeEvent;
         var updateFunc = this.updateCallback;
+        var syncFieldsFunc = this.syncFieldsCallback;
 
         var sourceField = document.getElementById(this.sourceFieldId);
         var targetField = document.getElementById(this.targetFieldId);
@@ -56,13 +58,28 @@ var ColorShifter = Class.extend({
         var colorizeField = document.getElementById(this.colorizeFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
 
-        if (targetField) targetField.readOnly = enable;
-
         if (sourceField) {
             eventFunc(sourceField, "change", updateFunc);
             eventFunc(sourceField, "keyup", updateFunc);
             if (enable && sourceField.value !== '')
                 this.update(sourceField.value)
+        }
+
+        if (targetField) {
+            targetField.readOnly = enable;
+        }
+        
+        if (sourceField && targetField) {
+            eventFunc(sourceField, "scroll", syncFieldsFunc);
+            eventFunc(targetField, "scroll", syncFieldsFunc);
+            eventFunc(sourceField, "resize", syncFieldsFunc);
+            eventFunc(targetField, "resize", syncFieldsFunc);
+            eventFunc(sourceField, "mouseout", syncFieldsFunc);
+            eventFunc(targetField, "mouseout", syncFieldsFunc);
+            eventFunc(sourceField, "mousemove", syncFieldsFunc);
+            eventFunc(targetField, "mousemove", syncFieldsFunc);
+            eventFunc(document.body, "mouseup", syncFieldsFunc);
+            eventFunc(document.body, "mouseout", syncFieldsFunc);
         }
 
         eventFunc(hueField, "change", updateFunc);
@@ -72,7 +89,6 @@ var ColorShifter = Class.extend({
         eventFunc(contrastField, "change", updateFunc);
         eventFunc(colorizeField, "change", updateFunc);
         eventFunc(webSafeField, "change", updateFunc);
-        
         
     },
 
@@ -84,6 +100,7 @@ var ColorShifter = Class.extend({
         
         this.createRegExp();
         this.updateCallback = this.update.bind(this);
+        this.syncFieldsCallback = this.fieldSync.bind(this);
         this._setupFields(true, options);
 
     },
@@ -117,6 +134,28 @@ var ColorShifter = Class.extend({
     
     disableFields: function() {
         this._setupFields(false);
+    },
+    
+    fieldSync: function(event) {
+        
+        var changedField = event.srcElement || event.target;
+        
+        var fieldToSyncId = this.targetFieldId;
+        if (changedField.id == this.targetFieldId)
+            fieldToSyncId = this.sourceFieldId;
+        else if (changedField.id != this.sourceFieldId)
+            changedField = document.getElementById(this.sourceFieldId);
+            
+        var fieldToSync = document.getElementById(fieldToSyncId);
+        
+        fieldToSync.scrollTop = changedField.scrollTop;
+        if (changedField.style.margin)
+            fieldToSync.style.margin = changedField.style.margin;
+        if (changedField.style.width)
+            fieldToSync.style.width = changedField.style.width;
+        if (changedField.style.height)
+            fieldToSync.style.height = changedField.style.height;
+        
     },
 
     refreshFromFields: function() {
