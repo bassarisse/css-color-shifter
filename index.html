@@ -2,7 +2,7 @@
 <head>
     <title>CSS Color Shifter</title>
     
-    <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script> -->
 
     <script src="JsInheritance.js"></script>
     <script src="Globals.js"></script>
@@ -19,6 +19,7 @@
 	    
 	    var initFunc = function() {
 			var colorShifter = new ColorShifter({
+			    containerId: "color-shifter-container",
 			    sourceFieldId: "source",
 			    targetFieldId: "target",
 			    hueFieldId: "hueChange",
@@ -27,7 +28,9 @@
 			    alphaFieldId: "alphaChange",
 			    contrastFieldId: "contrastChange",
 			    colorizeFieldId: "colorize",
-			    webSafeFieldId: "webSafeColors"
+			    webSafeFieldId: "webSafeColors",
+			    originalColorsContainerId: "originalColors",
+			    newColorsContainerId: "newColors"
 			});
 		};
 	    
@@ -41,7 +44,7 @@
 
 </head>
 
-<body>
+<body id="color-shifter-container">
 
 <div>
     <label>Hue Change<input type="range" id="hueChange" value="0" min="0" max="360" step="0.01" /></label>
@@ -3191,13 +3194,13 @@ footer.entry-meta {
     </textarea>
 </div>
 
-<div id="originalColors"></div>
+<div id="originalColors" class="color-swatches"></div>
+
+<div id="newColors" class="color-swatches"></div>
 
 <div>
     <textarea id="target" rows="10" cols="80"></textarea>
 </div>
-
-<div id="changedColors"></div>
 
 </body>
 </html>

@@ -22,6 +22,16 @@ var Util = {
         else if (element.detachEvent)
             element.detachEvent('on' + event, callback);
             
+    },
+    
+    createColorSwatch: function (colorStr) {
+        
+        var newColorSwatch = document.createElement('div');
+        newColorSwatch.setAttribute('class', "color-swatch");
+        newColorSwatch.style.backgroundColor = colorStr;
+        newColorSwatch.title = colorStr;
+        
+        return newColorSwatch;   
     }
     
 };

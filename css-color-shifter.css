@@ -1,5 +1,13 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+.color-swatches {
+    clear: both;
+}
+
 .color-swatch {
     float: left;
-    width: 10px;
-    height: 10px;
+    height: 30px;
 }

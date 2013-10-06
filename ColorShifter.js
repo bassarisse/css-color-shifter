@@ -18,6 +18,7 @@ var ColorShifter = Class.extend({
     updateCallback: null,
     syncFieldsCallback: null,
     
+    containerId: null,
     sourceFieldId: null,
     targetFieldId: null,
     hueFieldId: null,
@@ -26,10 +27,13 @@ var ColorShifter = Class.extend({
     alphaFieldId: null,
     contrastFieldId: null,
     colorizeFieldId: null,
+    originalColorsContainerId: null,
+    newColorsContainerId: null,
     
     _setupFields: function(enable, options) {
         
         if (options) {
+            this.containerId = options.containerId;
             this.sourceFieldId = options.sourceFieldId;
             this.targetFieldId = options.targetFieldId;
             this.hueFieldId = options.hueFieldId;
@@ -39,6 +43,8 @@ var ColorShifter = Class.extend({
             this.contrastFieldId = options.contrastFieldId;
             this.colorizeFieldId = options.colorizeFieldId;
             this.webSafeFieldId = options.webSafeFieldId;
+            this.originalColorsContainerId = options.originalColorsContainerId;
+            this.newColorsContainerId = options.newColorsContainerId;
         }
         
         if (typeof(enable) == 'undefined')
@@ -62,7 +68,7 @@ var ColorShifter = Class.extend({
             eventFunc(sourceField, "change", updateFunc);
             eventFunc(sourceField, "keyup", updateFunc);
             if (enable && sourceField.value !== '')
-                this.update(sourceField.value)
+                this.update(sourceField.value);
         }
 
         if (targetField) {
@@ -89,6 +95,7 @@ var ColorShifter = Class.extend({
         eventFunc(contrastField, "change", updateFunc);
         eventFunc(colorizeField, "change", updateFunc);
         eventFunc(webSafeField, "change", updateFunc);
+        eventFunc(window, "resize", updateFunc);
         
     },
 
@@ -195,18 +202,23 @@ var ColorShifter = Class.extend({
                 return;
         }
         
-        this.refreshFromFields();
-
         var self = this;
         this.sourceCssString = cssString;
+        this.refreshFromFields();
         
-        //TODO: jQuery should NOT be used on the final version
+        var container = document.getElementById(this.containerId);
+        var originalColorsContainer = document.getElementById(this.originalColorsContainerId);
+        var newColorsContainer = document.getElementById(this.newColorsContainerId);
         
-        var originalColorsContainer = $("#originalColors");
-        var changedColorsContainer = $("#changedColors");
+        if (originalColorsContainer) {
+            while (originalColorsContainer.hasChildNodes())
+                originalColorsContainer.removeChild(originalColorsContainer.lastChild);
+        }
         
-        originalColorsContainer.empty();
-        changedColorsContainer.empty();
+        if (newColorsContainer) {
+            while (newColorsContainer.hasChildNodes())
+                newColorsContainer.removeChild(newColorsContainer.lastChild);
+        }
 
         this.shiftedCssString = cssString.replace(this.matchRegExp, function(match) {
             
@@ -232,9 +244,11 @@ var ColorShifter = Class.extend({
                 var newColor = colorMatch.getValue({
                     format: self.outputFormat
                 });
-                
-                originalColorsContainer.append('<div class="color-swatch" style="background-color:' + colorString + ';"></div>');
-                changedColorsContainer.append('<div class="color-swatch" style="background-color:' + newColor + ';"></div>');
+        
+                if (originalColorsContainer)
+                    originalColorsContainer.appendChild(Util.createColorSwatch(colorString));
+                if (newColorsContainer)
+                    newColorsContainer.appendChild(Util.createColorSwatch(newColor));
                 
                 for (var n in ColorNames) {
                     if (newColor.toLowerCase() == ColorNames[n].toLowerCase()) {
@@ -249,7 +263,25 @@ var ColorShifter = Class.extend({
             return modifiedStringPart;
         });
         
-        originalColorsContainer.append('<br clear="all">');
+        var c, width, node;
+        
+        if (originalColorsContainer) {
+            width = originalColorsContainer.offsetWidth / originalColorsContainer.childElementCount;
+            for (c in originalColorsContainer.childNodes) {
+                node = originalColorsContainer.childNodes[c];
+                if (node.nodeType = node.ELEMENT_NODE)
+                    node.style.width = width + "px";
+            }
+        }
+        
+        if (newColorsContainer) {
+            width = newColorsContainer.offsetWidth / newColorsContainer.childElementCount;
+            for (c in newColorsContainer.childNodes) {
+                node = newColorsContainer.childNodes[c];
+                if (node.nodeType = node.ELEMENT_NODE)
+                    node.style.width = width + "px";
+            }
+        }
 
         this.fillTargetField();
 	},
