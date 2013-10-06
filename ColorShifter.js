@@ -223,9 +223,9 @@ var ColorShifter = Class.extend({
 
         this.shiftedCssString = cssString.replace(this.matchRegExp, function(match) {
             
-            var modifiedStringPart = match.replace(self.colorRegExp, function(colorString) {
+            var modifiedStringPart = match.replace(self.colorRegExp, function(originalColorString) {
                 
-                colorString = ColorNames[colorString.toLowerCase()] || colorString;
+                var colorString = ColorNames[originalColorString.toLowerCase()] || originalColorString;
                 
                 var colorMatch = new ColorMatch(colorString);
                 
@@ -246,8 +246,8 @@ var ColorShifter = Class.extend({
                     format: self.outputFormat
                 });
                 
-                if (colorsShown.indexOf(colorString) == -1) {
-                    colorsShown.push(colorString);
+                if (colorsShown.indexOf(originalColorString) == -1) {
+                    colorsShown.push(originalColorString);
                     
                     if (originalColorsContainer)
                         originalColorsContainer.appendChild(Util.createColorSwatch(colorString));
