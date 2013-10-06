@@ -202,10 +202,11 @@ var ColorShifter = Class.extend({
                 return;
         }
         
-        var self = this;
         this.sourceCssString = cssString;
         this.refreshFromFields();
         
+        var self = this;
+        var colorsShown = [];
         var container = document.getElementById(this.containerId);
         var originalColorsContainer = document.getElementById(this.originalColorsContainerId);
         var newColorsContainer = document.getElementById(this.newColorsContainerId);
@@ -244,11 +245,16 @@ var ColorShifter = Class.extend({
                 var newColor = colorMatch.getValue({
                     format: self.outputFormat
                 });
-        
-                if (originalColorsContainer)
-                    originalColorsContainer.appendChild(Util.createColorSwatch(colorString));
-                if (newColorsContainer)
-                    newColorsContainer.appendChild(Util.createColorSwatch(newColor));
+                
+                if (colorsShown.indexOf(colorString) == -1) {
+                    colorsShown.push(colorString);
+                    
+                    if (originalColorsContainer)
+                        originalColorsContainer.appendChild(Util.createColorSwatch(colorString));
+                    if (newColorsContainer)
+                        newColorsContainer.appendChild(Util.createColorSwatch(newColor));
+                    
+                }
                 
                 for (var n in ColorNames) {
                     if (newColor.toLowerCase() == ColorNames[n].toLowerCase()) {
@@ -266,7 +272,7 @@ var ColorShifter = Class.extend({
         var c, width, node;
         
         if (originalColorsContainer) {
-            width = originalColorsContainer.offsetWidth / originalColorsContainer.childElementCount;
+            width = originalColorsContainer.offsetWidth / colorsShown.length;
             for (c in originalColorsContainer.childNodes) {
                 node = originalColorsContainer.childNodes[c];
                 if (node.nodeType = node.ELEMENT_NODE)
@@ -275,7 +281,7 @@ var ColorShifter = Class.extend({
         }
         
         if (newColorsContainer) {
-            width = newColorsContainer.offsetWidth / newColorsContainer.childElementCount;
+            width = newColorsContainer.offsetWidth / colorsShown.length;
             for (c in newColorsContainer.childNodes) {
                 node = newColorsContainer.childNodes[c];
                 if (node.nodeType = node.ELEMENT_NODE)
