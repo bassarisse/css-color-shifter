@@ -258,7 +258,7 @@ var ColorMatch = Class.extend({
             format = options.format;
 
         if (this.format == ColorFormat.Hex && alphaSpecified && !options.useARGB)
-            format = ColorFormat.Rgb;
+            format = options.preferHSL ? ColorFormat.Hsl : ColorFormat.Rgb;
         
         var hexColorStr = "#";
         if (alphaSpecified)
