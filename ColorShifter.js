@@ -9,6 +9,7 @@ var ColorShifter = Class.extend({
 	contrastChange: 0,
 	colorize: false,
     useOnlyWebSafeColors: false,
+    useColorNames: false,
     outputFormat: ColorFormat.Unknown,
 
     matchRegExp: null,
@@ -27,6 +28,8 @@ var ColorShifter = Class.extend({
     alphaFieldId: null,
     contrastFieldId: null,
     colorizeFieldId: null,
+    webSafeFieldId: null,
+    colorNamesFieldId: null,
     originalColorsContainerId: null,
     newColorsContainerId: null,
     
@@ -43,6 +46,7 @@ var ColorShifter = Class.extend({
             this.contrastFieldId = options.contrastFieldId;
             this.colorizeFieldId = options.colorizeFieldId;
             this.webSafeFieldId = options.webSafeFieldId;
+            this.colorNamesFieldId = options.colorNamesFieldId;
             this.originalColorsContainerId = options.originalColorsContainerId;
             this.newColorsContainerId = options.newColorsContainerId;
         }
@@ -63,6 +67,7 @@ var ColorShifter = Class.extend({
         var contrastField = document.getElementById(this.contrastFieldId);
         var colorizeField = document.getElementById(this.colorizeFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
+        var colorNamesField = document.getElementById(this.colorNamesFieldId);
 
         if (sourceField) {
             eventFunc(sourceField, "change", updateFunc);
@@ -95,6 +100,7 @@ var ColorShifter = Class.extend({
         eventFunc(contrastField, "change", updateFunc);
         eventFunc(colorizeField, "change", updateFunc);
         eventFunc(webSafeField, "change", updateFunc);
+        eventFunc(colorNamesField, "change", updateFunc);
         eventFunc(window, "resize", updateFunc);
         
     },
@@ -174,6 +180,7 @@ var ColorShifter = Class.extend({
         var contrastField = document.getElementById(this.contrastFieldId);
         var colorizeField = document.getElementById(this.colorizeFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
+        var colorNamesField = document.getElementById(this.colorNamesFieldId);
 
         if (hueElement) this.hueChange = parseFloat(hueElement.value);
         if (saturationElement) this.saturationChange = parseFloat(saturationElement.value);
@@ -182,6 +189,7 @@ var ColorShifter = Class.extend({
         if (contrastField) this.contrastChange = parseFloat(contrastField.value);
         if (colorizeField) this.colorize = colorizeField.checked ? true : false;
         if (webSafeField) this.useOnlyWebSafeColors = webSafeField.checked ? true : false;
+        if (colorNamesField) this.useColorNames = colorNamesField.checked ? true : false;
 
         if (isNaN(this.hueChange)) this.hueChange = 0;
         if (isNaN(this.saturationChange)) this.saturationChange = 0;
@@ -245,6 +253,7 @@ var ColorShifter = Class.extend({
                 
                 var newColor = colorMatch.getValue({
                     format: self.outputFormat,
+                    colorNames: self.useColorNames,
                     isAlphaSpecified: (self.alphaChange != 0)
                 });
                 
@@ -256,13 +265,6 @@ var ColorShifter = Class.extend({
                     if (newColorsContainer)
                         newColorsContainer.appendChild(Util.createColorSwatch(newColor));
                     
-                }
-                
-                for (var n in ColorNames) {
-                    if (newColor.toLowerCase() === ColorNames[n].toLowerCase()) {
-                        newColor = n;
-                        break;
-                    }
                 }
                 
                 return newColor;
@@ -277,7 +279,7 @@ var ColorShifter = Class.extend({
             width = originalColorsContainer.offsetWidth / colorsShown.length;
             for (c in originalColorsContainer.childNodes) {
                 node = originalColorsContainer.childNodes[c];
-                if (node.nodeType === node.ELEMENT_NODE)
+                if (node && typeof(node.nodeType) != 'undefined' && node.nodeType === node.ELEMENT_NODE)
                     node.style.width = width + "px";
             }
         }
@@ -286,7 +288,7 @@ var ColorShifter = Class.extend({
             width = newColorsContainer.offsetWidth / colorsShown.length;
             for (c in newColorsContainer.childNodes) {
                 node = newColorsContainer.childNodes[c];
-                if (node.nodeType === node.ELEMENT_NODE)
+                if (node && typeof(node.nodeType) != 'undefined' && node.nodeType === node.ELEMENT_NODE)
                     node.style.width = width + "px";
             }
         }

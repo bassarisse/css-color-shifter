@@ -259,19 +259,21 @@ var ColorMatch = Class.extend({
 
         if (this.format == ColorFormat.Hex && alphaSpecified)
             format = ColorFormat.Rgb;
+        
+        var hexColorStr = "#";
+        if (alphaSpecified)
+            hexColorStr += ((1 << 8) + Math.round(this.alpha * 255)).toString(16).slice(1);
+
+        hexColorStr += ((1 << 24) + (this.red << 16) + (this.green << 8) + this.blue).toString(16).slice(1);
 
 		switch (format) {
 
             case ColorFormat.Hex:
-                var returnStr = "#";
-                if (alphaSpecified)
-                    returnStr += ((1 << 8) + Math.round(this.alpha * 255)).toString(16).slice(1);
-
-                returnStr += ((1 << 24) + (this.red << 16) + (this.green << 8) + this.blue).toString(16).slice(1);
+                returnStr = hexColorStr;
                 break;
 
             case ColorFormat.Hsl:
-                var returnStr = "hsl";
+                returnStr = "hsl";
                 if (alphaSpecified)
                     returnStr += "a";
                 returnStr += "(" + this.hue.toDecimalString(0) + ", " + this.saturation.toDecimalString(2) + "%, " + this.lightness.toDecimalString(2) + "%";
@@ -282,7 +284,7 @@ var ColorMatch = Class.extend({
 
             case ColorFormat.Rgb:
             default:
-                var returnStr = "rgb";
+                returnStr = "rgb";
                 if (alphaSpecified)
                     returnStr += "a";
                 returnStr += "(" + this.red.toDecimalString(0) + ", " + this.green.toDecimalString(0) + ", " + this.blue.toDecimalString(0);
@@ -290,6 +292,15 @@ var ColorMatch = Class.extend({
                     returnStr +=  ", " + this.alpha.toDecimalString(4);
                 returnStr += ")";
                 break
+        }
+        
+        if (options.colorNames) {
+            for (var n in ColorNames) {
+                if (hexColorStr.toLowerCase() === ColorNames[n].toLowerCase()) {
+                    returnStr = n;
+                    break;
+                }
+            }
         }
 
         return returnStr;
