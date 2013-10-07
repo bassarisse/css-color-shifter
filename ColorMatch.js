@@ -140,7 +140,7 @@ var ColorMatch = Class.extend({
 			this.red = parseInt(colorStr.substr(startIndex, 2), 16);
 			this.green = parseInt(colorStr.substr(startIndex + 2, 2), 16);
 			this.blue = parseInt(colorStr.substr(startIndex + 4, 2), 16);
-			this.alpha = this.isAlphaSpecified ? parseInt(colorStr.substr(0, 2), 16) : 1;
+			this.alpha = this.isAlphaSpecified ? parseInt(colorStr.substr(0, 2), 16) / 255 : 1;
 
 			this._updateFromRgb();
 
@@ -257,7 +257,7 @@ var ColorMatch = Class.extend({
         if (typeof(options.format) != "undefined" && options.format != ColorFormat.Unknown)
             format = options.format;
 
-        if (this.format == ColorFormat.Hex && alphaSpecified)
+        if (this.format == ColorFormat.Hex && alphaSpecified && !options.useARGB)
             format = ColorFormat.Rgb;
         
         var hexColorStr = "#";

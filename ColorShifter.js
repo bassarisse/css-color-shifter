@@ -10,6 +10,7 @@ var ColorShifter = Class.extend({
 	colorize: false,
     useOnlyWebSafeColors: false,
     useColorNames: false,
+    useARGB: false,
     outputFormat: ColorFormat.Unknown,
 
     matchRegExp: null,
@@ -30,6 +31,7 @@ var ColorShifter = Class.extend({
     colorizeFieldId: null,
     webSafeFieldId: null,
     colorNamesFieldId: null,
+    aRGBFieldId: null,
     originalColorsContainerId: null,
     newColorsContainerId: null,
     
@@ -47,6 +49,7 @@ var ColorShifter = Class.extend({
             this.colorizeFieldId = options.colorizeFieldId;
             this.webSafeFieldId = options.webSafeFieldId;
             this.colorNamesFieldId = options.colorNamesFieldId;
+            this.aRGBFieldId = options.aRGBFieldId;
             this.originalColorsContainerId = options.originalColorsContainerId;
             this.newColorsContainerId = options.newColorsContainerId;
         }
@@ -68,6 +71,7 @@ var ColorShifter = Class.extend({
         var colorizeField = document.getElementById(this.colorizeFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
         var colorNamesField = document.getElementById(this.colorNamesFieldId);
+        var aRGBField = document.getElementById(this.aRGBFieldId);
 
         if (sourceField) {
             eventFunc(sourceField, "change", updateFunc);
@@ -101,6 +105,7 @@ var ColorShifter = Class.extend({
         eventFunc(colorizeField, "change", updateFunc);
         eventFunc(webSafeField, "change", updateFunc);
         eventFunc(colorNamesField, "change", updateFunc);
+        eventFunc(aRGBField, "change", updateFunc);
         eventFunc(window, "resize", updateFunc);
         
     },
@@ -181,6 +186,7 @@ var ColorShifter = Class.extend({
         var colorizeField = document.getElementById(this.colorizeFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
         var colorNamesField = document.getElementById(this.colorNamesFieldId);
+        var aRGBField = document.getElementById(this.aRGBFieldId);
 
         if (hueElement) this.hueChange = parseFloat(hueElement.value);
         if (saturationElement) this.saturationChange = parseFloat(saturationElement.value);
@@ -190,6 +196,7 @@ var ColorShifter = Class.extend({
         if (colorizeField) this.colorize = colorizeField.checked ? true : false;
         if (webSafeField) this.useOnlyWebSafeColors = webSafeField.checked ? true : false;
         if (colorNamesField) this.useColorNames = colorNamesField.checked ? true : false;
+        if (aRGBField) this.useARGB = aRGBField.checked ? true : false;
 
         if (isNaN(this.hueChange)) this.hueChange = 0;
         if (isNaN(this.saturationChange)) this.saturationChange = 0;
@@ -254,6 +261,7 @@ var ColorShifter = Class.extend({
                 var newColor = colorMatch.getValue({
                     format: self.outputFormat,
                     colorNames: self.useColorNames,
+                    useARGB: self.useARGB,
                     isAlphaSpecified: (self.alphaChange != 0)
                 });
                 
