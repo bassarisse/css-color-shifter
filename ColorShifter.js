@@ -226,11 +226,12 @@ var ColorShifter = Class.extend({
             var modifiedStringPart = match.replace(self.colorRegExp, function(originalColorString) {
                 
                 var colorString = ColorNames[originalColorString.toLowerCase()] || originalColorString;
-                
                 var colorMatch = new ColorMatch(colorString);
                 
-                if (self.alphaChange != 0)
-                    colorMatch.isAlphaSpecified = true;
+                var testColorString = colorMatch.getValue({
+                    format: ColorFormat.Rgb,
+                    isAlphaSpecified: true
+                });
                     
                 colorMatch.modify({
                     hue: self.hueChange,
@@ -243,11 +244,12 @@ var ColorShifter = Class.extend({
                 });
                 
                 var newColor = colorMatch.getValue({
-                    format: self.outputFormat
+                    format: self.outputFormat,
+                    isAlphaSpecified: (self.alphaChange != 0)
                 });
                 
-                if (colorsShown.indexOf(originalColorString) == -1) {
-                    colorsShown.push(originalColorString);
+                if (colorsShown.indexOf(testColorString) == -1) {
+                    colorsShown.push(testColorString);
                     
                     if (originalColorsContainer)
                         originalColorsContainer.appendChild(Util.createColorSwatch(colorString));
@@ -257,7 +259,7 @@ var ColorShifter = Class.extend({
                 }
                 
                 for (var n in ColorNames) {
-                    if (newColor.toLowerCase() == ColorNames[n].toLowerCase()) {
+                    if (newColor.toLowerCase() === ColorNames[n].toLowerCase()) {
                         newColor = n;
                         break;
                     }
@@ -275,7 +277,7 @@ var ColorShifter = Class.extend({
             width = originalColorsContainer.offsetWidth / colorsShown.length;
             for (c in originalColorsContainer.childNodes) {
                 node = originalColorsContainer.childNodes[c];
-                if (node.nodeType = node.ELEMENT_NODE)
+                if (node.nodeType === node.ELEMENT_NODE)
                     node.style.width = width + "px";
             }
         }
@@ -284,7 +286,7 @@ var ColorShifter = Class.extend({
             width = newColorsContainer.offsetWidth / colorsShown.length;
             for (c in newColorsContainer.childNodes) {
                 node = newColorsContainer.childNodes[c];
-                if (node.nodeType = node.ELEMENT_NODE)
+                if (node.nodeType === node.ELEMENT_NODE)
                     node.style.width = width + "px";
             }
         }
