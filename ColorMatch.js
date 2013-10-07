@@ -181,6 +181,17 @@ var ColorMatch = Class.extend({
 
 	},
 
+    _proportialValue: function(theValue, modifyValue) {
+        
+        if (modifyValue < 0)
+            return theValue + (theValue / 100 * modifyValue);
+            
+        else if (modifyValue > 0)
+            return theValue + ((100 - theValue) / 100 * modifyValue);
+            
+        return theValue;
+    },
+
 	init: function(colorStr) {
 
 		this.originalString = colorStr;
@@ -233,9 +244,27 @@ var ColorMatch = Class.extend({
 		if (!this.isValid)
             return;
 
-        if (!isNaN(options.hue)) this.hue = options.colorize ? options.hue : this.hue + options.hue;
-        if (!isNaN(options.saturation)) this.saturation += options.saturation;
-        if (!isNaN(options.lightness)) this.lightness += options.lightness;
+        if (!isNaN(options.hue)) {
+            if (options.colorize)
+                this.hue = options.hue;
+            else
+                this.hue += options.hue;
+        }
+        
+        if (!isNaN(options.saturation)) {
+            if (options.proportionalSaturation)
+                this.saturation = this._proportialValue(this.saturation, options.saturation);
+            else
+                this.saturation += options.saturation;
+        }
+        
+        if (!isNaN(options.lightness)) {
+            if (options.proportionalLightness)
+                this.lightness = this._proportialValue(this.lightness, options.lightness);
+            else
+                this.lightness += options.lightness;
+        }
+        
         if (!isNaN(options.alpha)) {
             if (options.fixAlpha)
                 this.alpha = options.alpha;

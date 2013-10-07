@@ -13,6 +13,8 @@ var ColorShifter = Class.extend({
     useARGB: false,
     preferHSL: false,
     fixAlpha: false,
+    proportionalSaturation: false,
+    proportionalLightness: false,
     outputFormat: ColorFormat.Unknown,
 
     matchRegExp: null,
@@ -36,6 +38,8 @@ var ColorShifter = Class.extend({
     aRGBFieldId: null,
     preferHSLFieldId: null,
     fixAlphaFieldId: null,
+    proportionalSaturationFieldId: null,
+    proportionalLightnessFieldId: null,
     originalColorsContainerId: null,
     newColorsContainerId: null,
     
@@ -56,6 +60,8 @@ var ColorShifter = Class.extend({
             this.aRGBFieldId = options.aRGBFieldId;
             this.preferHSLFieldId = options.preferHSLFieldId;
             this.fixAlphaFieldId = options.fixAlphaFieldId;
+            this.proportionalSaturationFieldId = options.proportionalSaturationFieldId;
+            this.proportionalLightnessFieldId = options.proportionalLightnessFieldId;
             this.originalColorsContainerId = options.originalColorsContainerId;
             this.newColorsContainerId = options.newColorsContainerId;
         }
@@ -80,6 +86,8 @@ var ColorShifter = Class.extend({
         var aRGBField = document.getElementById(this.aRGBFieldId);
         var preferHSLField = document.getElementById(this.preferHSLFieldId);
         var fixAlphaField = document.getElementById(this.fixAlphaFieldId);
+        var proportionalSaturationField = document.getElementById(this.proportionalSaturationFieldId);
+        var proportionalLightnessField = document.getElementById(this.proportionalLightnessFieldId);
 
         if (sourceField) {
             eventFunc(sourceField, "change", updateFunc);
@@ -116,6 +124,8 @@ var ColorShifter = Class.extend({
         eventFunc(aRGBField, "change", updateFunc);
         eventFunc(preferHSLField, "change", updateFunc);
         eventFunc(fixAlphaField, "change", updateFunc);
+        eventFunc(proportionalSaturationField, "change", updateFunc);
+        eventFunc(proportionalLightnessField, "change", updateFunc);
         eventFunc(window, "resize", updateFunc);
         
     },
@@ -199,6 +209,8 @@ var ColorShifter = Class.extend({
         var aRGBField = document.getElementById(this.aRGBFieldId);
         var preferHSLField = document.getElementById(this.preferHSLFieldId);
         var fixAlphaField = document.getElementById(this.fixAlphaFieldId);
+        var proportionalSaturationField = document.getElementById(this.proportionalSaturationFieldId);
+        var proportionalLightnessField = document.getElementById(this.proportionalLightnessFieldId);
 
         if (hueElement) this.hueChange = parseFloat(hueElement.value);
         if (saturationElement) this.saturationChange = parseFloat(saturationElement.value);
@@ -211,6 +223,8 @@ var ColorShifter = Class.extend({
         if (aRGBField) this.useARGB = aRGBField.checked ? true : false;
         if (preferHSLField) this.preferHSL = preferHSLField.checked ? true : false;
         if (fixAlphaField) this.fixAlpha = fixAlphaField.checked ? true : false;
+        if (proportionalSaturationField) this.proportionalSaturation = proportionalSaturationField.checked ? true : false;
+        if (proportionalLightnessField) this.proportionalLightness = proportionalLightnessField.checked ? true : false;
 
         if (isNaN(this.hueChange)) this.hueChange = 0;
         if (isNaN(this.saturationChange)) this.saturationChange = 0;
@@ -270,7 +284,9 @@ var ColorShifter = Class.extend({
                     contrast: self.contrastChange,
                     colorize: self.colorize,
                     webSafe: self.useOnlyWebSafeColors,
-                    fixAlpha: self.fixAlpha
+                    fixAlpha: self.fixAlpha,
+                    proportionalSaturation: self.proportionalSaturation,
+                    proportionalLightness: self.proportionalLightness
                 });
                 
                 var newColor = colorMatch.getValue({
