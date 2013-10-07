@@ -27,6 +27,7 @@
 			    lightnessFieldId: "lightnessChange",
 			    alphaFieldId: "alphaChange",
 			    contrastFieldId: "contrastChange",
+			    formatFieldId: "colorformat",
 			    colorizeFieldId: "colorize",
 			    webSafeFieldId: "webSafeColors",
 			    colorNamesFieldId: "colorNames",
@@ -66,6 +67,14 @@
 </div>
 <div>
     <label>Contrast Change<input type="range" id="contrastChange" value="0" min="-255" max="255" step="0.1" /></label>
+</div>
+<div>
+    <label>Color format<select id="colorformat">
+        <option value="0" selected="selected">Same as source</option>
+        <option value="1">Hex</option>
+        <option value="2">Rgb</option>
+        <option value="3">Hsl</option>
+    </select></label>
 </div>
 <div>
     <label>Colorize<input type="checkbox" id="colorize" value="1" /></label>

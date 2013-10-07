@@ -7,6 +7,7 @@ var ColorShifter = Class.extend({
 	lightnessChange: 0,
 	alphaChange: 0,
 	contrastChange: 0,
+    outputFormat: ColorFormat.Unknown,
 	colorize: false,
     useOnlyWebSafeColors: false,
     useColorNames: false,
@@ -15,7 +16,6 @@ var ColorShifter = Class.extend({
     fixAlpha: false,
     proportionalSaturation: false,
     proportionalLightness: false,
-    outputFormat: ColorFormat.Unknown,
 
     matchRegExp: null,
     colorRegExp: null,
@@ -32,6 +32,7 @@ var ColorShifter = Class.extend({
     lightnessFieldId: null,
     alphaFieldId: null,
     contrastFieldId: null,
+    formatFieldId: null,
     colorizeFieldId: null,
     webSafeFieldId: null,
     colorNamesFieldId: null,
@@ -54,6 +55,7 @@ var ColorShifter = Class.extend({
             this.lightnessFieldId = options.lightnessFieldId;
             this.alphaFieldId = options.alphaFieldId;
             this.contrastFieldId = options.contrastFieldId;
+            this.formatFieldId = options.formatFieldId;
             this.colorizeFieldId = options.colorizeFieldId;
             this.webSafeFieldId = options.webSafeFieldId;
             this.colorNamesFieldId = options.colorNamesFieldId;
@@ -66,7 +68,7 @@ var ColorShifter = Class.extend({
             this.newColorsContainerId = options.newColorsContainerId;
         }
         
-        if (typeof(enable) == 'undefined')
+        if (typeof(enable) === 'undefined')
             return;
         
         var eventFunc = enable ? Util.addEvent : Util.removeEvent;
@@ -80,6 +82,7 @@ var ColorShifter = Class.extend({
         var lightnessField = document.getElementById(this.lightnessFieldId);
         var alphaField = document.getElementById(this.alphaFieldId);
         var contrastField = document.getElementById(this.contrastFieldId);
+        var formatField = document.getElementById(this.formatFieldId);
         var colorizeField = document.getElementById(this.colorizeFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
         var colorNamesField = document.getElementById(this.colorNamesFieldId);
@@ -118,6 +121,7 @@ var ColorShifter = Class.extend({
         eventFunc(lightnessField, "change", updateFunc);
         eventFunc(alphaField, "change", updateFunc);
         eventFunc(contrastField, "change", updateFunc);
+        eventFunc(formatField, "change", updateFunc);
         eventFunc(colorizeField, "change", updateFunc);
         eventFunc(webSafeField, "change", updateFunc);
         eventFunc(colorNamesField, "change", updateFunc);
@@ -203,6 +207,7 @@ var ColorShifter = Class.extend({
         var lightnessField = document.getElementById(this.lightnessFieldId);
         var alphaField = document.getElementById(this.alphaFieldId);
         var contrastField = document.getElementById(this.contrastFieldId);
+        var formatField = document.getElementById(this.formatFieldId);
         var colorizeField = document.getElementById(this.colorizeFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
         var colorNamesField = document.getElementById(this.colorNamesFieldId);
@@ -217,6 +222,7 @@ var ColorShifter = Class.extend({
         if (lightnessField) this.lightnessChange = parseFloat(lightnessField.value);
         if (alphaField) this.alphaChange = parseFloat(alphaField.value);
         if (contrastField) this.contrastChange = parseFloat(contrastField.value);
+        if (formatField) this.outputFormat = parseInt(formatField.value, 10);
         if (colorizeField) this.colorize = colorizeField.checked ? true : false;
         if (webSafeField) this.useOnlyWebSafeColors = webSafeField.checked ? true : false;
         if (colorNamesField) this.useColorNames = colorNamesField.checked ? true : false;
