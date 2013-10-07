@@ -136,11 +136,11 @@ var ColorShifter = Class.extend({
         add('hsla?\\(\\s*\\d+(.\\d+)?\\s*,\\s*\\d+(.\\d+)?%?\\s*,\\s*\\d+(.\\d+)?%?\\s*(,\\s*\\d(.\\d+)?\\s*)?\\)');
         
         for (var n in ColorNames)
-            add(n);
+            add('\\b' + n + '\\b');
         
         this.colorRegExp = new RegExp(regexp, "igm");
             
-        regexp = ":[^:;{}!]*(" + regexp + ")";
+        regexp = ':[^:;{}!\\n]*(' + regexp + ')';
         
         this.matchRegExp = new RegExp(regexp, "igm");
         
@@ -269,7 +269,7 @@ var ColorShifter = Class.extend({
                     colorsShown.push(testColorString);
                     
                     if (originalColorsContainer)
-                        originalColorsContainer.appendChild(Util.createColorSwatch(colorString));
+                        originalColorsContainer.appendChild(Util.createColorSwatch(originalColorString));
                     if (newColorsContainer)
                         newColorsContainer.appendChild(Util.createColorSwatch(newColor));
                     
