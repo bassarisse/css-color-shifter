@@ -236,7 +236,12 @@ var ColorMatch = Class.extend({
         if (!isNaN(options.hue)) this.hue = options.colorize ? options.hue : this.hue + options.hue;
         if (!isNaN(options.saturation)) this.saturation += options.saturation;
         if (!isNaN(options.lightness)) this.lightness += options.lightness;
-        if (!isNaN(options.alpha)) this.alpha += options.alpha;
+        if (!isNaN(options.alpha)) {
+            if (options.fixAlpha)
+                this.alpha = options.alpha;
+            else
+                this.alpha += options.alpha;
+        }
 
         this._normalize();
         this._updateFromHsl();

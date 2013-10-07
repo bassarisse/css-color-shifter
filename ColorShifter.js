@@ -12,6 +12,7 @@ var ColorShifter = Class.extend({
     useColorNames: false,
     useARGB: false,
     preferHSL: false,
+    fixAlpha: false,
     outputFormat: ColorFormat.Unknown,
 
     matchRegExp: null,
@@ -34,6 +35,7 @@ var ColorShifter = Class.extend({
     colorNamesFieldId: null,
     aRGBFieldId: null,
     preferHSLFieldId: null,
+    fixAlphaFieldId: null,
     originalColorsContainerId: null,
     newColorsContainerId: null,
     
@@ -53,6 +55,7 @@ var ColorShifter = Class.extend({
             this.colorNamesFieldId = options.colorNamesFieldId;
             this.aRGBFieldId = options.aRGBFieldId;
             this.preferHSLFieldId = options.preferHSLFieldId;
+            this.fixAlphaFieldId = options.fixAlphaFieldId;
             this.originalColorsContainerId = options.originalColorsContainerId;
             this.newColorsContainerId = options.newColorsContainerId;
         }
@@ -76,6 +79,7 @@ var ColorShifter = Class.extend({
         var colorNamesField = document.getElementById(this.colorNamesFieldId);
         var aRGBField = document.getElementById(this.aRGBFieldId);
         var preferHSLField = document.getElementById(this.preferHSLFieldId);
+        var fixAlphaField = document.getElementById(this.fixAlphaFieldId);
 
         if (sourceField) {
             eventFunc(sourceField, "change", updateFunc);
@@ -111,6 +115,7 @@ var ColorShifter = Class.extend({
         eventFunc(colorNamesField, "change", updateFunc);
         eventFunc(aRGBField, "change", updateFunc);
         eventFunc(preferHSLField, "change", updateFunc);
+        eventFunc(fixAlphaField, "change", updateFunc);
         eventFunc(window, "resize", updateFunc);
         
     },
@@ -193,6 +198,7 @@ var ColorShifter = Class.extend({
         var colorNamesField = document.getElementById(this.colorNamesFieldId);
         var aRGBField = document.getElementById(this.aRGBFieldId);
         var preferHSLField = document.getElementById(this.preferHSLFieldId);
+        var fixAlphaField = document.getElementById(this.fixAlphaFieldId);
 
         if (hueElement) this.hueChange = parseFloat(hueElement.value);
         if (saturationElement) this.saturationChange = parseFloat(saturationElement.value);
@@ -204,6 +210,7 @@ var ColorShifter = Class.extend({
         if (colorNamesField) this.useColorNames = colorNamesField.checked ? true : false;
         if (aRGBField) this.useARGB = aRGBField.checked ? true : false;
         if (preferHSLField) this.preferHSL = preferHSLField.checked ? true : false;
+        if (fixAlphaField) this.fixAlpha = fixAlphaField.checked ? true : false;
 
         if (isNaN(this.hueChange)) this.hueChange = 0;
         if (isNaN(this.saturationChange)) this.saturationChange = 0;
@@ -262,7 +269,8 @@ var ColorShifter = Class.extend({
                     alpha: self.alphaChange,
                     contrast: self.contrastChange,
                     colorize: self.colorize,
-                    webSafe: self.useOnlyWebSafeColors
+                    webSafe: self.useOnlyWebSafeColors,
+                    fixAlpha: self.fixAlpha
                 });
                 
                 var newColor = colorMatch.getValue({
@@ -270,7 +278,7 @@ var ColorShifter = Class.extend({
                     colorNames: self.useColorNames,
                     useARGB: self.useARGB,
                     preferHSL: self.preferHSL,
-                    isAlphaSpecified: (self.alphaChange != 0)
+                    isAlphaSpecified: ((!self.fixAlpha && self.alphaChange != 0) || (self.fixAlpha && self.alphaChange != 1))
                 });
                 
                 if (colorsShown.indexOf(testColorString) == -1) {
