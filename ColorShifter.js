@@ -24,6 +24,7 @@ var ColorShifter = Class.extend({
     fixAlpha: false,
     proportionalSaturation: false,
     proportionalLightness: false,
+    disablecCSSCheck: false,
 
     containerId: null,
     sourceFieldId: null,
@@ -43,6 +44,7 @@ var ColorShifter = Class.extend({
     fixAlphaFieldId: null,
     proportionalSaturationFieldId: null,
     proportionalLightnessFieldId: null,
+    disablecCSSCheckFieldId: null,
     originalColorsContainerId: null,
     newColorsContainerId: null,
     
@@ -67,6 +69,7 @@ var ColorShifter = Class.extend({
             this.fixAlphaFieldId = options.fixAlphaFieldId;
             this.proportionalSaturationFieldId = options.proportionalSaturationFieldId;
             this.proportionalLightnessFieldId = options.proportionalLightnessFieldId;
+            this.disablecCSSCheckFieldId = options.disablecCSSCheckFieldId;
             this.originalColorsContainerId = options.originalColorsContainerId;
             this.newColorsContainerId = options.newColorsContainerId;
         }
@@ -95,6 +98,7 @@ var ColorShifter = Class.extend({
         var fixAlphaField = document.getElementById(this.fixAlphaFieldId);
         var proportionalSaturationField = document.getElementById(this.proportionalSaturationFieldId);
         var proportionalLightnessField = document.getElementById(this.proportionalLightnessFieldId);
+        var disablecCSSCheckField = document.getElementById(this.disablecCSSCheckFieldId);
 
         if (sourceField) {
             eventFunc(sourceField, "change", updateFunc);
@@ -135,6 +139,7 @@ var ColorShifter = Class.extend({
         eventFunc(fixAlphaField, "change", updateFunc);
         eventFunc(proportionalSaturationField, "change", updateFunc);
         eventFunc(proportionalLightnessField, "change", updateFunc);
+        eventFunc(disablecCSSCheckField, "change", updateFunc);
         eventFunc(window, "resize", updateFunc);
         
     },
@@ -222,6 +227,7 @@ var ColorShifter = Class.extend({
         var fixAlphaField = document.getElementById(this.fixAlphaFieldId);
         var proportionalSaturationField = document.getElementById(this.proportionalSaturationFieldId);
         var proportionalLightnessField = document.getElementById(this.proportionalLightnessFieldId);
+        var disablecCSSCheckField = document.getElementById(this.disablecCSSCheckFieldId);
 
         if (hueElement) this.hueChange = parseFloat(hueElement.value);
         if (saturationElement) this.saturationChange = parseFloat(saturationElement.value);
@@ -238,6 +244,7 @@ var ColorShifter = Class.extend({
         if (fixAlphaField) this.fixAlpha = fixAlphaField.checked ? true : false;
         if (proportionalSaturationField) this.proportionalSaturation = proportionalSaturationField.checked ? true : false;
         if (proportionalLightnessField) this.proportionalLightness = proportionalLightnessField.checked ? true : false;
+        if (disablecCSSCheckField) this.disablecCSSCheck = disablecCSSCheckField.checked ? true : false;
 
         if (isNaN(this.hueChange)) this.hueChange = 0;
         if (isNaN(this.saturationChange)) this.saturationChange = 0;
@@ -276,56 +283,63 @@ var ColorShifter = Class.extend({
             while (newColorsContainer.hasChildNodes())
                 newColorsContainer.removeChild(newColorsContainer.lastChild);
         }
-
-        this.shiftedCssString = cssString.replace(this.matchRegExp, function(match) {
-            
-            var modifiedStringPart = match.replace(self.colorRegExp, function(originalColorString) {
-                
-                var colorString = ColorNames[originalColorString.toLowerCase()] || originalColorString;
-                var colorMatch = new ColorMatch(colorString);
-                
-                var testColorString = colorMatch.getValue({
-                    format: ColorFormat.Rgb,
-                    isAlphaSpecified: true
-                });
-                    
-                colorMatch.modify({
-                    hue: self.hueChange,
-                    saturation: self.saturationChange,
-                    lightness: self.lightnessChange,
-                    alpha: self.alphaChange,
-                    contrast: self.contrastChange,
-                    colorize: self.colorize,
-                    webSafe: self.useOnlyWebSafeColors,
-                    fixAlpha: self.fixAlpha,
-                    proportionalSaturation: self.proportionalSaturation,
-                    proportionalLightness: self.proportionalLightness
-                });
-                
-                var newColor = colorMatch.getValue({
-                    format: self.outputFormat,
-                    colorNames: self.useColorNames,
-                    contractedHexCodes: self.useContractedHexCodes,
-                    useARGB: self.useARGB,
-                    preferHSL: self.preferHSL,
-                    isAlphaSpecified: ((!self.fixAlpha && self.alphaChange != 0) || (self.fixAlpha && self.alphaChange != 1))
-                });
-                
-                if (colorsShown.indexOf(testColorString) == -1) {
-                    colorsShown.push(testColorString);
-                    
-                    if (originalColorsContainer)
-                        originalColorsContainer.appendChild(Util.createColorSwatch(originalColorString));
-                    if (newColorsContainer)
-                        newColorsContainer.appendChild(Util.createColorSwatch(newColor));
-                    
-                }
-                
-                return newColor;
-            });
         
-            return modifiedStringPart;
-        });
+        var shiftColorFunc = function(originalColorString) {
+                
+            var colorString = ColorNames[originalColorString.toLowerCase()] || originalColorString;
+            var colorMatch = new ColorMatch(colorString);
+            
+            var testColorString = colorMatch.getValue({
+                format: ColorFormat.Rgb,
+                isAlphaSpecified: true
+            });
+                
+            colorMatch.modify({
+                hue: self.hueChange,
+                saturation: self.saturationChange,
+                lightness: self.lightnessChange,
+                alpha: self.alphaChange,
+                contrast: self.contrastChange,
+                colorize: self.colorize,
+                webSafe: self.useOnlyWebSafeColors,
+                fixAlpha: self.fixAlpha,
+                proportionalSaturation: self.proportionalSaturation,
+                proportionalLightness: self.proportionalLightness
+            });
+            
+            var newColor = colorMatch.getValue({
+                format: self.outputFormat,
+                colorNames: self.useColorNames,
+                contractedHexCodes: self.useContractedHexCodes,
+                useARGB: self.useARGB,
+                preferHSL: self.preferHSL,
+                isAlphaSpecified: ((!self.fixAlpha && self.alphaChange !== 0) || (self.fixAlpha && self.alphaChange !== 1))
+            });
+            
+            if (colorsShown.indexOf(testColorString) == -1) {
+                colorsShown.push(testColorString);
+                
+                if (originalColorsContainer)
+                    originalColorsContainer.appendChild(Util.createColorSwatch(originalColorString));
+                if (newColorsContainer)
+                    newColorsContainer.appendChild(Util.createColorSwatch(newColor));
+                
+            }
+            
+            return newColor;
+        };
+        
+        if (this.disablecCSSCheck) {
+            
+            this.shiftedCssString = cssString.replace(this.colorRegExp, shiftColorFunc);
+            
+        } else {
+
+            this.shiftedCssString = cssString.replace(this.matchRegExp, function(match) {
+                return match.replace(self.colorRegExp, shiftColorFunc);
+            });
+            
+        }
         
         var c, width, node;
         
