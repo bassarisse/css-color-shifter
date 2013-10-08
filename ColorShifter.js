@@ -11,6 +11,7 @@ var ColorShifter = Class.extend({
 	colorize: false,
     useOnlyWebSafeColors: false,
     useColorNames: false,
+    useContractedHexCodes: false,
     useARGB: false,
     preferHSL: false,
     fixAlpha: false,
@@ -36,6 +37,7 @@ var ColorShifter = Class.extend({
     colorizeFieldId: null,
     webSafeFieldId: null,
     colorNamesFieldId: null,
+    contractedHexCodesFieldId: null,
     aRGBFieldId: null,
     preferHSLFieldId: null,
     fixAlphaFieldId: null,
@@ -59,6 +61,7 @@ var ColorShifter = Class.extend({
             this.colorizeFieldId = options.colorizeFieldId;
             this.webSafeFieldId = options.webSafeFieldId;
             this.colorNamesFieldId = options.colorNamesFieldId;
+            this.contractedHexCodesFieldId = options.contractedHexCodesFieldId;
             this.aRGBFieldId = options.aRGBFieldId;
             this.preferHSLFieldId = options.preferHSLFieldId;
             this.fixAlphaFieldId = options.fixAlphaFieldId;
@@ -86,6 +89,7 @@ var ColorShifter = Class.extend({
         var colorizeField = document.getElementById(this.colorizeFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
         var colorNamesField = document.getElementById(this.colorNamesFieldId);
+        var contractedHexCodesField = document.getElementById(this.contractedHexCodesFieldId);
         var aRGBField = document.getElementById(this.aRGBFieldId);
         var preferHSLField = document.getElementById(this.preferHSLFieldId);
         var fixAlphaField = document.getElementById(this.fixAlphaFieldId);
@@ -125,6 +129,7 @@ var ColorShifter = Class.extend({
         eventFunc(colorizeField, "change", updateFunc);
         eventFunc(webSafeField, "change", updateFunc);
         eventFunc(colorNamesField, "change", updateFunc);
+        eventFunc(contractedHexCodesField, "change", updateFunc);
         eventFunc(aRGBField, "change", updateFunc);
         eventFunc(preferHSLField, "change", updateFunc);
         eventFunc(fixAlphaField, "change", updateFunc);
@@ -211,6 +216,7 @@ var ColorShifter = Class.extend({
         var colorizeField = document.getElementById(this.colorizeFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
         var colorNamesField = document.getElementById(this.colorNamesFieldId);
+        var contractedHexCodesField = document.getElementById(this.contractedHexCodesFieldId);
         var aRGBField = document.getElementById(this.aRGBFieldId);
         var preferHSLField = document.getElementById(this.preferHSLFieldId);
         var fixAlphaField = document.getElementById(this.fixAlphaFieldId);
@@ -226,6 +232,7 @@ var ColorShifter = Class.extend({
         if (colorizeField) this.colorize = colorizeField.checked ? true : false;
         if (webSafeField) this.useOnlyWebSafeColors = webSafeField.checked ? true : false;
         if (colorNamesField) this.useColorNames = colorNamesField.checked ? true : false;
+        if (contractedHexCodesField) this.useContractedHexCodes = contractedHexCodesField.checked ? true : false;
         if (aRGBField) this.useARGB = aRGBField.checked ? true : false;
         if (preferHSLField) this.preferHSL = preferHSLField.checked ? true : false;
         if (fixAlphaField) this.fixAlpha = fixAlphaField.checked ? true : false;
@@ -298,6 +305,7 @@ var ColorShifter = Class.extend({
                 var newColor = colorMatch.getValue({
                     format: self.outputFormat,
                     colorNames: self.useColorNames,
+                    contractedHexCodes: self.useContractedHexCodes,
                     useARGB: self.useARGB,
                     preferHSL: self.preferHSL,
                     isAlphaSpecified: ((!self.fixAlpha && self.alphaChange != 0) || (self.fixAlpha && self.alphaChange != 1))

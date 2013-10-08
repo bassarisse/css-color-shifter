@@ -304,6 +304,8 @@ var ColorMatch = Class.extend({
 
             case ColorFormat.Hex:
                 returnStr = hexColorStr;
+                if (options.contractedHexCodes && /#([\da-f])\1([\da-f])\2([\da-f])\3/i.test(returnStr))
+                    returnStr = "#" + returnStr[1] + returnStr[3] + returnStr[5];
                 break;
 
             case ColorFormat.Hsl:
