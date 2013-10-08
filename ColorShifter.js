@@ -15,6 +15,7 @@ var ColorShifter = Class.extend({
 	alphaChange: 0,
 	contrastChange: 0,
     outputFormat: ColorFormat.Unknown,
+    postProcessing: PostProcessing.None,
 	colorize: false,
     useOnlyWebSafeColors: false,
     useColorNames: false,
@@ -35,6 +36,7 @@ var ColorShifter = Class.extend({
     alphaFieldId: null,
     contrastFieldId: null,
     formatFieldId: null,
+    postProcessingFieldId: null,
     colorizeFieldId: null,
     webSafeFieldId: null,
     colorNamesFieldId: null,
@@ -61,6 +63,7 @@ var ColorShifter = Class.extend({
             this.contrastFieldId = options.contrastFieldId;
             this.formatFieldId = options.formatFieldId;
             this.colorizeFieldId = options.colorizeFieldId;
+            this.postProcessingFieldId = options.postProcessingFieldId;
             this.webSafeFieldId = options.webSafeFieldId;
             this.colorNamesFieldId = options.colorNamesFieldId;
             this.contractedHexCodesFieldId = options.contractedHexCodesFieldId;
@@ -89,6 +92,7 @@ var ColorShifter = Class.extend({
         var alphaField = document.getElementById(this.alphaFieldId);
         var contrastField = document.getElementById(this.contrastFieldId);
         var formatField = document.getElementById(this.formatFieldId);
+        var postProcessingField = document.getElementById(this.postProcessingFieldId);
         var colorizeField = document.getElementById(this.colorizeFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
         var colorNamesField = document.getElementById(this.colorNamesFieldId);
@@ -130,6 +134,7 @@ var ColorShifter = Class.extend({
         eventFunc(alphaField, "change", updateFunc);
         eventFunc(contrastField, "change", updateFunc);
         eventFunc(formatField, "change", updateFunc);
+        eventFunc(postProcessingField, "change", updateFunc);
         eventFunc(colorizeField, "change", updateFunc);
         eventFunc(webSafeField, "change", updateFunc);
         eventFunc(colorNamesField, "change", updateFunc);
@@ -218,6 +223,7 @@ var ColorShifter = Class.extend({
         var alphaField = document.getElementById(this.alphaFieldId);
         var contrastField = document.getElementById(this.contrastFieldId);
         var formatField = document.getElementById(this.formatFieldId);
+        var postProcessingField = document.getElementById(this.postProcessingFieldId);
         var colorizeField = document.getElementById(this.colorizeFieldId);
         var webSafeField = document.getElementById(this.webSafeFieldId);
         var colorNamesField = document.getElementById(this.colorNamesFieldId);
@@ -235,6 +241,7 @@ var ColorShifter = Class.extend({
         if (alphaField) this.alphaChange = parseFloat(alphaField.value);
         if (contrastField) this.contrastChange = parseFloat(contrastField.value);
         if (formatField) this.outputFormat = parseInt(formatField.value, 10);
+        if (postProcessingField) this.postProcessing = parseInt(postProcessingField.value, 10);
         if (colorizeField) this.colorize = colorizeField.checked ? true : false;
         if (webSafeField) this.useOnlyWebSafeColors = webSafeField.checked ? true : false;
         if (colorNamesField) this.useColorNames = colorNamesField.checked ? true : false;
@@ -338,6 +345,22 @@ var ColorShifter = Class.extend({
             this.shiftedCssString = cssString.replace(this.matchRegExp, function(match) {
                 return match.replace(self.colorRegExp, shiftColorFunc);
             });
+            
+        }
+        
+        if (this.postProcessing === PostProcessing.Beautify && css_beautify) {
+            
+            this.shiftedCssString = css_beautify(this.shiftedCssString);
+            
+        } else if (this.postProcessing === PostProcessing.Minify && CSSOCompressor) {
+            
+            var compressor = new CSSOCompressor(),
+                translator = new CSSOTranslator(),
+                minifyFunc = function(cssStr) {
+                    return translator.translate(cleanInfo(compressor.compress(srcToCSSP(cssStr, 'stylesheet', true))));
+                };
+                
+            this.shiftedCssString = minifyFunc(this.shiftedCssString);
             
         }
         

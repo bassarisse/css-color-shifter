@@ -2,12 +2,13 @@
 <head>
     <title>CSS Color Shifter</title>
     
-    <!-- <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script> -->
+    <script src="libs/beautify-css.js"></script>
+    <script src="libs/csso.web.js"></script>
 
     <script src="JsInheritance.js"></script>
     <script src="Globals.js"></script>
     <script src="Util.js"></script>
-    <script src="ColorFormat.js"></script>
+    <script src="Enums.js"></script>
     <script src="ColorNames.js"></script>
     <script src="ColorMatch.js"></script>
     <script src="ColorShifter.js"></script>
@@ -28,6 +29,7 @@
 			    alphaFieldId: "alphaChange",
 			    contrastFieldId: "contrastChange",
 			    formatFieldId: "colorformat",
+			    postProcessingFieldId: "postprocessing",
 			    colorizeFieldId: "colorize",
 			    webSafeFieldId: "webSafeColors",
 			    colorNamesFieldId: "colorNames",
@@ -76,6 +78,13 @@
         <option value="1">Hex</option>
         <option value="2">Rgb</option>
         <option value="3">Hsl</option>
+    </select></label>
+</div>
+<div>
+    <label>Post processing<select id="postprocessing">
+        <option value="0" selected="selected">None</option>
+        <option value="1">Beautify</option>
+        <option value="2">Minify</option>
     </select></label>
 </div>
 <div>
