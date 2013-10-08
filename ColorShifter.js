@@ -2,6 +2,13 @@
 var ColorShifter = Class.extend({
 
     initialized: false,
+    matchRegExp: null,
+    colorRegExp: null,
+    sourceCssString: "",
+    shiftedCssString: "",
+    updateCallback: null,
+    syncFieldsCallback: null,
+    
     hueChange: 0,
 	saturationChange: 0,
 	lightnessChange: 0,
@@ -18,13 +25,6 @@ var ColorShifter = Class.extend({
     proportionalSaturation: false,
     proportionalLightness: false,
 
-    matchRegExp: null,
-    colorRegExp: null,
-    sourceCssString: "",
-    shiftedCssString: "",
-    updateCallback: null,
-    syncFieldsCallback: null,
-    
     containerId: null,
     sourceFieldId: null,
     targetFieldId: null,
@@ -169,7 +169,7 @@ var ColorShifter = Class.extend({
         
         this.colorRegExp = new RegExp(regexp, "igm");
             
-        regexp = ':[^:;{}!\\n]*(' + regexp + ')';
+        regexp = '{[^{]*:[^:;{}!\\n]*(' + regexp + ')(?=[^}]*})';
         
         this.matchRegExp = new RegExp(regexp, "igm");
         
