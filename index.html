@@ -24,10 +24,15 @@
 			    sourceFieldId: "source",
 			    targetFieldId: "target",
 			    hueFieldId: "hueChange",
+			    hueNumericFieldId: "hueChangeNumeric",
 			    saturationFieldId: "saturationChange",
+			    saturationNumericFieldId: "saturationChangeNumeric",
 			    lightnessFieldId: "lightnessChange",
+			    lightnessNumericFieldId: "lightnessChangeNumeric",
 			    alphaFieldId: "alphaChange",
+			    alphaNumericFieldId: "alphaChangeNumeric",
 			    contrastFieldId: "contrastChange",
+			    contrastNumericFieldId: "contrastChangeNumeric",
 			    formatFieldId: "colorformat",
 			    postProcessingFieldId: "postprocessing",
 			    colorizeFieldId: "colorize",
@@ -58,19 +63,19 @@
 <body id="color-shifter-container">
 
 <div>
-    <label>Hue Change<input type="range" id="hueChange" value="0" min="0" max="360" step="0.01" /></label>
+    <label>Hue Change<input type="range" id="hueChange" value="0" min="0" max="360" step="0.01" /></label><input type="number" id="hueChangeNumeric" value="0" min="0" max="360" step="1" />
 </div>
 <div>
-    <label>Saturation Change<input type="range" id="saturationChange" value="0" min="-100" max="100" step="0.01" /></label>
+    <label>Saturation Change<input type="range" id="saturationChange" value="0" min="-100" max="100" step="0.01" /></label><input type="number" id="saturationChangeNumeric" value="0" min="-100" max="100" step="1" />
 </div>
 <div>
-    <label>Lightness Change<input type="range" id="lightnessChange" value="0" min="-100" max="100" step="0.01" /></label>
+    <label>Lightness Change<input type="range" id="lightnessChange" value="0" min="-100" max="100" step="0.01" /></label><input type="number" id="lightnessChangeNumeric" value="0" min="-100" max="100" step="1" />
 </div>
 <div>
-    <label>Alpha Change<input type="range" id="alphaChange" value="0" min="-1" max="1" step="0.0001" /></label>
+    <label>Alpha Change<input type="range" id="alphaChange" value="0" min="-1" max="1" step="0.0001" /></label><input type="number" id="alphaChangeNumeric" value="0" min="-1" max="1" step="0.1" />
 </div>
 <div>
-    <label>Contrast Change<input type="range" id="contrastChange" value="0" min="-255" max="255" step="0.1" /></label>
+    <label>Contrast Change<input type="range" id="contrastChange" value="0" min="-255" max="255" step="0.1" /></label><input type="number" id="contrastChangeNumeric" value="0" min="-255" max="255" step="1" />
 </div>
 <div>
     <label>Color format<select id="colorformat">

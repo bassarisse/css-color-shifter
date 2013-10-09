@@ -8,6 +8,7 @@ var ColorShifter = Class.extend({
     shiftedCssString: "",
     updateCallback: null,
     syncFieldsCallback: null,
+    tiedFieldChangeCallback: null,
     
     hueChange: 0,
 	saturationChange: 0,
@@ -31,10 +32,15 @@ var ColorShifter = Class.extend({
     sourceFieldId: null,
     targetFieldId: null,
     hueFieldId: null,
+    hueNumericFieldId: null,
     saturationFieldId: null,
+    saturationNumericFieldId: null,
     lightnessFieldId: null,
+    lightnessNumericFieldId: null,
     alphaFieldId: null,
+    alphaNumericFieldId: null,
     contrastFieldId: null,
+    contrastNumericFieldId: null,
     formatFieldId: null,
     postProcessingFieldId: null,
     colorizeFieldId: null,
@@ -57,10 +63,15 @@ var ColorShifter = Class.extend({
             this.sourceFieldId = options.sourceFieldId;
             this.targetFieldId = options.targetFieldId;
             this.hueFieldId = options.hueFieldId;
+            this.hueNumericFieldId = options.hueNumericFieldId;
             this.saturationFieldId = options.saturationFieldId;
+            this.saturationNumericFieldId = options.saturationNumericFieldId;
             this.lightnessFieldId = options.lightnessFieldId;
+            this.lightnessNumericFieldId = options.lightnessNumericFieldId;
             this.alphaFieldId = options.alphaFieldId;
+            this.alphaNumericFieldId = options.alphaNumericFieldId;
             this.contrastFieldId = options.contrastFieldId;
+            this.contrastNumericFieldId = options.contrastNumericFieldId;
             this.formatFieldId = options.formatFieldId;
             this.colorizeFieldId = options.colorizeFieldId;
             this.postProcessingFieldId = options.postProcessingFieldId;
@@ -87,10 +98,15 @@ var ColorShifter = Class.extend({
         var sourceField = document.getElementById(this.sourceFieldId);
         var targetField = document.getElementById(this.targetFieldId);
         var hueField = document.getElementById(this.hueFieldId);
+        var hueNumericField = document.getElementById(this.hueNumericFieldId);
         var saturationField = document.getElementById(this.saturationFieldId);
+        var saturationNumericField = document.getElementById(this.saturationNumericFieldId);
         var lightnessField = document.getElementById(this.lightnessFieldId);
+        var lightnessNumericField = document.getElementById(this.lightnessNumericFieldId);
         var alphaField = document.getElementById(this.alphaFieldId);
+        var alphaNumericField = document.getElementById(this.alphaNumericFieldId);
         var contrastField = document.getElementById(this.contrastFieldId);
+        var contrastNumericField = document.getElementById(this.contrastNumericFieldId);
         var formatField = document.getElementById(this.formatFieldId);
         var postProcessingField = document.getElementById(this.postProcessingFieldId);
         var colorizeField = document.getElementById(this.colorizeFieldId);
@@ -127,12 +143,42 @@ var ColorShifter = Class.extend({
             eventFunc(document.body, "mouseup", syncFieldsFunc);
             eventFunc(document.body, "mouseout", syncFieldsFunc);
         }
+        
+        if (hueField && hueNumericField) {
+            eventFunc(hueField, "change", this.tiedFieldChangeCallback);
+            eventFunc(hueNumericField, "change", this.tiedFieldChangeCallback);
+        }
+        
+        if (saturationField && saturationNumericField) {
+            eventFunc(saturationField, "change", this.tiedFieldChangeCallback);
+            eventFunc(saturationNumericField, "change", this.tiedFieldChangeCallback);
+        }
+        
+        if (lightnessField && lightnessNumericField) {
+            eventFunc(lightnessField, "change", this.tiedFieldChangeCallback);
+            eventFunc(lightnessNumericField, "change", this.tiedFieldChangeCallback);
+        }
+        
+        if (alphaField && alphaNumericField) {
+            eventFunc(alphaField, "change", this.tiedFieldChangeCallback);
+            eventFunc(alphaNumericField, "change", this.tiedFieldChangeCallback);
+        }
+        
+        if (contrastField && contrastNumericField) {
+            eventFunc(contrastField, "change", this.tiedFieldChangeCallback);
+            eventFunc(contrastNumericField, "change", this.tiedFieldChangeCallback);
+        }
 
         eventFunc(hueField, "change", updateFunc);
+        eventFunc(hueNumericField, "change", updateFunc);
         eventFunc(saturationField, "change", updateFunc);
+        eventFunc(saturationNumericField, "change", updateFunc);
         eventFunc(lightnessField, "change", updateFunc);
+        eventFunc(lightnessNumericField, "change", updateFunc);
         eventFunc(alphaField, "change", updateFunc);
+        eventFunc(alphaNumericField, "change", updateFunc);
         eventFunc(contrastField, "change", updateFunc);
+        eventFunc(contrastNumericField, "change", updateFunc);
         eventFunc(formatField, "change", updateFunc);
         eventFunc(postProcessingField, "change", updateFunc);
         eventFunc(colorizeField, "change", updateFunc);
@@ -148,6 +194,27 @@ var ColorShifter = Class.extend({
         eventFunc(window, "resize", updateFunc);
         
     },
+    
+    tiedFieldChanged: function(element) {
+        
+        var idToFind = 
+        element.id === this.hueFieldId ? this.hueNumericFieldId :
+        element.id === this.hueNumericFieldId ? this.hueFieldId :
+        element.id === this.saturationFieldId ? this.saturationNumericFieldId :
+        element.id === this.saturationNumericFieldId ? this.saturationFieldId :
+        element.id === this.lightnessFieldId ? this.lightnessNumericFieldId :
+        element.id === this.lightnessNumericFieldId ? this.lightnessFieldId :
+        element.id === this.alphaFieldId ? this.alphaNumericFieldId :
+        element.id === this.alphaNumericFieldId ? this.alphaFieldId :
+        element.id === this.contrastFieldId ? this.contrastNumericFieldId :
+        element.id === this.contrastNumericFieldId ? this.contrastFieldId :
+        null;
+        
+        var elementToChange = document.getElementById(idToFind);
+        if (elementToChange)
+            elementToChange.value = element.value;
+        
+    },
 
     init: function(options) {
         
@@ -155,9 +222,16 @@ var ColorShifter = Class.extend({
             return;
         this.initialized = true;
         
+        var self = this;
+        
         this.createRegExp();
+        
         this.updateCallback = this.update.bind(this);
         this.syncFieldsCallback = this.fieldSync.bind(this);
+        this.tiedFieldChangeCallback = function() {
+            self.tiedFieldChanged(this);
+        };
+        
         this._setupFields(true, options);
 
     },
@@ -217,11 +291,16 @@ var ColorShifter = Class.extend({
 
     refreshFromFields: function() {
 
-        var hueElement = document.getElementById(this.hueFieldId);
-        var saturationElement = document.getElementById(this.saturationFieldId);
+        var hueField = document.getElementById(this.hueFieldId);
+        var hueNumericField = document.getElementById(this.hueNumericFieldId);
+        var saturationField = document.getElementById(this.saturationFieldId);
+        var saturationNumericField = document.getElementById(this.saturationNumericFieldId);
         var lightnessField = document.getElementById(this.lightnessFieldId);
+        var lightnessNumericField = document.getElementById(this.lightnessNumericFieldId);
         var alphaField = document.getElementById(this.alphaFieldId);
+        var alphaNumericField = document.getElementById(this.alphaNumericFieldId);
         var contrastField = document.getElementById(this.contrastFieldId);
+        var contrastNumericField = document.getElementById(this.contrastNumericFieldId);
         var formatField = document.getElementById(this.formatFieldId);
         var postProcessingField = document.getElementById(this.postProcessingFieldId);
         var colorizeField = document.getElementById(this.colorizeFieldId);
@@ -235,11 +314,17 @@ var ColorShifter = Class.extend({
         var proportionalLightnessField = document.getElementById(this.proportionalLightnessFieldId);
         var disablecCSSCheckField = document.getElementById(this.disablecCSSCheckFieldId);
 
-        if (hueElement) this.hueChange = parseFloat(hueElement.value);
-        if (saturationElement) this.saturationChange = parseFloat(saturationElement.value);
+        if (hueField) this.hueChange = parseFloat(hueField.value);
+        else if (hueNumericField) this.hueChange = parseFloat(hueNumericField.value);
+        if (saturationField) this.saturationChange = parseFloat(saturationField.value);
+        else if (saturationNumericField) this.saturationChange = parseFloat(saturationNumericField.value);
         if (lightnessField) this.lightnessChange = parseFloat(lightnessField.value);
+        else if (lightnessNumericField) this.lightnessChange = parseFloat(lightnessNumericField.value);
         if (alphaField) this.alphaChange = parseFloat(alphaField.value);
+        else if (alphaNumericField) this.alphaChange = parseFloat(alphaNumericField.value);
         if (contrastField) this.contrastChange = parseFloat(contrastField.value);
+        else if (contrastNumericField) this.contrastChange = parseFloat(contrastNumericField.value);
+        
         if (formatField) this.outputFormat = parseInt(formatField.value, 10);
         if (postProcessingField) this.postProcessing = parseInt(postProcessingField.value, 10);
         if (colorizeField) this.colorize = colorizeField.checked ? true : false;
