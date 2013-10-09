@@ -9,6 +9,7 @@ var ColorShifter = Class.extend({
     syncFieldsCallback: null,
     updateCallback: null,
     tiedFieldChangeCallback: null,
+    updateTimer: 0,
     
     hueChange: 0,
 	saturationChange: 0,
@@ -92,6 +93,7 @@ var ColorShifter = Class.extend({
             return;
         
         var eventFunc = enable ? Util.addEvent : Util.removeEvent;
+        var updateEvents = "change input";
         var updateFunc = this.updateCallback;
         var syncFieldsFunc = this.syncFieldsCallback;
 
@@ -132,14 +134,8 @@ var ColorShifter = Class.extend({
         }
         
         if (sourceField && targetField) {
-            eventFunc(sourceField, "scroll", syncFieldsFunc);
-            eventFunc(targetField, "scroll", syncFieldsFunc);
-            eventFunc(sourceField, "resize", syncFieldsFunc);
-            eventFunc(targetField, "resize", syncFieldsFunc);
-            eventFunc(sourceField, "mouseout", syncFieldsFunc);
-            eventFunc(targetField, "mouseout", syncFieldsFunc);
-            eventFunc(sourceField, "mousemove", syncFieldsFunc);
-            eventFunc(targetField, "mousemove", syncFieldsFunc);
+            eventFunc(sourceField, "scroll resize mouseout mousemove", syncFieldsFunc);
+            eventFunc(targetField, "scroll resize mouseout mousemove", syncFieldsFunc);
             eventFunc(document.body, "mouseup", syncFieldsFunc);
             eventFunc(document.body, "mouseout", syncFieldsFunc);
         }
@@ -169,28 +165,28 @@ var ColorShifter = Class.extend({
             eventFunc(contrastNumericField, "change", this.tiedFieldChangeCallback);
         }
 
-        eventFunc(hueField, "change", updateFunc);
-        eventFunc(hueNumericField, "change", updateFunc);
-        eventFunc(saturationField, "change", updateFunc);
-        eventFunc(saturationNumericField, "change", updateFunc);
-        eventFunc(lightnessField, "change", updateFunc);
-        eventFunc(lightnessNumericField, "change", updateFunc);
-        eventFunc(alphaField, "change", updateFunc);
-        eventFunc(alphaNumericField, "change", updateFunc);
-        eventFunc(contrastField, "change", updateFunc);
-        eventFunc(contrastNumericField, "change", updateFunc);
-        eventFunc(formatField, "change", updateFunc);
-        eventFunc(postProcessingField, "change", updateFunc);
-        eventFunc(colorizeField, "change", updateFunc);
-        eventFunc(webSafeField, "change", updateFunc);
-        eventFunc(colorNamesField, "change", updateFunc);
-        eventFunc(contractedHexCodesField, "change", updateFunc);
-        eventFunc(aRGBField, "change", updateFunc);
-        eventFunc(preferHSLField, "change", updateFunc);
-        eventFunc(fixAlphaField, "change", updateFunc);
-        eventFunc(proportionalSaturationField, "change", updateFunc);
-        eventFunc(proportionalLightnessField, "change", updateFunc);
-        eventFunc(disablecCSSCheckField, "change", updateFunc);
+        eventFunc(hueField, updateEvents, updateFunc);
+        eventFunc(hueNumericField, updateEvents, updateFunc);
+        eventFunc(saturationField, updateEvents, updateFunc);
+        eventFunc(saturationNumericField, updateEvents, updateFunc);
+        eventFunc(lightnessField, updateEvents, updateFunc);
+        eventFunc(lightnessNumericField, updateEvents, updateFunc);
+        eventFunc(alphaField, updateEvents, updateFunc);
+        eventFunc(alphaNumericField, updateEvents, updateFunc);
+        eventFunc(contrastField, updateEvents, updateFunc);
+        eventFunc(contrastNumericField, updateEvents, updateFunc);
+        eventFunc(formatField, updateEvents, updateFunc);
+        eventFunc(postProcessingField, updateEvents, updateFunc);
+        eventFunc(colorizeField, updateEvents, updateFunc);
+        eventFunc(webSafeField, updateEvents, updateFunc);
+        eventFunc(colorNamesField, updateEvents, updateFunc);
+        eventFunc(contractedHexCodesField, updateEvents, updateFunc);
+        eventFunc(aRGBField, updateEvents, updateFunc);
+        eventFunc(preferHSLField, updateEvents, updateFunc);
+        eventFunc(fixAlphaField, updateEvents, updateFunc);
+        eventFunc(proportionalSaturationField, updateEvents, updateFunc);
+        eventFunc(proportionalLightnessField, updateEvents, updateFunc);
+        eventFunc(disablecCSSCheckField, updateEvents, updateFunc);
         eventFunc(window, "resize", updateFunc);
         
     },
@@ -227,11 +223,15 @@ var ColorShifter = Class.extend({
         this.createRegExp();
         
         this.syncFieldsCallback = this.fieldSync.bind(this);
+        
         this.updateCallback = function(e) {
-            setTimeout(function() {
+            if (self.updateTimer)
+                clearTimeout(self.updateTimer);
+            self.updateTimer = setTimeout(function() {
                 self.update();
-            }, 0);
+            }, 250);
         };
+        
         this.tiedFieldChangeCallback = function(e) {
             self.tiedFieldChanged(Util.getElementFromEvent(e));
         };
