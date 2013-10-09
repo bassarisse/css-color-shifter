@@ -298,7 +298,7 @@ var ColorShifter = Class.extend({
                 clearTimeout(self.updateTimer);
             self.updateTimer = setTimeout(function() {
                 self.update();
-            }, 200);
+            }, 100);
         };
         
         this.tiedFieldChangeCallback = function(e) {
