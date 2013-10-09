@@ -6,8 +6,8 @@ var ColorShifter = Class.extend({
     colorRegExp: null,
     sourceCssString: "",
     shiftedCssString: "",
-    updateCallback: null,
     syncFieldsCallback: null,
+    updateCallback: null,
     tiedFieldChangeCallback: null,
     
     hueChange: 0,
@@ -226,10 +226,14 @@ var ColorShifter = Class.extend({
         
         this.createRegExp();
         
-        this.updateCallback = this.update.bind(this);
         this.syncFieldsCallback = this.fieldSync.bind(this);
-        this.tiedFieldChangeCallback = function() {
-            self.tiedFieldChanged(this);
+        this.updateCallback = function(e) {
+            setTimeout(function() {
+                self.update();
+            }, 0);
+        };
+        this.tiedFieldChangeCallback = function(e) {
+            self.tiedFieldChanged(Util.getElementFromEvent(e));
         };
         
         this._setupFields(true, options);
@@ -455,7 +459,7 @@ var ColorShifter = Class.extend({
             width = originalColorsContainer.offsetWidth / colorsShown.length;
             for (c in originalColorsContainer.childNodes) {
                 node = originalColorsContainer.childNodes[c];
-                if (node && typeof(node.nodeType) != 'undefined' && node.nodeType === node.ELEMENT_NODE)
+                if (node && node.nodeType === 1)
                     node.style.width = width + "px";
             }
         }
@@ -464,7 +468,7 @@ var ColorShifter = Class.extend({
             width = newColorsContainer.offsetWidth / colorsShown.length;
             for (c in newColorsContainer.childNodes) {
                 node = newColorsContainer.childNodes[c];
-                if (node && typeof(node.nodeType) != 'undefined' && node.nodeType === node.ELEMENT_NODE)
+                if (node && node.nodeType === 1)
                     node.style.width = width + "px";
             }
         }

@@ -3,17 +3,22 @@ body, html {
     padding: 0;
 }
 
+.color-swatches, .color-swatch {
+    height: 30px;
+}
+
 .color-swatches {
     clear: both;
 }
 
 .color-swatch {
     float: left;
-    height: 30px;
 }
 
 textarea {
+    margin: 0;
     width: 100%;
+    height: 100px;
     min-height: 100px;
     resize: vertical;
 }
