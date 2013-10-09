@@ -25,14 +25,20 @@
 			    targetFieldId: "target",
 			    hueFieldId: "hueChange",
 			    hueNumericFieldId: "hueChangeNumeric",
+			    hueResetButtonId: "hueReset",
 			    saturationFieldId: "saturationChange",
 			    saturationNumericFieldId: "saturationChangeNumeric",
+			    saturationResetButtonId: "saturationReset",
 			    lightnessFieldId: "lightnessChange",
 			    lightnessNumericFieldId: "lightnessChangeNumeric",
+			    lightnessResetButtonId: "lightnessReset",
 			    alphaFieldId: "alphaChange",
 			    alphaNumericFieldId: "alphaChangeNumeric",
+			    alphaResetButtonId: "alphaReset",
 			    contrastFieldId: "contrastChange",
 			    contrastNumericFieldId: "contrastChangeNumeric",
+			    contrastResetButtonId: "contrastReset",
+			    allResetButtonId: "allReset",
 			    formatFieldId: "colorformat",
 			    postProcessingFieldId: "postprocessing",
 			    colorizeFieldId: "colorize",
@@ -63,19 +69,47 @@
 <body id="color-shifter-container">
 
 <div>
-    <label>Hue Change<input type="range" id="hueChange" value="0" min="0" max="360" step="0.01" /></label><input type="number" id="hueChangeNumeric" value="0" min="0" max="360" step="1" />
+    <label>
+        Hue Change
+        <input type="range" id="hueChange" value="0" min="0" max="360" step="0.01" />
+    </label>
+    <input type="number" id="hueChangeNumeric" value="0" min="0" max="360" step="1" />
+    <input type="button" id="hueReset" value="Reset" />
 </div>
 <div>
-    <label>Saturation Change<input type="range" id="saturationChange" value="0" min="-100" max="100" step="0.01" /></label><input type="number" id="saturationChangeNumeric" value="0" min="-100" max="100" step="1" />
+    <label>
+        Saturation Change
+        <input type="range" id="saturationChange" value="0" min="-100" max="100" step="0.01" />
+    </label>
+    <input type="number" id="saturationChangeNumeric" value="0" min="-100" max="100" step="1" />
+    <input type="button" id="saturationReset" value="Reset" />
 </div>
 <div>
-    <label>Lightness Change<input type="range" id="lightnessChange" value="0" min="-100" max="100" step="0.01" /></label><input type="number" id="lightnessChangeNumeric" value="0" min="-100" max="100" step="1" />
+    <label>
+        Lightness Change
+        <input type="range" id="lightnessChange" value="0" min="-100" max="100" step="0.01" />
+    </label>
+    <input type="number" id="lightnessChangeNumeric" value="0" min="-100" max="100" step="1" />
+    <input type="button" id="lightnessReset" value="Reset" />
 </div>
 <div>
-    <label>Alpha Change<input type="range" id="alphaChange" value="0" min="-1" max="1" step="0.0001" /></label><input type="number" id="alphaChangeNumeric" value="0" min="-1" max="1" step="0.1" />
+    <label>
+        Alpha Change
+        <input type="range" id="alphaChange" value="0" min="-1" max="1" step="0.0001" />
+    </label>
+    <input type="number" id="alphaChangeNumeric" value="0" min="-1" max="1" step="0.1" />
+    <input type="button" id="alphaReset" value="Reset" />
 </div>
 <div>
-    <label>Contrast Change<input type="range" id="contrastChange" value="0" min="-255" max="255" step="0.1" /></label><input type="number" id="contrastChangeNumeric" value="0" min="-255" max="255" step="1" />
+    <label>
+        Contrast Change
+        <input type="range" id="contrastChange" value="0" min="-255" max="255" step="0.1" />
+    </label>
+    <input type="number" id="contrastChangeNumeric" value="0" min="-255" max="255" step="1" />
+    <input type="button" id="contrastReset" value="Reset" />
+</div>
+<div>
+    <input type="button" id="allReset" value="Reset All" />
 </div>
 <div>
     <label>Color format<select id="colorformat">

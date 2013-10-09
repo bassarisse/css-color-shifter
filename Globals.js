@@ -8,7 +8,7 @@ Function.prototype.bind=(function(){}).bind||function(b){if(typeof this!=="funct
 Array.isArray||(Array.isArray=function(vArg){return Object.prototype.toString.call(vArg)==="[object Array]";});
 
 // Array forEach polyfill
-[].forEach||(Array.prototype.forEach=function(a,b){"use strict";var c,d;if(null==this)throw new TypeError("this is null or not defined");var e,f=Object(this),g=f.length>>>0;if("[object Function]"!=={}.toString.call(a))throw new TypeError(a+" is not a function");for(arguments.length>=2&&(c=b),d=0;g>d;)d in f&&(e=f[d],a.call(c,e,d,f)),d++});
+[].forEach||(Array.prototype.forEach=function(a,b){"use strict";var c,d;if(null===this)throw new TypeError("this is null or not defined");var e,f=Object(this),g=f.length>>>0;if("[object Function]"!=={}.toString.call(a))throw new TypeError(a+" is not a function");for(arguments.length>=2&&(c=b),d=0;g>d;)d in f&&(e=f[d],a.call(c,e,d,f)),d++});
 
 // Numeric formating that removes trailing zeros after decimal separator
 Number.prototype.toDecimalString = function(decimalPlaces) {

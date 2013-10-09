@@ -9,6 +9,7 @@ var ColorShifter = Class.extend({
     syncFieldsCallback: null,
     updateCallback: null,
     tiedFieldChangeCallback: null,
+    resetCallback: null,
     updateTimer: 0,
     
     hueChange: 0,
@@ -34,14 +35,20 @@ var ColorShifter = Class.extend({
     targetFieldId: null,
     hueFieldId: null,
     hueNumericFieldId: null,
+    hueResetButtonId: null,
     saturationFieldId: null,
     saturationNumericFieldId: null,
+    saturationResetButtonId: null,
     lightnessFieldId: null,
     lightnessNumericFieldId: null,
+    lightnessResetButtonId: null,
     alphaFieldId: null,
     alphaNumericFieldId: null,
+    alphaResetButtonId: null,
     contrastFieldId: null,
     contrastNumericFieldId: null,
+    contrastResetButtonId: null,
+    allResetButtonId: null,
     formatFieldId: null,
     postProcessingFieldId: null,
     colorizeFieldId: null,
@@ -65,14 +72,20 @@ var ColorShifter = Class.extend({
             this.targetFieldId = options.targetFieldId;
             this.hueFieldId = options.hueFieldId;
             this.hueNumericFieldId = options.hueNumericFieldId;
+            this.hueResetButtonId = options.hueResetButtonId;
             this.saturationFieldId = options.saturationFieldId;
             this.saturationNumericFieldId = options.saturationNumericFieldId;
+            this.saturationResetButtonId = options.saturationResetButtonId;
             this.lightnessFieldId = options.lightnessFieldId;
             this.lightnessNumericFieldId = options.lightnessNumericFieldId;
+            this.lightnessResetButtonId = options.lightnessResetButtonId;
             this.alphaFieldId = options.alphaFieldId;
             this.alphaNumericFieldId = options.alphaNumericFieldId;
+            this.alphaResetButtonId = options.alphaResetButtonId;
             this.contrastFieldId = options.contrastFieldId;
             this.contrastNumericFieldId = options.contrastNumericFieldId;
+            this.contrastResetButtonId = options.contrastResetButtonId;
+            this.allResetButtonId = options.allResetButtonId;
             this.formatFieldId = options.formatFieldId;
             this.colorizeFieldId = options.colorizeFieldId;
             this.postProcessingFieldId = options.postProcessingFieldId;
@@ -95,20 +108,27 @@ var ColorShifter = Class.extend({
         var eventFunc = enable ? Util.addEvent : Util.removeEvent;
         var updateEvents = "change input";
         var updateFunc = this.updateCallback;
+        var syncFieldsEvents = "change input";
         var syncFieldsFunc = this.syncFieldsCallback;
 
         var sourceField = document.getElementById(this.sourceFieldId);
         var targetField = document.getElementById(this.targetFieldId);
         var hueField = document.getElementById(this.hueFieldId);
         var hueNumericField = document.getElementById(this.hueNumericFieldId);
+        var hueResetButton = document.getElementById(this.hueResetButtonId);
         var saturationField = document.getElementById(this.saturationFieldId);
         var saturationNumericField = document.getElementById(this.saturationNumericFieldId);
+        var saturationResetButton = document.getElementById(this.saturationResetButtonId);
         var lightnessField = document.getElementById(this.lightnessFieldId);
         var lightnessNumericField = document.getElementById(this.lightnessNumericFieldId);
+        var lightnessResetButton = document.getElementById(this.lightnessResetButtonId);
         var alphaField = document.getElementById(this.alphaFieldId);
         var alphaNumericField = document.getElementById(this.alphaNumericFieldId);
+        var alphaResetButton = document.getElementById(this.alphaResetButtonId);
         var contrastField = document.getElementById(this.contrastFieldId);
         var contrastNumericField = document.getElementById(this.contrastNumericFieldId);
+        var contrastResetButton = document.getElementById(this.contrastResetButtonId);
+        var allResetButton = document.getElementById(this.allResetButtonId);
         var formatField = document.getElementById(this.formatFieldId);
         var postProcessingField = document.getElementById(this.postProcessingFieldId);
         var colorizeField = document.getElementById(this.colorizeFieldId);
@@ -141,28 +161,28 @@ var ColorShifter = Class.extend({
         }
         
         if (hueField && hueNumericField) {
-            eventFunc(hueField, "change", this.tiedFieldChangeCallback);
-            eventFunc(hueNumericField, "change", this.tiedFieldChangeCallback);
+            eventFunc(hueField, syncFieldsEvents, this.tiedFieldChangeCallback);
+            eventFunc(hueNumericField, syncFieldsEvents, this.tiedFieldChangeCallback);
         }
         
         if (saturationField && saturationNumericField) {
-            eventFunc(saturationField, "change", this.tiedFieldChangeCallback);
-            eventFunc(saturationNumericField, "change", this.tiedFieldChangeCallback);
+            eventFunc(saturationField, syncFieldsEvents, this.tiedFieldChangeCallback);
+            eventFunc(saturationNumericField, syncFieldsEvents, this.tiedFieldChangeCallback);
         }
         
         if (lightnessField && lightnessNumericField) {
-            eventFunc(lightnessField, "change", this.tiedFieldChangeCallback);
-            eventFunc(lightnessNumericField, "change", this.tiedFieldChangeCallback);
+            eventFunc(lightnessField, syncFieldsEvents, this.tiedFieldChangeCallback);
+            eventFunc(lightnessNumericField, syncFieldsEvents, this.tiedFieldChangeCallback);
         }
         
         if (alphaField && alphaNumericField) {
-            eventFunc(alphaField, "change", this.tiedFieldChangeCallback);
-            eventFunc(alphaNumericField, "change", this.tiedFieldChangeCallback);
+            eventFunc(alphaField, syncFieldsEvents, this.tiedFieldChangeCallback);
+            eventFunc(alphaNumericField, syncFieldsEvents, this.tiedFieldChangeCallback);
         }
         
         if (contrastField && contrastNumericField) {
-            eventFunc(contrastField, "change", this.tiedFieldChangeCallback);
-            eventFunc(contrastNumericField, "change", this.tiedFieldChangeCallback);
+            eventFunc(contrastField, syncFieldsEvents, this.tiedFieldChangeCallback);
+            eventFunc(contrastNumericField, syncFieldsEvents, this.tiedFieldChangeCallback);
         }
 
         eventFunc(hueField, updateEvents, updateFunc);
@@ -189,6 +209,13 @@ var ColorShifter = Class.extend({
         eventFunc(disablecCSSCheckField, updateEvents, updateFunc);
         eventFunc(window, "resize", updateFunc);
         
+        eventFunc(hueResetButton, "click", this.resetCallback);
+        eventFunc(saturationResetButton, "click", this.resetCallback);
+        eventFunc(lightnessResetButton, "click", this.resetCallback);
+        eventFunc(alphaResetButton, "click", this.resetCallback);
+        eventFunc(contrastResetButton, "click", this.resetCallback);
+        eventFunc(allResetButton, "click", this.resetCallback);
+        
     },
     
     tiedFieldChanged: function(element) {
@@ -211,6 +238,48 @@ var ColorShifter = Class.extend({
             elementToChange.value = element.value;
         
     },
+    
+    reset: function(element) {
+        
+        var elementId = element.id;
+        var resetAll = elementId === this.allResetButtonId;
+        
+        if (resetAll || elementId === this.hueResetButtonId) {
+            this.resetField(this.hueFieldId);
+            this.resetField(this.hueNumericFieldId);
+        }
+        
+        if (resetAll || elementId === this.saturationResetButtonId) {
+            this.resetField(this.saturationFieldId);
+            this.resetField(this.saturationNumericFieldId);
+        }
+        
+        if (resetAll || elementId === this.lightnessResetButtonId) {
+            this.resetField(this.lightnessFieldId);
+            this.resetField(this.lightnessNumericFieldId);
+        }
+        
+        if (resetAll || elementId === this.alphaResetButtonId) {
+            this.resetField(this.alphaFieldId);
+            this.resetField(this.alphaNumericFieldId);
+        }
+        
+        if (resetAll || elementId === this.contrastResetButtonId) {
+            this.resetField(this.contrastFieldId);
+            this.resetField(this.contrastNumericFieldId);
+        }
+        
+        this.update();
+        
+    },
+    
+    resetField: function(fieldId) {
+        
+        var element = document.getElementById(fieldId);
+        if (element)
+            element.value = 0;
+        
+    },
 
     init: function(options) {
         
@@ -229,11 +298,15 @@ var ColorShifter = Class.extend({
                 clearTimeout(self.updateTimer);
             self.updateTimer = setTimeout(function() {
                 self.update();
-            }, 250);
+            }, 200);
         };
         
         this.tiedFieldChangeCallback = function(e) {
             self.tiedFieldChanged(Util.getElementFromEvent(e));
+        };
+        
+        this.resetCallback = function(e) {
+            self.reset(Util.getElementFromEvent(e));
         };
         
         this._setupFields(true, options);
