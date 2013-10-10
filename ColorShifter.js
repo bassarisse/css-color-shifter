@@ -209,6 +209,12 @@ var ColorShifter = Class.extend({
         eventFunc(disablecCSSCheckField, updateEvents, updateFunc);
         eventFunc(window, "resize", updateFunc);
         
+        eventFunc(hueNumericField, "keypress", this.keypressField);
+        eventFunc(saturationNumericField, "keypress", this.keypressField);
+        eventFunc(lightnessNumericField, "keypress", this.keypressField);
+        eventFunc(alphaNumericField, "keypress", this.keypressField);
+        eventFunc(contrastNumericField, "keypress", this.keypressField);
+        
         eventFunc(hueResetButton, "click", this.resetCallback);
         eventFunc(saturationResetButton, "click", this.resetCallback);
         eventFunc(lightnessResetButton, "click", this.resetCallback);
@@ -232,6 +238,8 @@ var ColorShifter = Class.extend({
         element.id === this.contrastFieldId ? this.contrastNumericFieldId :
         element.id === this.contrastNumericFieldId ? this.contrastFieldId :
         null;
+        
+        this.validateFieldValue(element);
         
         var elementToChange = document.getElementById(idToFind);
         if (elementToChange)
@@ -315,11 +323,12 @@ var ColorShifter = Class.extend({
     
     createRegExp: function() {
         
-        var regexp = "", add = function(s) {
-            if (regexp != "")
-                regexp += "|";
-            regexp += s;
-        };
+        var regexp = "",
+            add = function(s) {
+                if (regexp != "")
+                    regexp += "|";
+                regexp += s;
+            };
         
         add('#[\\da-f]{3,8}');
         add('rgba?\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*(,\\s*\\d(.\\d+)?\\s*)?\\)');
@@ -345,6 +354,7 @@ var ColorShifter = Class.extend({
     },
     
     fieldSync: function(event) {
+        event || (event = window.event);
         
         var changedField = event.srcElement || event.target;
         
@@ -364,6 +374,29 @@ var ColorShifter = Class.extend({
         if (changedField.style.height)
             fieldToSync.style.height = changedField.style.height;
         
+    },
+    
+    keypressField: function(event) {
+        event || (event = window.event);
+        
+        var charCode = event.which || event.keyCode || event.charCode;
+        var changedField = event.srcElement || event.target;
+        var validated = true;
+        var inputStr = String.fromCharCode(charCode);
+        
+        if (/[a-z ]/igm.test(inputStr))
+            validated = false;
+        if (inputStr === '.' && changedField.value.toString().indexOf('.') !== -1)
+            validated = false;
+        if (inputStr === ',' && changedField.value.toString().indexOf(',') !== -1)
+            validated = false;
+        
+        if (!validated && event.preventDefault) {
+            event.preventDefault();
+            return false;
+        }
+        
+        return true;
     },
 
     refreshFromFields: function() {
@@ -390,6 +423,12 @@ var ColorShifter = Class.extend({
         var proportionalSaturationField = document.getElementById(this.proportionalSaturationFieldId);
         var proportionalLightnessField = document.getElementById(this.proportionalLightnessFieldId);
         var disablecCSSCheckField = document.getElementById(this.disablecCSSCheckFieldId);
+        
+        this.validateFieldValue(hueNumericField);
+        this.validateFieldValue(saturationNumericField);
+        this.validateFieldValue(lightnessNumericField);
+        this.validateFieldValue(alphaNumericField);
+        this.validateFieldValue(contrastNumericField);
 
         if (hueField) this.hueChange = parseFloat(hueField.value);
         else if (hueNumericField) this.hueChange = parseFloat(hueNumericField.value);
@@ -421,6 +460,19 @@ var ColorShifter = Class.extend({
         if (isNaN(this.alphaChange)) this.alphaChange = 0;
         if (isNaN(this.contrastChange)) this.contrastChange = 0;
 
+    },
+    
+    validateFieldValue: function(field) {
+        
+        if (!field)
+            return;
+        
+        var validationRegExp = /[a-z ]/igm;
+        
+        var valueStr = field.value.toString();
+        if (validationRegExp.test(valueStr))
+            field.value = valueStr.replace(validationRegExp, '');
+        
     },
 
 	update: function(cssString) {
