@@ -68,6 +68,8 @@
 
 <body id="color-shifter-container">
 
+<h1>CSS Color Shifter</h1>
+
 <div>
     <label>
         Hue Change
@@ -157,6 +159,9 @@
     <label title="Only if applicable, but please DON'T (e.g. #40506070)">Use aRGB<input type="checkbox" id="useargb" value="1" /></label>
 </div>
 
+<div>
+    <label for="source"><strong>Source</strong></label>
+</div>
 <div>
     <textarea id="source">
 /*
@@ -3283,10 +3288,16 @@ footer.entry-meta {
     </textarea>
 </div>
 
+<div>
+    <strong>Preview</strong>
+</div>
 <div id="originalColors" class="color-swatches"></div>
 
 <div id="newColors" class="color-swatches"></div>
 
+<div>
+    <label for="target"><strong>Output</strong></label>
+</div>
 <div>
     <textarea id="target"></textarea>
 </div>
