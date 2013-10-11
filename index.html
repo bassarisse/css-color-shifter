@@ -112,11 +112,11 @@
     <input type="button" id="allReset" value="Reset All" />
 </div>
 <div>
-    <label>Color format<select id="colorformat">
+    <label>Output color format<select id="colorformat">
         <option value="0" selected="selected">Same as source</option>
-        <option value="1">Hex</option>
-        <option value="2">Rgb</option>
-        <option value="3">Hsl</option>
+        <option value="1">HEX</option>
+        <option value="2">RGB</option>
+        <option value="3">HSL</option>
     </select></label>
 </div>
 <div>
@@ -127,34 +127,34 @@
     </select></label>
 </div>
 <div>
-    <label>Colorize<input type="checkbox" id="colorize" value="1" /></label>
+    <label title="All colors will use the informed hue value">Colorize<input type="checkbox" id="colorize" value="1" /></label>
 </div>
 <div>
-    <label>Proportional Saturation<input type="checkbox" id="proportionalsaturation" value="1" /></label>
+    <label title="Modifies the saturation of all colors by the same relative value towards the minimum or maximum">Proportional Saturation<input type="checkbox" id="proportionalsaturation" value="1" /></label>
 </div>
 <div>
-    <label>Proportional Lightness<input type="checkbox" id="proportionallightness" value="1" /></label>
+    <label title="Modifies the lightness of all colors by the same relative value towards the minimum or maximum">Proportional Lightness<input type="checkbox" id="proportionallightness" value="1" /></label>
 </div>
 <div>
-    <label>Fix alpha<input type="checkbox" id="fixAlpha" value="1" /></label>
+    <label title="Makes all colors use the specified alpha value">Fix alpha<input type="checkbox" id="fixAlpha" value="1" /></label>
 </div>
 <div>
-    <label>Disable basic CSS syntax detection<input type="checkbox" id="disablecsssyntax" value="1" /></label>
+    <label title="Use this if you just want to throw some colors and modify them, but if you're pasting a stylesheet, you're better leaving this option alone">Disable basic CSS syntax detection<input type="checkbox" id="disablecsssyntax" value="1" /></label>
 </div>
 <div>
-    <label>Convert to web safe colors<input type="checkbox" id="webSafeColors" value="1" /></label>
+    <label title="Only when possible (e.g. red, white)">Use color names<input type="checkbox" id="colorNames" value="1" /></label>
 </div>
 <div>
-    <label>Use color names if possible<input type="checkbox" id="colorNames" value="1" /></label>
+    <label title="Only when possible (e.g. #f00)">Use contracted hex codes<input type="checkbox" id="contractedhexcodes" value="1" /></label>
 </div>
 <div>
-    <label>Use contracted hex codes<input type="checkbox" id="contractedhexcodes" value="1" /></label>
+    <label title="HEX format is changed to RGB when modifying alpha, but you can choose HSL here">Prefer HSL over RGB format<input type="checkbox" id="preferhsl" value="1" /></label>
 </div>
 <div>
-    <label>Prefer HSL over RGB format<input type="checkbox" id="preferhsl" value="1" /></label>
+    <label title="Is anybody concerned about this? I don't think so">Convert to web safe colors<input type="checkbox" id="webSafeColors" value="1" /></label>
 </div>
 <div>
-    <label>Use aRGB hex codes if applicable<input type="checkbox" id="useargb" value="1" /></label>
+    <label title="Only if applicable, but please DON'T (e.g. #40506070)">Use aRGB<input type="checkbox" id="useargb" value="1" /></label>
 </div>
 
 <div>
@@ -3289,6 +3289,19 @@ footer.entry-meta {
 
 <div>
     <textarea id="target"></textarea>
+</div>
+
+<div>
+    <h2>About</h2>
+    <p>For many times I wanted to consistenly change the colors of stylesheets, but it always ended up being a tedious and large amount of work.
+    So, I decided to build a tool that would do that for me, and here it is! I think it could be useful for someone out there on this little planet of ours.</p>
+    <p>Feel free to share your thoughts and inform me about some bug you may stumble upon.</p>
+    <p>You can check out <a href="http://bassarisse.com">my website</a> or talk to me on <a href="http://twitter.com/bassarisse">Twitter</a>.</p>
+    <p>Version: 1.0</p>
+    <p>Credits:<br />
+    Beautify code by <a href="https://github.com/einars/js-beautify" target="_blank">Einar Lielmanis</a><br />
+    Minify code by <a href="https://github.com/css/csso" target="_blank">Vitaly Harisov and Sergey Kryzhanovsky</a></p>
+    
 </div>
 
 </body>
