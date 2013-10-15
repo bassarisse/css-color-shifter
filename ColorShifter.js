@@ -582,7 +582,7 @@ var ColorShifter = Class.extend({
         var c, width, node;
         
         if (originalColorsContainer) {
-            width = originalColorsContainer.offsetWidth / colorsShown.length;
+            width = (originalColorsContainer.offsetWidth - 4) / colorsShown.length;
             for (c in originalColorsContainer.childNodes) {
                 node = originalColorsContainer.childNodes[c];
                 if (node && node.nodeType === 1)
@@ -591,7 +591,7 @@ var ColorShifter = Class.extend({
         }
         
         if (newColorsContainer) {
-            width = newColorsContainer.offsetWidth / colorsShown.length;
+            width = (newColorsContainer.offsetWidth - 4) / colorsShown.length;
             for (c in newColorsContainer.childNodes) {
                 node = newColorsContainer.childNodes[c];
                 if (node && node.nodeType === 1)

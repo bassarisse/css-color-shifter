@@ -1,10 +1,122 @@
 body, html {
     margin: 0;
+    padding: 6pt;
+    color: #333;
+}
+
+body, html, input, select {
+    font: 10pt Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    padding: 4pt;
+    margin-bottom: 0;
+    background-color: #333;
+    color: white;
+}
+
+h1 span, h4 {
+    display: block;
+    font-weight: normal;
+    font-size: 9pt;
+    margin-top: 0;
+    text-align: right;
+    padding-right: 4pt;
+}
+
+.options-box {
+    background-color: #F0F0F0;
+    margin: 2px;
+    padding: 8pt 4pt;
+    float: left;
+    min-width: 25%;
+}
+
+.options-main {
+    padding-top: 1pt;
+    margin-top: 10px;
+    clear: both;
+}
+
+.options-box.main {
+    width: 71.5%;
+    white-space: nowrap;
+}
+
+.property-line + .property-line,
+.select-line + .select-line {
+    margin-top: 12px;
+}
+
+.property-name {
+    display: inline-block;
+    text-align: right;
+    width: 15%;
+    box-sizing: border-box;
+}
+
+input[type=range] {
+    width: 47%;
     padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
+input[type=number] {
+    width: 10%;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
+input[type=button] {
+    width: 8%;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
+input[type=checkbox] {
+    vertical-align: baseline;
+}
+
+.property-rel-option {
+    display: inline-block;
+    width: 20%;
+    box-sizing: border-box;
+}
+
+.reset-all-container input[type=button] {
+    margin-left: 73.4%;
+}
+
+.css-area-content {
+    clear: both;
+}
+
+.css-area-column {
+    float: left;
+    width: 49.3%;
+}
+
+.css-area-column + .css-area-column {
+    margin-left: 1%;
+}
+
+.css-area-content  {
+    padding-top: 1pt;
+}
+
+.css-area-content label {
+    display: block;
+    margin-top: 10pt;
 }
 
 .color-swatches, .color-swatch {
     height: 30px;
+}
+
+.color-swatches + .color-swatches {
+    margin-top: 1px;
 }
 
 .color-swatches {
@@ -18,7 +130,14 @@ body, html {
 textarea {
     margin: 0;
     width: 100%;
-    height: 100px;
-    min-height: 100px;
+    height: 80px;
+    min-height: 80px;
     resize: vertical;
+    font: 8pt "Lucida Console", Monaco, "Courier New", Courier, monospace;
+}
+
+.info {
+    padding-top: 1pt;
+    margin-top: 10px;
+    clear: both;
 }
