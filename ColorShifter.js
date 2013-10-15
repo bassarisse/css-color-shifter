@@ -6,7 +6,8 @@ var ColorShifter = Class.extend({
     colorRegExp: null,
     sourceCssString: "",
     shiftedCssString: "",
-    syncFieldsCallback: null,
+    scrollSyncFieldsCallback: null,
+    sizeSyncFieldsCallback: null,
     updateCallback: null,
     tiedFieldChangeCallback: null,
     resetCallback: null,
@@ -109,7 +110,6 @@ var ColorShifter = Class.extend({
         var updateEvents = "change input";
         var updateFunc = this.updateCallback;
         var syncFieldsEvents = "change input";
-        var syncFieldsFunc = this.syncFieldsCallback;
 
         var sourceField = document.getElementById(this.sourceFieldId);
         var targetField = document.getElementById(this.targetFieldId);
@@ -154,10 +154,10 @@ var ColorShifter = Class.extend({
         }
         
         if (sourceField && targetField) {
-            eventFunc(sourceField, "scroll resize mouseout mousemove", syncFieldsFunc);
-            eventFunc(targetField, "scroll resize mouseout mousemove", syncFieldsFunc);
-            eventFunc(document.body, "mouseup", syncFieldsFunc);
-            eventFunc(document.body, "mouseout", syncFieldsFunc);
+            eventFunc(sourceField, "scroll resize", this.scrollSyncFieldsCallback);
+            eventFunc(targetField, "scroll resize", this.scrollSyncFieldsCallback);
+            eventFunc(sourceField, "mouseout mousemove", this.sizeSyncFieldsCallback);
+            eventFunc(document.body, "mouseup mouseout", this.sizeSyncFieldsCallback);
         }
         
         if (hueField && hueNumericField) {
@@ -299,7 +299,8 @@ var ColorShifter = Class.extend({
         
         this.createRegExp();
         
-        this.syncFieldsCallback = this.fieldSync.bind(this);
+        this.scrollSyncFieldsCallback = this.fieldScrollSync.bind(this);
+        this.sizeSyncFieldsCallback = this.fieldSizeSync.bind(this);
         
         this.updateCallback = function(e) {
             if (self.updateTimer)
@@ -353,26 +354,37 @@ var ColorShifter = Class.extend({
         this._setupFields(false);
     },
     
-    fieldSync: function(event) {
+    fieldScrollSync: function(event) {
         event || (event = window.event);
         
         var changedField = event.srcElement || event.target;
-        
-        var fieldToSyncId = this.targetFieldId;
-        if (changedField.id == this.targetFieldId)
-            fieldToSyncId = this.sourceFieldId;
-        else if (changedField.id != this.sourceFieldId)
-            changedField = document.getElementById(this.sourceFieldId);
+        var changedFieldId = changedField.id;
             
-        var fieldToSync = document.getElementById(fieldToSyncId);
+        var syncFieldId =
+        changedFieldId === this.sourceFieldId ? this.targetFieldId : 
+        changedFieldId === this.targetFieldId ? this.sourceFieldId :
+        null;
+            
+        var fieldToSync = document.getElementById(syncFieldId);
         
-        if (this.postProcessing === PostProcessing.None)
+        if (fieldToSync && changedField && this.postProcessing === PostProcessing.None)
             fieldToSync.scrollTop = changedField.scrollTop;
-        if (changedField.style.margin)
-            fieldToSync.style.margin = changedField.style.margin;
-        if (changedField.style.width)
-            fieldToSync.style.width = changedField.style.width;
-        if (changedField.style.height)
+        
+    },
+    
+    fieldSizeSync: function(event) {
+        
+        var changedFieldId = this.sourceFieldId;
+            
+        var syncFieldId =
+        changedFieldId === this.sourceFieldId ? this.targetFieldId : 
+        changedFieldId === this.targetFieldId ? this.sourceFieldId :
+        null;
+            
+        var changedField = document.getElementById(changedFieldId);
+        var fieldToSync = document.getElementById(syncFieldId);
+        
+        if (fieldToSync && changedField && changedField.style.height)
             fieldToSync.style.height = changedField.style.height;
         
     },

@@ -136,6 +136,10 @@ textarea {
     font: 8pt "Lucida Console", Monaco, "Courier New", Courier, monospace;
 }
 
+textarea.target-field {
+    resize: none;
+}
+
 .info {
     padding-top: 1pt;
     margin-top: 10px;
