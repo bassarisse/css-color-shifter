@@ -366,7 +366,8 @@ var ColorShifter = Class.extend({
             
         var fieldToSync = document.getElementById(fieldToSyncId);
         
-        fieldToSync.scrollTop = changedField.scrollTop;
+        if (this.postProcessing === PostProcessing.None)
+            fieldToSync.scrollTop = changedField.scrollTop;
         if (changedField.style.margin)
             fieldToSync.style.margin = changedField.style.margin;
         if (changedField.style.width)
