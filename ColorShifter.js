@@ -14,13 +14,13 @@ var ColorShifter = Class.extend({
     updateTimer: 0,
     
     hueChange: 0,
-	saturationChange: 0,
-	lightnessChange: 0,
-	alphaChange: 0,
-	contrastChange: 0,
+    saturationChange: 0,
+    lightnessChange: 0,
+    alphaChange: 0,
+    contrastChange: 0,
     outputFormat: ColorFormat.Unknown,
     postProcessing: PostProcessing.None,
-	colorize: false,
+    colorize: false,
     useOnlyWebSafeColors: false,
     useColorNames: false,
     useContractedHexCodes: false,
@@ -103,7 +103,7 @@ var ColorShifter = Class.extend({
             this.newColorsContainerId = options.newColorsContainerId;
         }
         
-        if (typeof(enable) === 'undefined')
+        if (typeof enable === "undefined")
             return;
         
         var eventFunc = enable ? Util.addEvent : Util.removeEvent;
@@ -145,7 +145,7 @@ var ColorShifter = Class.extend({
         if (sourceField) {
             eventFunc(sourceField, "change", updateFunc);
             eventFunc(sourceField, "keyup", updateFunc);
-            if (enable && sourceField.value !== '')
+            if (enable && sourceField.value !== "")
                 this.update(sourceField.value);
         }
 
@@ -297,7 +297,7 @@ var ColorShifter = Class.extend({
         
         var self = this;
         
-        this.createRegExp();
+        this._createRegExp();
         
         this.scrollSyncFieldsCallback = this.fieldScrollSync.bind(this);
         this.sizeSyncFieldsCallback = this.fieldSizeSync.bind(this);
@@ -322,25 +322,25 @@ var ColorShifter = Class.extend({
 
     },
     
-    createRegExp: function() {
+    _createRegExp: function() {
         
         var regexp = "",
             add = function(s) {
-                if (regexp != "")
+                if (regexp !== "")
                     regexp += "|";
                 regexp += s;
             };
         
-        add('#[\\da-f]{3,8}');
-        add('rgba?\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*(,\\s*\\d(.\\d+)?\\s*)?\\)');
-        add('hsla?\\(\\s*\\d+(.\\d+)?\\s*,\\s*\\d+(.\\d+)?%?\\s*,\\s*\\d+(.\\d+)?%?\\s*(,\\s*\\d(.\\d+)?\\s*)?\\)');
+        add("#[\\da-f]{3,8}");
+        add("rgba?\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*(,\\s*\\d(.\\d+)?\\s*)?\\)");
+        add("hsla?\\(\\s*\\d+(.\\d+)?\\s*,\\s*\\d+(.\\d+)?%?\\s*,\\s*\\d+(.\\d+)?%?\\s*(,\\s*\\d(.\\d+)?\\s*)?\\)");
         
         for (var n in ColorNames)
-            add('\\b' + n + '\\b');
+            add("\\b" + n + "\\b");
         
         this.colorRegExp = new RegExp(regexp, "igm");
             
-        regexp = '{[^{]*:[^:;{}!\\n]*(' + regexp + ')(?=[^}]*})';
+        regexp = "{[^{]*:[^:;{}!\\n]*(" + regexp + ")(?=[^}]*})";
         
         this.matchRegExp = new RegExp(regexp, "igm");
         
@@ -354,10 +354,10 @@ var ColorShifter = Class.extend({
         this._setupFields(false);
     },
     
-    fieldScrollSync: function(event) {
-        event || (event = window.event);
+    fieldScrollSync: function(aEvent) {
+        aEvent || (aEvent = window.event);
         
-        var changedField = event.srcElement || event.target;
+        var changedField = aEvent.srcElement || aEvent.target;
         var changedFieldId = changedField.id;
             
         var syncFieldId =
@@ -372,7 +372,7 @@ var ColorShifter = Class.extend({
         
     },
     
-    fieldSizeSync: function(event) {
+    fieldSizeSync: function(aEvent) {
         
         var changedFieldId = this.sourceFieldId;
             
@@ -389,23 +389,23 @@ var ColorShifter = Class.extend({
         
     },
     
-    keypressField: function(event) {
-        event || (event = window.event);
+    keypressField: function(aEvent) {
+        aEvent || (aEvent = window.event);
         
-        var charCode = event.which || event.keyCode || event.charCode;
-        var changedField = event.srcElement || event.target;
+        var charCode = aEvent.which || aEvent.keyCode || aEvent.charCode;
+        var changedField = aEvent.srcElement || aEvent.target;
         var validated = true;
         var inputStr = String.fromCharCode(charCode);
         
         if (/[a-z ]/igm.test(inputStr))
             validated = false;
-        if (inputStr === '.' && changedField.value.toString().indexOf('.') !== -1)
+        if (inputStr === "." && changedField.value.toString().indexOf(".") !== -1)
             validated = false;
-        if (inputStr === ',' && changedField.value.toString().indexOf(',') !== -1)
+        if (inputStr === "," && changedField.value.toString().indexOf(",") !== -1)
             validated = false;
         
-        if (!validated && event.preventDefault) {
-            event.preventDefault();
+        if (!validated && aEvent.preventDefault) {
+            aEvent.preventDefault();
             return false;
         }
         
@@ -484,18 +484,18 @@ var ColorShifter = Class.extend({
         
         var valueStr = field.value.toString();
         if (validationRegExp.test(valueStr))
-            field.value = valueStr.replace(validationRegExp, '');
+            field.value = valueStr.replace(validationRegExp, "");
         
     },
 
-	update: function(cssString) {
+    update: function(cssString) {
 
-        if (typeof(cssString) != "string") {
+        if (typeof cssString !== "string") {
             var sourceField = document.getElementById(this.sourceFieldId);
             if (sourceField)
                 cssString = sourceField.value;
     
-            if (typeof(cssString) != "string")
+            if (typeof cssString !== "string")
                 return;
         }
         
@@ -550,7 +550,7 @@ var ColorShifter = Class.extend({
                 isAlphaSpecified: ((!self.fixAlpha && self.alphaChange !== 0) || (self.fixAlpha && self.alphaChange !== 1))
             });
             
-            if (colorsShown.indexOf(testColorString) == -1) {
+            if (colorsShown.indexOf(testColorString) === -1) {
                 colorsShown.push(testColorString);
                 
                 if (originalColorsContainer)
@@ -584,7 +584,7 @@ var ColorShifter = Class.extend({
             var compressor = new CSSOCompressor(),
                 translator = new CSSOTranslator(),
                 minifyFunc = function(cssStr) {
-                    return translator.translate(cleanInfo(compressor.compress(srcToCSSP(cssStr, 'stylesheet', true))));
+                    return translator.translate(cleanInfo(compressor.compress(srcToCSSP(cssStr, "stylesheet", true))));
                 };
                 
             this.shiftedCssString = minifyFunc(this.shiftedCssString);
@@ -612,7 +612,7 @@ var ColorShifter = Class.extend({
         }
 
         this.fillTargetField();
-	},
+    },
 
     fillTargetField: function() {
 
@@ -623,6 +623,6 @@ var ColorShifter = Class.extend({
 
         targetField.value = this.shiftedCssString;
 
-	}
+    }
 
 });

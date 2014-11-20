@@ -1,57 +1,57 @@
 
 var ColorMatch = Class.extend({
 
-	originalString: "",
-	isValid: false,
-	isAlphaSpecified: false,
-	format: ColorFormat.Unknown,
-	red: 0,
-	green: 0,
-	blue: 0,
-	hue: 0,
-	saturation: 0,
-	lightness: 0,
-	alpha: 0,
+    originalString: "",
+    isValid: false,
+    isAlphaSpecified: false,
+    format: ColorFormat.Unknown,
+    red: 0,
+    green: 0,
+    blue: 0,
+    hue: 0,
+    saturation: 0,
+    lightness: 0,
+    alpha: 0,
 
-	_updateFromRgb: function() {
+    _updateFromRgb: function() {
 
-		var r = this.red / 255;
-		var g = this.green / 255;
-		var b = this.blue / 255;
-		var cMax = Math.max(r, g, b);
-		var cMin = Math.min(r, g, b);
-		var delta = cMax - cMin;
+        var r = this.red / 255;
+        var g = this.green / 255;
+        var b = this.blue / 255;
+        var cMax = Math.max(r, g, b);
+        var cMin = Math.min(r, g, b);
+        var delta = cMax - cMin;
 
-		if (delta == 0) this.hue = 0;
-		else if (cMax == r) this.hue = ((g - b) / delta) % 6;
-		else if (cMax == g) this.hue = ((b - r) / delta) + 2;
-		else this.hue = ((r - g) / delta) + 4;
+        if (delta === 0) this.hue = 0;
+        else if (cMax === r) this.hue = ((g - b) / delta) % 6;
+        else if (cMax === g) this.hue = ((b - r) / delta) + 2;
+        else this.hue = ((r - g) / delta) + 4;
 
-		this.hue = this.hue * 60;
+        this.hue = this.hue * 60;
 
         if (this.hue < 0) this.hue += 360;
         if (this.hue > 360) this.hue -= 360;
 
-		this.lightness = (cMax + cMin) / 2;
+        this.lightness = (cMax + cMin) / 2;
 
-		if (delta == 0)
-			this.saturation = 0;
-		else
-			this.saturation = delta / (1 - Math.abs(2 * this.lightness - 1));
+        if (delta === 0)
+            this.saturation = 0;
+        else
+            this.saturation = delta / (1 - Math.abs(2 * this.lightness - 1));
 
-		this.saturation *= 100;
-		this.lightness *= 100;
+        this.saturation *= 100;
+        this.lightness *= 100;
 
-		this._normalize();
+        this._normalize();
 
-	},
+    },
 
-	_updateFromHsl: function() {
+    _updateFromHsl: function() {
 
-		var l = this.lightness / 100;
-		var s = this.saturation / 100;
+        var l = this.lightness / 100;
+        var s = this.saturation / 100;
 
-        if (s == 0) {
+        if (s === 0) {
             var f = l * 255;
             this.red = f;
             this.green = f;
@@ -60,43 +60,43 @@ var ColorMatch = Class.extend({
             return;
         }
 
-		var c = (1 - Math.abs(2 * l - 1)) * s;
-		var h = this.hue / 60;
-		var x = c * (1 - Math.abs(h % 2 - 1));
-		var m = l - c / 2;
+        var c = (1 - Math.abs(2 * l - 1)) * s;
+        var h = this.hue / 60;
+        var x = c * (1 - Math.abs(h % 2 - 1));
+        var m = l - c / 2;
 
-		var r, g, b;
+        var r, g, b;
 
-		if (h < 0 || h >= 6) { r = 0; g = 0; b = 0; }
-		else if (h < 1) { r = c; g = x; b = 0; }
-		else if (h < 2) { r = x; g = c; b = 0; }
-		else if (h < 3) { r = 0; g = c; b = x; }
-		else if (h < 4) { r = 0; g = x; b = c; }
-		else if (h < 5) { r = x; g = 0; b = c; }
-		else if (h < 6) { r = c; g = 0; b = x; }
+        if (h < 0 || h >= 6) { r = 0; g = 0; b = 0; }
+        else if (h < 1) { r = c; g = x; b = 0; }
+        else if (h < 2) { r = x; g = c; b = 0; }
+        else if (h < 3) { r = 0; g = c; b = x; }
+        else if (h < 4) { r = 0; g = x; b = c; }
+        else if (h < 5) { r = x; g = 0; b = c; }
+        else if (h < 6) { r = c; g = 0; b = x; }
 
-		r += m;
-		g += m;
-		b += m;
+        r += m;
+        g += m;
+        b += m;
 
-		this.red = r * 255;
-		this.green = g * 255;
-		this.blue = b * 255;
+        this.red = r * 255;
+        this.green = g * 255;
+        this.blue = b * 255;
 
-		this._normalize();
+        this._normalize();
 
-	},
+    },
 
     _normalize: function() {
 
         var multiplier = 10000000;
 
-		this.red = Math.round(this.red);
-		this.green = Math.round(this.green);
-		this.blue = Math.round(this.blue);
+        this.red = Math.round(this.red);
+        this.green = Math.round(this.green);
+        this.blue = Math.round(this.blue);
 
-		this.saturation = Math.round(this.saturation * multiplier) / multiplier;
-		this.lightness = Math.round(this.lightness * multiplier) / multiplier;
+        this.saturation = Math.round(this.saturation * multiplier) / multiplier;
+        this.lightness = Math.round(this.lightness * multiplier) / multiplier;
 
         if (this.red > 255) this.red = 255;
         if (this.red < 0) this.red = 0;
@@ -115,71 +115,73 @@ var ColorMatch = Class.extend({
 
     },
 
-	_setup: function(colorStr) {
+    _setup: function(colorStr) {
 
-		if (colorStr.indexOf("#") == 0) {
+        var strParts;
 
-			colorStr = colorStr.substr(1, colorStr.length - 1);
-			var strLength = colorStr.length;
+        if (colorStr.indexOf("#") === 0) {
 
-			if (strLength == 3 || strLength == 4) {
-				var newStr = "";
-				for (var s in colorStr) {
-					newStr += colorStr[s] + colorStr[s];
-				}
-				colorStr = newStr;
-				strLength = colorStr.length;
-			}
+            colorStr = colorStr.substr(1, colorStr.length - 1);
+            var strLength = colorStr.length;
 
-			this.format = ColorFormat.Hex;
-			this.isAlphaSpecified = strLength == 8;
-			this.isValid = (strLength == 6 || strLength == 8);
+            if (strLength === 3 || strLength === 4) {
+                var newStr = "";
+                for (var s in colorStr) {
+                    newStr += colorStr[s] + colorStr[s];
+                }
+                colorStr = newStr;
+                strLength = colorStr.length;
+            }
+
+            this.format = ColorFormat.Hex;
+            this.isAlphaSpecified = strLength === 8;
+            this.isValid = (strLength === 6 || strLength === 8);
 
             var startIndex = this.isAlphaSpecified ? 2 : 0;
 
-			this.red = parseInt(colorStr.substr(startIndex, 2), 16);
-			this.green = parseInt(colorStr.substr(startIndex + 2, 2), 16);
-			this.blue = parseInt(colorStr.substr(startIndex + 4, 2), 16);
-			this.alpha = this.isAlphaSpecified ? parseInt(colorStr.substr(0, 2), 16) / 255 : 1;
+            this.red = parseInt(colorStr.substr(startIndex, 2), 16);
+            this.green = parseInt(colorStr.substr(startIndex + 2, 2), 16);
+            this.blue = parseInt(colorStr.substr(startIndex + 4, 2), 16);
+            this.alpha = this.isAlphaSpecified ? parseInt(colorStr.substr(0, 2), 16) / 255 : 1;
 
-			this._updateFromRgb();
+            this._updateFromRgb();
 
-		} else if (colorStr.indexOf("rgb") == 0) {
+        } else if (colorStr.indexOf("rgb") === 0) {
 
-			this.format = ColorFormat.Rgb;
-			this.isAlphaSpecified = colorStr[3] == "a";
-			this.isValid = true;
+            this.format = ColorFormat.Rgb;
+            this.isAlphaSpecified = colorStr[3] === "a";
+            this.isValid = true;
 
-			colorStr = colorStr.replace(/[rgba \(\)]/igm, "");
-			var strParts = colorStr.split(",");
+            colorStr = colorStr.replace(/[rgba \(\)]/igm, "");
+            strParts = colorStr.split(",");
 
-			this.red = parseInt(strParts[0], 10);
-			this.green = parseInt(strParts[1], 10);
-			this.blue = parseInt(strParts[2], 10);
-			this.alpha = this.isAlphaSpecified ? parseFloat(strParts[3]) : 1;
+            this.red = parseInt(strParts[0], 10);
+            this.green = parseInt(strParts[1], 10);
+            this.blue = parseInt(strParts[2], 10);
+            this.alpha = this.isAlphaSpecified ? parseFloat(strParts[3]) : 1;
             if (isNaN(this.alpha)) this.alpha = 1;
 
-			this._updateFromRgb();
+            this._updateFromRgb();
 
-		} else if (colorStr.indexOf("hsl") == 0) {
+        } else if (colorStr.indexOf("hsl") === 0) {
 
-			this.format = ColorFormat.Hsl;
-			this.isAlphaSpecified = colorStr[3] == "a";
-			this.isValid = true;
+            this.format = ColorFormat.Hsl;
+            this.isAlphaSpecified = colorStr[3] === "a";
+            this.isValid = true;
 
-			colorStr = colorStr.replace(/[hsla% \(\)]/igm, "");
-			var strParts = colorStr.split(",");
+            colorStr = colorStr.replace(/[hsla% \(\)]/igm, "");
+            strParts = colorStr.split(",");
 
-			this.hue = parseFloat(strParts[0]);
-			this.saturation = parseFloat(strParts[1]);
-			this.lightness = parseFloat(strParts[2]);
-			this.alpha = this.isAlphaSpecified ? parseFloat(strParts[3]) : 1;
+            this.hue = parseFloat(strParts[0]);
+            this.saturation = parseFloat(strParts[1]);
+            this.lightness = parseFloat(strParts[2]);
+            this.alpha = this.isAlphaSpecified ? parseFloat(strParts[3]) : 1;
             if (isNaN(this.alpha)) this.alpha = 1;
 
-			this._updateFromHsl();
-		}
+            this._updateFromHsl();
+        }
 
-	},
+    },
 
     _proportialValue: function(theValue, modifyValue) {
         
@@ -192,18 +194,18 @@ var ColorMatch = Class.extend({
         return theValue;
     },
 
-	init: function(colorStr) {
+    init: function(colorStr) {
 
-		this.originalString = colorStr;
-		this._setup(colorStr);
+        this.originalString = colorStr;
+        this._setup(colorStr);
 
-	},
+    },
 
-	reset: function() {
+    reset: function() {
 
-	    this._setup(this.originalString);
+        this._setup(this.originalString);
 
-	},
+    },
 
     applyContrast: function(contrast) {
 
@@ -221,7 +223,7 @@ var ColorMatch = Class.extend({
 
     },
 
-	convertToWebSafe: function() {
+    convertToWebSafe: function() {
 
         this.isAlphaSpecified = false;
 
@@ -237,11 +239,11 @@ var ColorMatch = Class.extend({
         this._normalize();
         this._updateFromRgb();
 
-	},
+    },
 
-	modify: function(options) {
+    modify: function(options) {
 
-		if (!this.isValid)
+        if (!this.isValid)
             return;
 
         if (!isNaN(options.hue)) {
@@ -277,21 +279,21 @@ var ColorMatch = Class.extend({
 
         if (!isNaN(options.contrast)) this.applyContrast(options.contrast);
         if (options.webSafe) this.convertToWebSafe();
-	},
+    },
 
-	getValue: function (options) {
+    getValue: function (options) {
 
-		if (!this.isValid)
+        if (!this.isValid)
             return this.originalString;
 
         var returnStr = "";
         var format = this.format;
         var alphaSpecified = (this.isAlphaSpecified || options.isAlphaSpecified);
 
-        if (typeof(options.format) != "undefined" && options.format != ColorFormat.Unknown)
+        if (typeof options.format !== "undefined" && options.format !== ColorFormat.Unknown)
             format = options.format;
 
-        if (format == ColorFormat.Hex && alphaSpecified && !options.useARGB)
+        if (format === ColorFormat.Hex && alphaSpecified && !options.useARGB)
             format = options.preferHSL ? ColorFormat.Hsl : ColorFormat.Rgb;
         
         var hexColorStr = "#";
@@ -300,7 +302,7 @@ var ColorMatch = Class.extend({
 
         hexColorStr += ((1 << 24) + (this.red << 16) + (this.green << 8) + this.blue).toString(16).slice(1);
 
-		switch (format) {
+        switch (format) {
 
             case ColorFormat.Hex:
                 returnStr = hexColorStr;
@@ -327,7 +329,7 @@ var ColorMatch = Class.extend({
                 if (alphaSpecified)
                     returnStr +=  ", " + this.alpha.toDecimalString(4);
                 returnStr += ")";
-                break
+                break;
         }
         
         if (options.colorNames) {
@@ -340,6 +342,6 @@ var ColorMatch = Class.extend({
         }
 
         return returnStr;
-	}
+    }
 
 });
