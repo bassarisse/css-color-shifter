@@ -147,7 +147,7 @@ CssColor.prototype.setup = function(colorStr) {
 
         if (strLength === 3 || strLength === 4) {
             var newStr = "";
-            for (var s in colorStr) {
+            for (var s = 0, sl = colorStr.length; s < sl; s++) {
                 newStr += colorStr[s] + colorStr[s];
             }
             colorStr = newStr;
