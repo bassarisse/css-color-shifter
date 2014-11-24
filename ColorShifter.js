@@ -18,7 +18,7 @@ var ColorShifter = Class.extend({
     lightnessChange: 0,
     alphaChange: 0,
     contrastChange: 0,
-    outputFormat: ColorFormat.Unknown,
+    outputFormat: CssColor.Format.Unknown,
     postProcessing: PostProcessing.None,
     colorize: false,
     useOnlyWebSafeColors: false,
@@ -335,7 +335,7 @@ var ColorShifter = Class.extend({
         add("rgba?\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*(,\\s*\\d(.\\d+)?\\s*)?\\)");
         add("hsla?\\(\\s*\\d+(.\\d+)?\\s*,\\s*\\d+(.\\d+)?%?\\s*,\\s*\\d+(.\\d+)?%?\\s*(,\\s*\\d(.\\d+)?\\s*)?\\)");
         
-        for (var n in CssColor.colorNames)
+        for (var n in CssColor.Names)
             add("\\b" + n + "\\b");
         
         this.colorRegExp = new RegExp(regexp, "igm");
@@ -523,7 +523,7 @@ var ColorShifter = Class.extend({
             var cssColor = new CssColor(originalColorString);
             
             var testColorString = cssColor.getValue({
-                format: ColorFormat.Rgb,
+                format: CssColor.Format.Rgb,
                 isAlphaSpecified: true
             });
                 
