@@ -335,7 +335,7 @@ var ColorShifter = Class.extend({
         add("rgba?\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*(,\\s*\\d(.\\d+)?\\s*)?\\)");
         add("hsla?\\(\\s*\\d+(.\\d+)?\\s*,\\s*\\d+(.\\d+)?%?\\s*,\\s*\\d+(.\\d+)?%?\\s*(,\\s*\\d(.\\d+)?\\s*)?\\)");
         
-        for (var n in ColorNames)
+        for (var n in CssColor.colorNames)
             add("\\b" + n + "\\b");
         
         this.colorRegExp = new RegExp(regexp, "igm");
@@ -519,16 +519,15 @@ var ColorShifter = Class.extend({
         }
         
         var shiftColorFunc = function(originalColorString) {
-                
-            var colorString = ColorNames[originalColorString.toLowerCase()] || originalColorString;
-            var colorMatch = new ColorMatch(colorString);
+
+            var cssColor = new CssColor(originalColorString);
             
-            var testColorString = colorMatch.getValue({
+            var testColorString = cssColor.getValue({
                 format: ColorFormat.Rgb,
                 isAlphaSpecified: true
             });
                 
-            colorMatch.modify({
+            cssColor.modify({
                 hue: self.hueChange,
                 saturation: self.saturationChange,
                 lightness: self.lightnessChange,
@@ -541,7 +540,7 @@ var ColorShifter = Class.extend({
                 proportionalLightness: self.proportionalLightness
             });
             
-            var newColor = colorMatch.getValue({
+            var newColor = cssColor.getValue({
                 format: self.outputFormat,
                 colorNames: self.useColorNames,
                 contractedHexCodes: self.useContractedHexCodes,
