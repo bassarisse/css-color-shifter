@@ -1,5 +1,21 @@
 
-var CssColor = function(colorStr) {
+// Numeric formating that removes trailing zeros after decimal separator
+function toDecimalString(str, decimalPlaces) {
+
+    if (isNaN(decimalPlaces))
+        decimalPlaces = 0;
+
+    var returnValue = str.toFixed(decimalPlaces);
+
+    if (decimalPlaces > 0)
+        returnValue = returnValue.replace(/0+$/, '');
+
+    returnValue = returnValue.replace(/\.$/, '');
+
+    return returnValue;
+};
+
+function CssColor(colorStr) {
 
     this.originalString = "";
     this.isValid = false;
@@ -16,7 +32,7 @@ var CssColor = function(colorStr) {
     if (colorStr)
         this.setup(colorStr);
 
-};
+}
 
 CssColor.prototype._updateFromRgb = function() {
 
@@ -121,13 +137,13 @@ CssColor.prototype._normalize = function() {
 };
 
 CssColor.prototype._proportialValue = function(theValue, modifyValue) {
-    
+
     if (modifyValue < 0)
         return theValue + (theValue / 100 * modifyValue);
-        
+
     else if (modifyValue > 0)
         return theValue + ((100 - theValue) / 100 * modifyValue);
-        
+
     return theValue;
 };
 
@@ -255,21 +271,21 @@ CssColor.prototype.modify = function(options) {
         else
             this.hue += options.hue;
     }
-    
+
     if (!isNaN(options.saturation)) {
         if (options.proportionalSaturation)
             this.saturation = this._proportialValue(this.saturation, options.saturation);
         else
             this.saturation += options.saturation;
     }
-    
+
     if (!isNaN(options.lightness)) {
         if (options.proportionalLightness)
             this.lightness = this._proportialValue(this.lightness, options.lightness);
         else
             this.lightness += options.lightness;
     }
-    
+
     if (!isNaN(options.alpha)) {
         if (options.fixAlpha)
             this.alpha = options.alpha;
@@ -300,7 +316,7 @@ CssColor.prototype.getValue = function(data) {
 
     if (format === CssColor.Format.Hex && alphaSpecified && !options.useARGB)
         format = options.preferHSL ? CssColor.Format.Hsl : CssColor.Format.Rgb;
-    
+
     var hexColorStr = "#";
     if (alphaSpecified)
         hexColorStr += ((1 << 8) + Math.round(this.alpha * 255)).toString(16).slice(1);
@@ -319,9 +335,9 @@ CssColor.prototype.getValue = function(data) {
             returnStr = "hsl";
             if (alphaSpecified)
                 returnStr += "a";
-            returnStr += "(" + this.hue.toDecimalString(0) + ", " + this.saturation.toDecimalString(2) + "%, " + this.lightness.toDecimalString(2) + "%";
+            returnStr += "(" + toDecimalString(this.hue, 0) + ", " + toDecimalString(this.saturation, 2) + "%, " + toDecimalString(this.lightness, 2) + "%";
             if (alphaSpecified)
-                returnStr +=  ", " + this.alpha.toDecimalString(4);
+                returnStr +=  ", " + toDecimalString(this.alpha, 4);
             returnStr += ")";
             break;
 
@@ -330,13 +346,13 @@ CssColor.prototype.getValue = function(data) {
             returnStr = "rgb";
             if (alphaSpecified)
                 returnStr += "a";
-            returnStr += "(" + this.red.toDecimalString(0) + ", " + this.green.toDecimalString(0) + ", " + this.blue.toDecimalString(0);
+            returnStr += "(" + toDecimalString(this.red, 0) + ", " + toDecimalString(this.green, 0) + ", " + toDecimalString(this.blue, 0);
             if (alphaSpecified)
-                returnStr +=  ", " + this.alpha.toDecimalString(4);
+                returnStr +=  ", " + toDecimalString(this.alpha, 4);
             returnStr += ")";
             break;
     }
-    
+
     if (options.colorNames) {
         var colorName = hexColorStr.toLowerCase();
         for (var n in CssColor.Names) {
@@ -358,7 +374,7 @@ CssColor.Format = {
     Unknown: 0,
     Hex: 1,
     Rgb: 2,
-    Hsl: 3
+    Hsl: 3,
 };
 
 CssColor.Names = {
@@ -501,5 +517,5 @@ CssColor.Names = {
     white: "#FFFFFF",
     whitesmoke: "#F5F5F5",
     yellow: "#FFFF00",
-    yellowgreen: "#9ACD32"
+    yellowgreen: "#9ACD32",
 };

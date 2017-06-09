@@ -1,25 +1,23 @@
 <html>
 <head>
     <title>CSS Color Shifter</title>
-    
+
     <script src="libs/beautify-css.js"></script>
     <script src="libs/csso.web.js"></script>
 
-    <script src="JsInheritance.js"></script>
-    <script src="Globals.js"></script>
+    <script src="polyfills.js"></script>
     <script src="Util.js"></script>
-    <script src="Enums.js"></script>
     <script src="CssColor.js"></script>
     <script src="ColorShifter.js"></script>
-    
+    <script src="ColorShifterUI.js"></script>
+
     <link rel="stylesheet" href="css-color-shifter.css" type="text/css" />
-    
+
 	<script>
 	(function() {
-	    
+
 	    var initFunc = function() {
-			var colorShifter = new ColorShifter({
-			    containerId: "color-shifter-container",
+			new ColorShifterUI({
 			    sourceFieldId: "source",
 			    targetFieldId: "target",
 			    hueFieldId: "hueChange",
@@ -49,17 +47,17 @@
 			    fixAlphaFieldId: "fixAlpha",
 			    proportionalSaturationFieldId: "proportionalsaturation",
 			    proportionalLightnessFieldId: "proportionallightness",
-			    disablecCSSCheckFieldId: "disablecsssyntax",
+			    enableCssCheckFieldId: "enablecsssyntax",
 			    originalColorsContainerId: "originalColors",
 			    newColorsContainerId: "newColors"
 			});
 		};
-	    
+
 	    if (window.addEventListener)
 		    window.addEventListener("DOMContentLoaded", initFunc, false);
 		else if (window.attachEvent)
 		    window.attachEvent("onload", initFunc);
-		
+
 	})();
 	</script>
 
@@ -110,7 +108,7 @@
 
 <div class="options-main">
     <div class="options-box main">
-    
+
         <div class="property-line">
             <span class="property-name">Hue</span>
             <input type="range" id="hueChange" value="0" min="0" max="360" step="0.01" />
@@ -118,7 +116,7 @@
             <input type="button" id="hueReset" value="Reset" />
             <label class="property-rel-option" title="All colors will use the informed hue value"><input type="checkbox" id="colorize" value="1" />Colorize</label>
         </div>
-        
+
         <div class="property-line">
             <span class="property-name">Saturation</span>
             <input type="range" id="saturationChange" value="0" min="-100" max="100" step="0.01" />
@@ -126,7 +124,7 @@
             <input type="button" id="saturationReset" value="Reset" />
             <label class="property-rel-option" title="Modifies the saturation of all colors by the same relative value towards the minimum or maximum"><input type="checkbox" id="proportionalsaturation" value="1" checked="checked" />Proportional</label>
         </div>
-        
+
         <div class="property-line">
             <span class="property-name">Lightness</span>
             <input type="range" id="lightnessChange" value="0" min="-100" max="100" step="0.01" />
@@ -134,7 +132,7 @@
             <input type="button" id="lightnessReset" value="Reset" />
             <label class="property-rel-option" title="Modifies the lightness of all colors by the same relative value towards the minimum or maximum"><input type="checkbox" id="proportionallightness" value="1" checked="checked" />Proportional</label>
         </div>
-        
+
         <div class="property-line">
             <span class="property-name">Alpha</span>
             <input type="range" id="alphaChange" value="0" min="-1" max="1" step="0.0001" />
@@ -142,22 +140,22 @@
             <input type="button" id="alphaReset" value="Reset" />
             <label class="property-rel-option" title="Makes all colors use the specified alpha value"><input type="checkbox" id="fixAlpha" value="1" />Fixed</label>
         </div>
-        
+
         <div class="property-line">
             <span class="property-name">Contrast</span>
             <input type="range" id="contrastChange" value="0" min="-255" max="255" step="0.1" />
             <input type="number" id="contrastChangeNumeric" value="0" min="-255" max="255" step="1" />
             <input type="button" id="contrastReset" value="Reset" />
         </div>
-        
+
         <div class="property-line reset-all-container">
             <input type="button" id="allReset" value="Reset All" />
         </div>
-        
+
     </div>
-    
+
     <div class="options-box">
-    
+
         <div class="select-line">
             <label>
                 Output color format<br />
@@ -169,7 +167,7 @@
                 </select>
             </label>
         </div>
-        
+
         <div class="select-line">
             <label>
                 Post processing<br />
@@ -180,17 +178,17 @@
                 </select>
             </label>
         </div>
-        
+
     </div>
-    
+
     <div class="options-box checklist">
         <label title="Only when possible"><input type="checkbox" id="colorNames" value="1" />Use color names (e.g. red, white)</label><br />
         <label title="Only when possible"><input type="checkbox" id="contractedhexcodes" value="1" checked="checked" />Use contracted hex codes (e.g. #f00)</label><br />
         <label title="When modifying alpha, HEX format is changed to RGB by default, but you can choose HSL here"><input type="checkbox" id="preferhsl" value="1" />Prefer HSL over RGB format</label>
     </div>
-    
+
     <div class="options-box checklist">
-        <label title="Use this if you just want to throw some colors and modify them, but if you're pasting a stylesheet, you're better leaving this option alone"><input type="checkbox" id="disablecsssyntax" value="1" />Disable basic CSS syntax detection</label><br />
+        <label title="Use this if you just want to throw some colors and modify them, but if you're pasting a stylesheet, you're better leaving this option alone"><input type="checkbox" id="enablecsssyntax" value="1" checked="checked" />Enable basic CSS syntax detection</label><br />
         <label title="Is anybody concerned about this? I don't think so"><input type="checkbox" id="webSafeColors" value="1" />Convert to web <del>not so</del> safe colors</label><br />
         <label title="Only if applicable (e.g. #40506070)"><input type="checkbox" id="useargb" value="1" />Use aRGB (please DON'T)</label>
     </div>
@@ -219,7 +217,7 @@
         Beautify code by <a href="https://github.com/einars/js-beautify" target="_blank">Einar Lielmanis</a><br />
         Minify code by <a href="https://github.com/css/csso" target="_blank">Vitaly Harisov and Sergey Kryzhanovsky</a>
     </p>
-    
+
 </div>
 
 <script type="text/javascript">
