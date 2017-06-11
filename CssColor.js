@@ -311,7 +311,7 @@ CssColor.prototype.getValue = function(data) {
     var format = this.format;
     var alphaSpecified = (this.isAlphaSpecified || options.isAlphaSpecified);
 
-    if (typeof options.format !== "undefined" && options.format !== CssColor.Format.Unknown)
+    if (typeof options.format !== "undefined" && options.format !== CssColor.Format.Auto)
         format = options.format;
 
     if (format === CssColor.Format.Hex && alphaSpecified && !options.useARGB)
@@ -371,7 +371,7 @@ CssColor.prototype.getYIQ = function() {
 };
 
 CssColor.Format = {
-    Unknown: 0,
+    Auto: 0,
     Hex: 1,
     Rgb: 2,
     Hsl: 3,

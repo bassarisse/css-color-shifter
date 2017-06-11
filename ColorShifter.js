@@ -6,18 +6,18 @@ function ColorShifter() {
     this.lightnessChange = 0;
     this.alphaChange = 0;
     this.contrastChange = 0;
-    this.outputFormat = CssColor.Format.Unknown;
+    this.outputFormat = CssColor.Format.Auto;
     this.postProcessing = ColorShifter.PostProcessing.None;
     this.colorize = false;
     this.useOnlyWebSafeColors = false;
     this.useColorNames = false;
-    this.useContractedHexCodes = false;
+    this.useContractedHexCodes = true;
     this.useARGB = false;
     this.preferHSL = false;
     this.fixAlpha = false;
-    this.proportionalSaturation = false;
-    this.proportionalLightness = false;
-    this.enableCssCheck = false;
+    this.proportionalSaturation = true;
+    this.proportionalLightness = true;
+    this.enableCssCheck = true;
 
     this._createRegExp();
 
