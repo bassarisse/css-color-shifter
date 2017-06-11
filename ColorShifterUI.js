@@ -27,7 +27,7 @@ function ColorShifterUI(options) {
     this.webSafeFieldId = options.webSafeFieldId || null;
     this.colorNamesFieldId = options.colorNamesFieldId || null;
     this.contractedHexCodesFieldId = options.contractedHexCodesFieldId || null;
-    this.aRGBFieldId = options.aRGBFieldId || null;
+    this.hexWithAlphaFieldId = options.hexWithAlphaFieldId || null;
     this.preferHSLFieldId = options.preferHSLFieldId || null;
     this.fixAlphaFieldId = options.fixAlphaFieldId || null;
     this.proportionalSaturationFieldId = options.proportionalSaturationFieldId || null;
@@ -50,7 +50,7 @@ function ColorShifterUI(options) {
     this.useOnlyWebSafeColors = false;
     this.useColorNames = false;
     this.useContractedHexCodes = false;
-    this.useARGB = false;
+    this.enableHexWithAlpha = false;
     this.preferHSL = false;
     this.fixAlpha = false;
     this.proportionalSaturation = false;
@@ -114,7 +114,7 @@ ColorShifterUI.prototype._setupFields = function(enable) {
     var webSafeField = document.getElementById(this.webSafeFieldId);
     var colorNamesField = document.getElementById(this.colorNamesFieldId);
     var contractedHexCodesField = document.getElementById(this.contractedHexCodesFieldId);
-    var aRGBField = document.getElementById(this.aRGBFieldId);
+    var hexWithAlphaField = document.getElementById(this.hexWithAlphaFieldId);
     var preferHSLField = document.getElementById(this.preferHSLFieldId);
     var fixAlphaField = document.getElementById(this.fixAlphaFieldId);
     var proportionalSaturationField = document.getElementById(this.proportionalSaturationFieldId);
@@ -180,7 +180,7 @@ ColorShifterUI.prototype._setupFields = function(enable) {
     eventFunc(webSafeField, updateEvents, this.updateCallback);
     eventFunc(colorNamesField, updateEvents, this.updateCallback);
     eventFunc(contractedHexCodesField, updateEvents, this.updateCallback);
-    eventFunc(aRGBField, updateEvents, this.updateCallback);
+    eventFunc(hexWithAlphaField, updateEvents, this.updateCallback);
     eventFunc(preferHSLField, updateEvents, this.updateCallback);
     eventFunc(fixAlphaField, updateEvents, this.updateCallback);
     eventFunc(proportionalSaturationField, updateEvents, this.updateCallback);
@@ -352,7 +352,7 @@ ColorShifterUI.prototype.refreshFromFields = function() {
     var webSafeField = document.getElementById(this.webSafeFieldId);
     var colorNamesField = document.getElementById(this.colorNamesFieldId);
     var contractedHexCodesField = document.getElementById(this.contractedHexCodesFieldId);
-    var aRGBField = document.getElementById(this.aRGBFieldId);
+    var hexWithAlphaField = document.getElementById(this.hexWithAlphaFieldId);
     var preferHSLField = document.getElementById(this.preferHSLFieldId);
     var fixAlphaField = document.getElementById(this.fixAlphaFieldId);
     var proportionalSaturationField = document.getElementById(this.proportionalSaturationFieldId);
@@ -382,7 +382,7 @@ ColorShifterUI.prototype.refreshFromFields = function() {
     if (webSafeField) this.useOnlyWebSafeColors = webSafeField.checked ? true : false;
     if (colorNamesField) this.useColorNames = colorNamesField.checked ? true : false;
     if (contractedHexCodesField) this.useContractedHexCodes = contractedHexCodesField.checked ? true : false;
-    if (aRGBField) this.useARGB = aRGBField.checked ? true : false;
+    if (hexWithAlphaField) this.enableHexWithAlpha = hexWithAlphaField.checked ? true : false;
     if (preferHSLField) this.preferHSL = preferHSLField.checked ? true : false;
     if (fixAlphaField) this.fixAlpha = fixAlphaField.checked ? true : false;
     if (proportionalSaturationField) this.proportionalSaturation = proportionalSaturationField.checked ? true : false;
@@ -442,7 +442,7 @@ ColorShifterUI.prototype.update = function(cssString) {
     colorShifter.useOnlyWebSafeColors = this.useOnlyWebSafeColors;
     colorShifter.useColorNames = this.useColorNames;
     colorShifter.useContractedHexCodes = this.useContractedHexCodes;
-    colorShifter.useARGB = this.useARGB;
+    colorShifter.enableHexWithAlpha = this.enableHexWithAlpha;
     colorShifter.preferHSL = this.preferHSL;
     colorShifter.fixAlpha = this.fixAlpha;
     colorShifter.proportionalSaturation = this.proportionalSaturation;

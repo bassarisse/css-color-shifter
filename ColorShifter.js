@@ -12,7 +12,7 @@ function ColorShifter() {
     this.useOnlyWebSafeColors = false;
     this.useColorNames = false;
     this.useContractedHexCodes = true;
-    this.useARGB = false;
+    this.enableHexWithAlpha = false;
     this.preferHSL = false;
     this.fixAlpha = false;
     this.proportionalSaturation = true;
@@ -96,7 +96,7 @@ ColorShifter.prototype.shiftColor = function(originalColorString) {
         format: this.outputFormat,
         colorNames: this.useColorNames,
         contractedHexCodes: this.useContractedHexCodes,
-        useARGB: this.useARGB,
+        enableHexWithAlpha: this.enableHexWithAlpha,
         preferHSL: this.preferHSL,
         isAlphaSpecified: ((!this.fixAlpha && this.alphaChange !== 0) || (this.fixAlpha && this.alphaChange !== 1)),
     });

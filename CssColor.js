@@ -196,7 +196,8 @@ CssColor.prototype.setup = function(colorStr) {
         this.green = parseInt(strParts[1], 10);
         this.blue = parseInt(strParts[2], 10);
         this.alpha = this.isAlphaSpecified ? parseFloat(strParts[3]) : 1;
-        if (isNaN(this.alpha)) this.alpha = 1;
+        if (isNaN(this.alpha))
+            this.alpha = 1;
 
         this._updateFromRgb();
 
@@ -213,7 +214,8 @@ CssColor.prototype.setup = function(colorStr) {
         this.saturation = parseFloat(strParts[1]);
         this.lightness = parseFloat(strParts[2]);
         this.alpha = this.isAlphaSpecified ? parseFloat(strParts[3]) : 1;
-        if (isNaN(this.alpha)) this.alpha = 1;
+        if (isNaN(this.alpha))
+            this.alpha = 1;
 
         this._updateFromHsl();
     }
@@ -221,9 +223,7 @@ CssColor.prototype.setup = function(colorStr) {
 };
 
 CssColor.prototype.reset = function() {
-
     this.setup(this.originalString);
-
 };
 
 CssColor.prototype.applyContrast = function(contrast) {
@@ -296,8 +296,10 @@ CssColor.prototype.modify = function(options) {
     this._normalize();
     this._updateFromHsl();
 
-    if (!isNaN(options.contrast)) this.applyContrast(options.contrast);
-    if (options.webSafe) this.convertToWebSafe();
+    if (!isNaN(options.contrast))
+        this.applyContrast(options.contrast);
+    if (options.webSafe)
+        this.convertToWebSafe();
 
 };
 
@@ -314,21 +316,20 @@ CssColor.prototype.getValue = function(data) {
     if (typeof options.format !== "undefined" && options.format !== CssColor.Format.Auto)
         format = options.format;
 
-    if (format === CssColor.Format.Hex && alphaSpecified && !options.useARGB)
+    if (format === CssColor.Format.Hex && alphaSpecified && !options.enableHexWithAlpha)
         format = options.preferHSL ? CssColor.Format.Hsl : CssColor.Format.Rgb;
 
     var hexColorStr = "#";
+    hexColorStr += ((1 << 24) + (this.red << 16) + (this.green << 8) + this.blue).toString(16).slice(1);
     if (alphaSpecified)
         hexColorStr += ((1 << 8) + Math.round(this.alpha * 255)).toString(16).slice(1);
-
-    hexColorStr += ((1 << 24) + (this.red << 16) + (this.green << 8) + this.blue).toString(16).slice(1);
 
     switch (format) {
 
         case CssColor.Format.Hex:
             returnStr = hexColorStr;
-            if (options.contractedHexCodes && /#([\da-f])\1([\da-f])\2([\da-f])\3/i.test(returnStr))
-                returnStr = "#" + returnStr[1] + returnStr[3] + returnStr[5];
+            if (options.contractedHexCodes && /^#([\da-f])\1([\da-f])\2([\da-f])\3(([\da-f])\5)?/i.test(returnStr))
+                returnStr = "#" + returnStr[1] + returnStr[3] + returnStr[5] + (returnStr[7] || "");
             break;
 
         case CssColor.Format.Hsl:
