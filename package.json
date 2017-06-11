@@ -1,0 +1,22 @@
+{
+  "name": "css-color-shifter",
+  "version": "1.1.0",
+  "description": "Tool to consistently change CSS colors from a stylesheet or raw text",
+  "main": "ColorShifterUI.js",
+  "scripts": {
+    "start": "python -m SimpleHTTPServer 8000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bassarisse/css-color-shifter.git"
+  },
+  "keywords": [
+    "css",
+    "color",
+    "rgb",
+    "hsl"
+  ],
+  "author": "Bruno Assarisse <bruno@assarisse.com.br> (http://bassarisse.com/)",
+  "license": "ISC",
+  "homepage": "http://bassarisse.com/csscolorshifter"
+}
