@@ -1,0 +1,56 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "commonjs": true
+  },
+  "globals": {
+    "APP_VERSION": true
+  },
+  "extends": [
+    "plugin:import/errors",
+    "plugin:import/warnings",
+  ],
+  "settings": {
+    "import/resolver": "webpack"
+  },
+  "rules": {
+    "key-spacing": [1, {
+      "beforeColon": false,
+      "afterColon": true
+    }],
+    "comma-spacing": [1, {
+      "before": false,
+      "after": true
+    }],
+    "object-curly-spacing": ["warn", "always"],
+    "no-trailing-spaces": ["warn"],
+    "no-multiple-empty-lines": ["warn", { "max": 1 }],
+    "no-undef": 1,
+    "quotes": [1, "single"],
+    "jsx-quotes": ["warn", "prefer-single"],
+    "eol-last": ["warn", "always"],
+    "no-underscore-dangle": 0,
+    "no-unused-vars": 1,
+    "no-debugger": 1,
+    "no-console": 1,
+    "react/jsx-uses-react": 2,
+    "react/jsx-uses-vars": 2,
+    "react/react-in-jsx-scope": 2,
+    "react/jsx-no-undef": 2,
+    "indent": ["warn", 4],
+    "semi": ["warn", "never"]
+  },
+  "plugins": [
+    "react",
+    "import"
+  ]
+}

@@ -1,70 +1,21 @@
+<!DOCTYPE html>
 <html>
 <head>
+    <!--[if lte IE 9]>
+    <script>
+        document.write('<base href="' + window.location.protocol + '//' + (window.location.host || (window.location.hostname + (window.location.port ? ':' + window.location.port : ''))) + '/" />')
+    </script>
+    <![endif]-->
+    <base href="/" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>CSS Color Shifter</title>
 
-    <script src="libs/beautify-css.js"></script>
-    <script src="libs/csso.web.js"></script>
-
-    <script src="polyfills.js"></script>
-    <script src="Util.js"></script>
-    <script src="CssColor.js"></script>
-    <script src="ColorShifter.js"></script>
-    <script src="ColorShifterUI.js"></script>
-
-    <link rel="stylesheet" href="css-color-shifter.css" type="text/css" />
-
-	<script>
-	(function() {
-
-	    var initFunc = function() {
-			new ColorShifterUI({
-			    sourceFieldId: "source",
-			    targetFieldId: "target",
-			    hueFieldId: "hueChange",
-			    hueNumericFieldId: "hueChangeNumeric",
-			    hueResetButtonId: "hueReset",
-			    saturationFieldId: "saturationChange",
-			    saturationNumericFieldId: "saturationChangeNumeric",
-			    saturationResetButtonId: "saturationReset",
-			    lightnessFieldId: "lightnessChange",
-			    lightnessNumericFieldId: "lightnessChangeNumeric",
-			    lightnessResetButtonId: "lightnessReset",
-			    alphaFieldId: "alphaChange",
-			    alphaNumericFieldId: "alphaChangeNumeric",
-			    alphaResetButtonId: "alphaReset",
-			    contrastFieldId: "contrastChange",
-			    contrastNumericFieldId: "contrastChangeNumeric",
-			    contrastResetButtonId: "contrastReset",
-			    allResetButtonId: "allReset",
-			    formatFieldId: "colorformat",
-			    postProcessingFieldId: "postprocessing",
-			    fixHueFieldId: "fixHue",
-			    colorNamesFieldId: "colorNames",
-			    contractedHexCodesFieldId: "contractedhexcodes",
-			    hexWithAlphaFieldId: "hexwithalpha",
-			    preferHSLFieldId: "preferhsl",
-			    fixAlphaFieldId: "fixAlpha",
-			    proportionalSaturationFieldId: "proportionalsaturation",
-			    proportionalLightnessFieldId: "proportionallightness",
-			    enableCssCheckFieldId: "enablecsssyntax",
-			    originalColorsContainerId: "originalColors",
-			    newColorsContainerId: "newColors"
-			});
-		};
-
-	    if (window.addEventListener)
-		    window.addEventListener("DOMContentLoaded", initFunc, false);
-		else if (window.attachEvent)
-		    window.attachEvent("onload", initFunc);
-
-	})();
-	</script>
-
+    <link rel="stylesheet" href="./css-color-shifter.css" type="text/css" />
 </head>
-
 <body id="color-shifter-container">
 
-<h1>CSS Color Shifter</h1>
+<h1>CSS Color Shifter <small id="version"></small></h1>
 <h4>by <a href="http://bassarisse.com" target="_blank">Bruno Assarisse</a></h4>
 
 <div class="css-area-column">
@@ -207,17 +158,13 @@
         Any browser should work fairly well, but please update yours to the latest version.
     </p>
     <p>
-        <strong>Version:</strong><br />
-        1.0.0 (2013-10-15)
-    </p>
-    <p>
-        <strong>Third-party code credits:</strong><br />
-        Beautify code by <a href="https://github.com/einars/js-beautify" target="_blank">Einar Lielmanis</a><br />
-        Minify code by <a href="https://github.com/css/csso" target="_blank">Vitaly Harisov and Sergey Kryzhanovsky</a>
+        <strong>Github:</strong><br />
+        <a href="https://github.com/bassarisse/css-color-shifter" target="_blank">https://github.com/bassarisse/css-color-shifter</a>
     </p>
 
 </div>
 
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default-3.4"></script>
 <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-6147007-1']);
