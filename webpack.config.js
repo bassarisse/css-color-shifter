@@ -22,10 +22,8 @@ try {
 }
 
 entryPointFiles
-    .filter(function(fileName) {
-        return ['.DS_Store', 'desktop.ini', 'Desktop.ini'].indexOf(fileName) === -1
-    })
-    .forEach(function(fileName) {
+    .filter(fileName => ['.DS_Store', 'desktop.ini', 'Desktop.ini'].indexOf(fileName) === -1)
+    .forEach(fileName => {
         var entryPointName = path.basename(fileName, path.extname(fileName))
         entryPoints[entryPointName] = path.join(mainPath, fileName)
     })
@@ -83,7 +81,7 @@ var config = {
             {
                 test: /\.css?$/i,
                 use: 'file',
-            }
+            },
         ]
     },
     resolve: {

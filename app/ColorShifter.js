@@ -54,13 +54,11 @@ ColorShifter.prototype._createRegExp = function() {
 
 ColorShifter.prototype.postProcess = function(cssString) {
 
-    if (this.postProcessing === ColorShifter.PostProcessing.Beautify) {
+    if (this.postProcessing === ColorShifter.PostProcessing.Beautify)
         return beautify.css(cssString)
-    }
 
-    if (this.postProcessing === ColorShifter.PostProcessing.Minify) {
+    if (this.postProcessing === ColorShifter.PostProcessing.Minify)
         return csso.minify(cssString).css
-    }
 
     return cssString
 }
