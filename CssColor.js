@@ -246,7 +246,7 @@ CssColor.prototype.modify = function(options) {
         return;
 
     if (!isNaN(options.hue)) {
-        if (options.colorize)
+        if (options.fixHue)
             this.hue = options.hue;
         else
             this.hue += options.hue;
