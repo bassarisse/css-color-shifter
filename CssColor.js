@@ -149,10 +149,10 @@ CssColor.prototype._proportialValue = function(theValue, modifyValue) {
 
 CssColor.prototype.setup = function(colorStr) {
 
-    colorStr = CssColor.Names[colorStr.toLowerCase()] || colorStr;
-
     this.originalString = colorStr;
     this.isValid = false;
+
+    colorStr = CssColor.Names[colorStr.toLowerCase()] || colorStr;
 
     var strParts;
 
@@ -174,12 +174,10 @@ CssColor.prototype.setup = function(colorStr) {
         this.isAlphaSpecified = strLength === 8;
         this.isValid = (strLength === 6 || strLength === 8);
 
-        var startIndex = this.isAlphaSpecified ? 2 : 0;
-
-        this.red = parseInt(colorStr.substr(startIndex, 2), 16);
-        this.green = parseInt(colorStr.substr(startIndex + 2, 2), 16);
-        this.blue = parseInt(colorStr.substr(startIndex + 4, 2), 16);
-        this.alpha = this.isAlphaSpecified ? parseInt(colorStr.substr(0, 2), 16) / 255 : 1;
+        this.red = parseInt(colorStr.substr(0, 2), 16);
+        this.green = parseInt(colorStr.substr(2, 2), 16);
+        this.blue = parseInt(colorStr.substr(4, 2), 16);
+        this.alpha = this.isAlphaSpecified ? parseInt(colorStr.substr(6, 2), 16) / 255 : 1;
 
         this._updateFromRgb();
 
