@@ -240,24 +240,6 @@ CssColor.prototype.applyContrast = function(contrast) {
 
 };
 
-CssColor.prototype.convertToWebSafe = function() {
-
-    this.isAlphaSpecified = false;
-
-    this.red += (255 - this.red) * (1 - this.alpha);
-    this.green += (255 - this.green) * (1 - this.alpha);
-    this.blue += (255 - this.blue) * (1 - this.alpha);
-    this.alpha = 1;
-
-    this.red = Math.floor((this.red + 25.5) / 51) * 51;
-    this.green = Math.floor((this.green + 25.5) / 51) * 51;
-    this.blue = Math.floor((this.blue + 25.5) / 51) * 51;
-
-    this._normalize();
-    this._updateFromRgb();
-
-};
-
 CssColor.prototype.modify = function(options) {
 
     if (!this.isValid)
@@ -296,8 +278,6 @@ CssColor.prototype.modify = function(options) {
 
     if (!isNaN(options.contrast))
         this.applyContrast(options.contrast);
-    if (options.webSafe)
-        this.convertToWebSafe();
 
 };
 

@@ -9,7 +9,6 @@ function ColorShifter() {
     this.outputFormat = CssColor.Format.Auto;
     this.postProcessing = ColorShifter.PostProcessing.None;
     this.colorize = false;
-    this.useOnlyWebSafeColors = false;
     this.useColorNames = false;
     this.useContractedHexCodes = true;
     this.enableHexWithAlpha = false;
@@ -86,7 +85,6 @@ ColorShifter.prototype.shiftColor = function(originalColorString) {
         alpha: this.alphaChange,
         contrast: this.contrastChange,
         colorize: this.colorize,
-        webSafe: this.useOnlyWebSafeColors,
         fixAlpha: this.fixAlpha,
         proportionalSaturation: this.proportionalSaturation,
         proportionalLightness: this.proportionalLightness,

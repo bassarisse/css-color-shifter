@@ -24,7 +24,6 @@ function ColorShifterUI(options) {
     this.formatFieldId = options.formatFieldId || null;
     this.postProcessingFieldId = options.postProcessingFieldId || null;
     this.colorizeFieldId = options.colorizeFieldId || null;
-    this.webSafeFieldId = options.webSafeFieldId || null;
     this.colorNamesFieldId = options.colorNamesFieldId || null;
     this.contractedHexCodesFieldId = options.contractedHexCodesFieldId || null;
     this.hexWithAlphaFieldId = options.hexWithAlphaFieldId || null;
@@ -47,7 +46,6 @@ function ColorShifterUI(options) {
     this.outputFormat = CssColor.Format.Unknown;
     this.postProcessing = ColorShifter.PostProcessing.None;
     this.colorize = false;
-    this.useOnlyWebSafeColors = false;
     this.useColorNames = false;
     this.useContractedHexCodes = false;
     this.enableHexWithAlpha = false;
@@ -111,7 +109,6 @@ ColorShifterUI.prototype._setupFields = function(enable) {
     var formatField = document.getElementById(this.formatFieldId);
     var postProcessingField = document.getElementById(this.postProcessingFieldId);
     var colorizeField = document.getElementById(this.colorizeFieldId);
-    var webSafeField = document.getElementById(this.webSafeFieldId);
     var colorNamesField = document.getElementById(this.colorNamesFieldId);
     var contractedHexCodesField = document.getElementById(this.contractedHexCodesFieldId);
     var hexWithAlphaField = document.getElementById(this.hexWithAlphaFieldId);
@@ -177,7 +174,6 @@ ColorShifterUI.prototype._setupFields = function(enable) {
     eventFunc(formatField, updateEvents, this.updateCallback);
     eventFunc(postProcessingField, updateEvents, this.updateCallback);
     eventFunc(colorizeField, updateEvents, this.updateCallback);
-    eventFunc(webSafeField, updateEvents, this.updateCallback);
     eventFunc(colorNamesField, updateEvents, this.updateCallback);
     eventFunc(contractedHexCodesField, updateEvents, this.updateCallback);
     eventFunc(hexWithAlphaField, updateEvents, this.updateCallback);
@@ -349,7 +345,6 @@ ColorShifterUI.prototype.refreshFromFields = function() {
     var formatField = document.getElementById(this.formatFieldId);
     var postProcessingField = document.getElementById(this.postProcessingFieldId);
     var colorizeField = document.getElementById(this.colorizeFieldId);
-    var webSafeField = document.getElementById(this.webSafeFieldId);
     var colorNamesField = document.getElementById(this.colorNamesFieldId);
     var contractedHexCodesField = document.getElementById(this.contractedHexCodesFieldId);
     var hexWithAlphaField = document.getElementById(this.hexWithAlphaFieldId);
@@ -379,7 +374,6 @@ ColorShifterUI.prototype.refreshFromFields = function() {
     if (formatField) this.outputFormat = parseInt(formatField.value, 10);
     if (postProcessingField) this.postProcessing = parseInt(postProcessingField.value, 10);
     if (colorizeField) this.colorize = colorizeField.checked ? true : false;
-    if (webSafeField) this.useOnlyWebSafeColors = webSafeField.checked ? true : false;
     if (colorNamesField) this.useColorNames = colorNamesField.checked ? true : false;
     if (contractedHexCodesField) this.useContractedHexCodes = contractedHexCodesField.checked ? true : false;
     if (hexWithAlphaField) this.enableHexWithAlpha = hexWithAlphaField.checked ? true : false;
@@ -439,7 +433,6 @@ ColorShifterUI.prototype.update = function(cssString) {
     colorShifter.outputFormat = this.outputFormat;
     colorShifter.postProcessing = this.postProcessing;
     colorShifter.colorize = this.colorize;
-    colorShifter.useOnlyWebSafeColors = this.useOnlyWebSafeColors;
     colorShifter.useColorNames = this.useColorNames;
     colorShifter.useContractedHexCodes = this.useContractedHexCodes;
     colorShifter.enableHexWithAlpha = this.enableHexWithAlpha;
