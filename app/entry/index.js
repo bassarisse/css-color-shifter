@@ -38,3 +38,10 @@ new ColorShifterUI({
 var versionNode = document.getElementById('version')
 if (versionNode)
     versionNode.innerText = 'v' + APP_VERSION
+
+import React from 'react'
+import { render } from 'react-dom'
+
+import App from '../App'
+
+render(<App />, document.getElementById('root'))
