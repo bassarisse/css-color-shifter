@@ -5,6 +5,7 @@ var webpack = require('webpack')
 var CleanWebpackPlugin = require('clean-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 var appVersion = require('./package.json').version
 
@@ -27,6 +28,11 @@ entryPointFiles
         var entryPointName = path.basename(fileName, path.extname(fileName))
         entryPoints[entryPointName] = path.join(mainPath, fileName)
     })
+
+var extractStyles = new ExtractTextPlugin({
+    filename: 'style_app_[chunkhash:8].css',
+    allChunks: true,
+})
 
 var config = {
     entry: entryPoints,
@@ -62,6 +68,7 @@ var config = {
                             'transform-runtime',
                             'transform-strict-mode',
                             'transform-decorators-legacy',
+                            [ 'emotion/babel', { inline: true }],
                         ],
                         env: {
                             development: {
@@ -79,8 +86,11 @@ var config = {
                 }
             },
             {
-                test: /\.css?$/i,
-                use: 'file',
+                test: /\.css$/,
+                use: extractStyles.extract({
+                    fallback: 'style',
+                    use: 'css'
+                })
             },
         ]
     },
@@ -94,8 +104,7 @@ var config = {
         hints: isProd ? 'warning' : false,
     },
     plugins: [
-        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), // avoiding auto load of moment locale files
-        new webpack.IgnorePlugin(/unicode\/category\/So/), // this is needed only when using unicode characters in slugs
+        extractStyles,
         new webpack.DefinePlugin({
             APP_VERSION: JSON.stringify(appVersion),
         }),

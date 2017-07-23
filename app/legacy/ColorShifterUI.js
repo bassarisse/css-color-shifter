@@ -1,7 +1,7 @@
 
-import ColorShifter from './ColorShifter.js'
-import CssColor from './CssColor.js'
-import Util from './Util.js'
+import ColorShifter from '../lib/ColorShifter'
+import CssColor from '../lib/CssColor'
+import Util from './Util'
 
 function ColorShifterUI(options) {
 

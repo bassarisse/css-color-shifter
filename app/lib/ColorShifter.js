@@ -3,7 +3,7 @@ import beautify from 'js-beautify'
 import csso from 'csso'
 import CssColorNames from 'css-color-names'
 
-import CssColor from './CssColor.js'
+import CssColor from './CssColor'
 
 function ColorShifter() {
 
