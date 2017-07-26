@@ -11,7 +11,8 @@ var appVersion = require('./package.json').version
 
 var isProd = process.env.NODE_ENV === 'production'
 
-var buildBase = path.join(__dirname, 'build')
+var buildBaseName = 'build'
+var buildBase = path.join(__dirname, buildBaseName)
 var mainPath = path.join(__dirname, 'app', 'entry')
 var entryPoints = {}
 var entryPointFiles
@@ -137,7 +138,7 @@ if (isProd) {
         },
     }))
 
-    config.plugins.push(new CleanWebpackPlugin(['build']))
+    config.plugins.push(new CleanWebpackPlugin([buildBaseName + '/*.*']))
 
 } else {
 
