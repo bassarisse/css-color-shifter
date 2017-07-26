@@ -4,6 +4,7 @@
   "description": "Tool to consistently change CSS colors from a stylesheet or raw text",
   "main": "ColorShifterUI.js",
   "scripts": {
+    "install": "git submodule update --init --recursive && cd build && git checkout gh-pages && git branch -d master || true",
     "fix-js": "eslint --fix --ext .js,.jsx ./app || true",
     "lint-js": "eslint --ext .js,.jsx ./app || true",
     "dev": "cross-env PORT=8181 webpack-dev-server --host 0.0.0.0 --open --public localhost:8181",
