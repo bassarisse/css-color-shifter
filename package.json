@@ -22,7 +22,7 @@
   ],
   "author": "Bruno Assarisse <bruno@assarisse.com.br> (http://bassarisse.com/)",
   "license": "ISC",
-  "homepage": "http://bassarisse.com/csscolorshifter",
+  "homepage": "https://bassarisse.github.io/css-color-shifter",
   "dependencies": {
     "css-color-names": "^0.0.4",
     "csso": "^3.1.1",
