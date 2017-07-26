@@ -14,148 +14,21 @@
 <body>
     <div id="root"></div>
 
-<div id="color-shifter-container" style="visibility:hidden;">
-<div class="css-area-column">
-    <div class="css-area-content">
-        <label for="source"><strong>Source</strong> (paste your CSS here)</label>
-    </div>
-    <div class="css-area-content">
-        <textarea id="source" class="source-field">
-.class1  { background-color: #ca3c08; }
-.class2  { background-color: #d94412; }
-.class3  { background-color: #fbca3c; }
-.class4  { background-color: #fff9c0; }
-.class5  { background-color: #ea9629; }
-.class6  { background-color: #21759b; }
-.class7  { background-color: #d4d0ba; }
-.class8  { background-color: #c3c0ab; }
-.class9  { background-color: #7d7b6d; }
-.class10 { background-color: #f5f5f5; }
-.class11 { background-color: #dddddd; }
-.class12 { background-color: #888888; }
-.class13 { background-color: #333333; }
-.class14 { background-color: #000000; }</textarea>
-    </div>
-</div>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default-3.4"></script>
+    
+    <!--
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-6147007-1']);
+      _gaq.push(['_trackPageview']);
 
-<div class="css-area-column">
-    <div class="css-area-content">
-        <label for="target"><strong>Output</strong> (this is the modified CSS)</label>
-    </div>
-    <div class="css-area-content">
-        <textarea id="target" class="target-field"></textarea>
-    </div>
-</div>
-
-<div class="css-area-content">
-    <label><strong>Preview</strong></label>
-</div>
-<div id="originalColors" class="color-swatches"></div>
-<div id="newColors" class="color-swatches"></div>
-
-<div class="options-main">
-    <div class="options-box main">
-
-        <div class="property-line">
-            <span class="property-name">Hue</span>
-            <input type="range" id="hueChange" value="0" min="0" max="360" step="0.01" />
-            <input type="number" id="hueChangeNumeric" value="0" min="0" max="360" step="1" />
-            <input type="button" id="hueReset" value="Reset" />
-            <label class="property-rel-option" title="All colors will use the informed hue value"><input type="checkbox" id="fixHue" value="1" />Fixed</label>
-        </div>
-
-        <div class="property-line">
-            <span class="property-name">Saturation</span>
-            <input type="range" id="saturationChange" value="0" min="-100" max="100" step="0.01" />
-            <input type="number" id="saturationChangeNumeric" value="0" min="-100" max="100" step="1" />
-            <input type="button" id="saturationReset" value="Reset" />
-            <label class="property-rel-option" title="Modifies the saturation of all colors by the same relative value towards the minimum or maximum"><input type="checkbox" id="proportionalsaturation" value="1" checked="checked" />Proportional</label>
-        </div>
-
-        <div class="property-line">
-            <span class="property-name">Lightness</span>
-            <input type="range" id="lightnessChange" value="0" min="-100" max="100" step="0.01" />
-            <input type="number" id="lightnessChangeNumeric" value="0" min="-100" max="100" step="1" />
-            <input type="button" id="lightnessReset" value="Reset" />
-            <label class="property-rel-option" title="Modifies the lightness of all colors by the same relative value towards the minimum or maximum"><input type="checkbox" id="proportionallightness" value="1" checked="checked" />Proportional</label>
-        </div>
-
-        <div class="property-line">
-            <span class="property-name">Alpha</span>
-            <input type="range" id="alphaChange" value="0" min="-1" max="1" step="0.0001" />
-            <input type="number" id="alphaChangeNumeric" value="0" min="-1" max="1" step="0.1" />
-            <input type="button" id="alphaReset" value="Reset" />
-            <label class="property-rel-option" title="Makes all colors use the specified alpha value"><input type="checkbox" id="fixAlpha" value="1" />Fixed</label>
-        </div>
-
-        <div class="property-line">
-            <span class="property-name">Contrast</span>
-            <input type="range" id="contrastChange" value="0" min="-255" max="255" step="0.1" />
-            <input type="number" id="contrastChangeNumeric" value="0" min="-255" max="255" step="1" />
-            <input type="button" id="contrastReset" value="Reset" />
-        </div>
-
-        <div class="property-line reset-all-container">
-            &nbsp;&nbsp;&nbsp;<input type="button" id="allReset" value="Reset All" />
-        </div>
-
-    </div>
-
-    <div class="options-box">
-
-        <div class="select-line">
-            <label>
-                Output color format<br />
-                <select id="colorformat">
-                    <option value="0" selected="selected">Same as source</option>
-                    <option value="1">HEX</option>
-                    <option value="2">RGB</option>
-                    <option value="3">HSL</option>
-                </select>
-            </label>
-        </div>
-
-        <div class="select-line">
-            <label>
-                Post processing<br />
-                <select id="postprocessing">
-                    <option value="0" selected="selected">None</option>
-                    <option value="1">Beautify</option>
-                    <option value="2">Minify</option>
-                </select>
-            </label>
-        </div>
-
-    </div>
-
-    <div class="options-box checklist">
-        <label title="Only when possible"><input type="checkbox" id="colorNames" value="1" />Use color names (e.g. red, white)</label><br />
-        <label title="Only when possible"><input type="checkbox" id="contractedhexcodes" value="1" checked="checked" />Use contracted hex codes (e.g. #f00)</label><br />
-        <label title="When modifying alpha, HEX format is changed to RGB by default, but you can choose HSL here"><input type="checkbox" id="preferhsl" value="1" />Prefer HSL over RGB format</label>
-    </div>
-
-    <div class="options-box checklist">
-        <label title="Use this if you just want to throw some colors and modify them, but if you're pasting a stylesheet, you're better leaving this option alone"><input type="checkbox" id="enablecsssyntax" value="1" checked="checked" />Enable basic CSS syntax detection</label><br />
-        <label title="Only if applicable (e.g. #40506070), low browser support"><input type="checkbox" id="hexwithalpha" value="1" />Enable Hex with alpha channel</label>
-    </div>
-</div>
-
-</div>
-
-<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default-3.4"></script>
-<!--
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-6147007-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script>
--->
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    -->
 
 </body>
 </html>

@@ -1,0 +1,44 @@
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+    margin: 0;
+}
+
+*:focus {
+    outline: none;
+}
+
+body, html, input, select, button, textarea {
+    font-size: 13px;
+    font-family: sans-serif;
+}
+
+body {
+    padding: 16px;
+    color: #333;
+    background-color: #fdfdfd;
+}
+
+input[type=button],
+input[type=submit] {
+    cursor: pointer;
+    border: 1px solid #b4bbc2;
+    background-color: #e7eef5;
+    border-radius: 1px;
+}
+
+input[type=button]:active,
+input[type=submit]:active {
+    border-color: #9fafbf;
+    background-color: #c4def9;
+}
+
+p {
+    margin: 1em 0;
+}

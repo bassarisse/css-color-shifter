@@ -28,6 +28,10 @@ function ColorShifter() {
 
 }
 
+ColorShifter.prototype.setOptions = function(obj) {
+    Object.assign(this, obj || {})
+}
+
 ColorShifter.prototype._createRegExp = function() {
 
     var regexp = ''
@@ -93,8 +97,12 @@ ColorShifter.prototype.shiftColor = function(originalColorString) {
         isAlphaSpecified: ((!this.fixAlpha && this.alphaChange !== 0) || (this.fixAlpha && this.alphaChange !== 1)),
     })
 
-    if (this.colorsFound.indexOf(testColorString) === -1) {
-        this.colorsFound.push(testColorString)
+    if (this._colorsFound.indexOf(testColorString) === -1) {
+        this._colorsFound.push(testColorString)
+        this.colors.push({
+            new: newColor,
+            original: originalColorString,
+        })
 
         if (typeof this.shiftCallback === 'function')
             this.shiftCallback(newColor, originalColorString)
@@ -124,7 +132,8 @@ ColorShifter.prototype.process = function(cssString) {
     if (typeof cssString !== 'string')
         return cssString
 
-    this.colorsFound = []
+    this._colorsFound = []
+    this.colors = []
 
     var shiftedCssString = this.shiftCss(cssString)
 

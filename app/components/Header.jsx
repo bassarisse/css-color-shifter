@@ -2,6 +2,12 @@
 import React from 'react'
 import styled from 'emotion/react'
 
+import { mainSpacing } from '../layout'
+
+const MainContainer = styled.div`
+    margin-bottom: ${mainSpacing}px;
+`
+
 const Title = styled.h1`
     padding: 4pt;
     margin: 0;
@@ -17,17 +23,17 @@ const Credit = styled.h4`
     display: block;
     font-weight: normal;
     font-size: 9pt;
-    margin-top: 0;
+    margin: 0;
     text-align: right;
     padding-right: 4pt;
 `
 
 function Header() {
     return (
-        <div>
+        <MainContainer>
             <Title>CSS Color Shifter <Version>v{APP_VERSION}</Version></Title>
             <Credit>by <a href='http://bassarisse.com' target='_blank'>Bruno Assarisse</a></Credit>
-        </div>
+        </MainContainer>
     )
 }
 
