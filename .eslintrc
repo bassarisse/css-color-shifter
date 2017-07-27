@@ -13,6 +13,7 @@
     "commonjs": true
   },
   "globals": {
+    "process": true,
     "APP_VERSION": true
   },
   "extends": [

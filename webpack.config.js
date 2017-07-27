@@ -112,6 +112,10 @@ var config = {
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: path.join(__dirname, 'app/index.tmpl.html'),
+            minify: isProd ? {
+                collapseWhitespace: true,
+                minifyJS: true,
+            } : false,
         }),
         new CopyWebpackPlugin([
             { from: path.join(__dirname, 'app/favicon.ico'), to: 'favicon.ico' },
